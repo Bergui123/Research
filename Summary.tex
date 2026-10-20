@@ -5,7 +5,9 @@
 \usepackage{geometry}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{hyperref}
 \geometry{margin=2.3cm}
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \title{\textbf{Summary} \\ \large Where the Project Stands}
@@ -23,7 +25,7 @@ U[\mathbf x]=\sum_{j=1}^{M}\Big[\tfrac12\gamma_jX_j^2+\varepsilon_j\sum_{k=1}^N|
 x_k^\top C\mathbf x_k
 \end{equation}
 
-How we got here: taken directly from Almgren--Chriss (2000) --- Eq.~15
+How we got here: taken directly from Almgren--Chriss (2000)~\cite{almgrenchriss2000} --- Eq.~15
 ($U=E+\lambda V$) applied to their Eqs.~29--30 (expected cost, variance),
 restricted to diagonal impact matrices (their Eq.~32).
 
@@ -38,7 +40,10 @@ x(t)^\top C\mathbf x(t)\big)\,dt,\qquad \dot{\mathbf x}=-\mathbf v,\qquad
 How we got here: start from Step~1, drop the two terms that don't depend
 on the schedule (permanent impact, spread cost under sales-only), write
 $n_{jk}=\tau v_j(t_k)$, and take $\tau\to0$: the Riemann sum
-$\sum_k\tau f(t_k)$ becomes the integral $\int_0^Tf(t)\,dt$.
+$\sum_k\tau f(t_k)$ becomes the integral $\int_0^Tf(t)\,dt$. This is the
+multi-asset continuum limit of Bergault--Drissi--Gu\'eant (2022)
+\cite{bergault2022}; the single-asset case matches Almgren--Chriss (2000)
+\cite{almgrenchriss2000}.
 
 \section*{Step 3 --- HJB equation and matrix Riccati ODE}
 
@@ -55,12 +60,12 @@ integral, apply Bellman's dynamic programming principle (split the horizon
 into $[t,t+dt]+[t+dt,T]$, expand to first order) to get the HJB PDE, then
 substitute the quadratic ansatz $\mathcal V=\tfrac12\mathbf x^\top
 P(t)\mathbf x$ to collapse it to the Riccati ODE. Verified by hand against
-Bergault--Drissi--Gu\'eant (2022), Eqs.~13--14 and~20--21.
+Bergault--Drissi--Gu\'eant (2022)~\cite{bergault2022}, Eqs.~13--14 and~20--21.
 
 \textbf{Reading the status column.} Three different kinds of claim get
 mixed together if not kept separate, so each row is tagged with which one
 applies:
-\begin{itemize}[leftmargin=1.5em,nosep]
+\begin{itemize}
   \item \emph{Numerically validated} --- an actual number was computed
         (by hand or by script) and compared against another number. This is
         the only kind of ``done'' that means the formula was tested, not
@@ -79,15 +84,15 @@ applies:
 \toprule
 \textbf{Stage} & \textbf{Status} & \textbf{Note} \\
 \midrule
-1. Discrete objective & Sourced; doc repairs open & Formula taken directly from Almgren--Chriss (2000). \textbf{Not fully done}: Eq.~20, Eqs.~26--27, Eq.~32 ($H$ vs.\ $\tilde H$), and the unfinished Drift sentence are still open repairs in the reference document (see WorkPlan Stage~1). \\
-2. HJB, Riccati, trajectory ($\Phi\to\infty$) & Literature-matched + partly numerically validated & HJB/Riccati/trajectory algebra matches Bergault--Drissi--Gu\'eant (2022) and Almgren--Chriss (2000) App.~A.2 (AI-checked this session). Separately, \emph{numerically} validated only for: one asset (exact), one asset vs.\ discrete cost at $N=4$ ($\sim\!3\times10^{-4}$ agreement), and two assets for \textbf{one} parameter set. Not a general proof. \\
-2 (finite $\Phi$) & Literature-matched only & Closed form in Bergault et al.\ App.~A, Cor.~1. AI-checked against the paper; \textbf{not yet numerically tested} against anything in this project. \\
-2b. Time-dependent $\lambda(t),H(t),C(t)$ & Literature-matched (Riccati form only) & Drissi (2023) confirmed real and on-topic (AI-checked). Closed form exists only in the special volume-time-clock case (derived here, standard calculus, \textbf{not numerically checked}). General case: no closed form, not implemented. \\
+1. Discrete objective & Sourced; doc repairs open & Formula taken directly from Almgren--Chriss (2000)~\cite{almgrenchriss2000}. \textbf{Not fully done}: Eq.~20, Eqs.~26--27, Eq.~32 ($H$ vs.\ $\tilde H$), and the unfinished Drift sentence are still open repairs in the reference document (see WorkPlan Stage~1). \\
+2. HJB, Riccati, trajectory ($\Phi\to\infty$) & Literature-matched + partly numerically validated & HJB/Riccati/trajectory algebra matches Bergault--Drissi--Gu\'eant (2022)~\cite{bergault2022} and Almgren--Chriss (2000) App.~A.2~\cite{almgrenchriss2000} (AI-checked this session). Separately, \emph{numerically} validated only for: one asset (exact), one asset vs.\ discrete cost at $N=4$ ($\sim\!3\times10^{-4}$ agreement), and two assets for \textbf{one} parameter set. Not a general proof. \\
+2 (finite $\Phi$) & Literature-matched only & Closed form in Bergault et al.\ \cite{bergault2022} App.~A, Cor.~1. AI-checked against the paper; \textbf{not yet numerically tested} against anything in this project. \\
+2b. Time-dependent $\lambda(t),H(t),C(t)$ & Literature-matched (Riccati form only) & Drissi (2023)~\cite{drissi2023} confirmed real and on-topic (AI-checked). Closed form exists only in the special volume-time-clock case~\cite{gueant2016} (derived here, standard calculus, \textbf{not numerically checked}). General case: no closed form, not implemented. \\
 3. Concrete instance & In progress, own work & No paper needed --- this is a parameter choice, not a result to cite. Known failure mode already observed: high correlation + small second position breaks the sales-only assumption. \\
-4. Cole--Hopf linearisation & Derived, unchecked & This project's own instantiation of a standard technique (Fleming--Soner, Kappen); \textbf{no numerical check has been run}. \\
+4. Cole--Hopf linearisation & Derived, unchecked & This project's own instantiation of a standard technique (Fleming--Soner~\cite{flemingsoner2006}, Kappen~\cite{kappen2005}); \textbf{no numerical check has been run}. \\
 5. Oscillator spectrum / choose $\nu$ & Derived, unchecked & Own work; the $\nu$-sweep table (exit criterion) has not been produced. \\
 6. Discretisation & Not started & \\
-7. Schr\"odingerisation & Not started & Jin--Liu--Yu papers not yet read; current notes are reconstructed from memory, explicitly marked unreliable in WorkPlan. \\
+7. Schr\"odingerisation & Not started & Jin--Liu--Yu papers~\cite{jin2024,jin2023} not yet read; current notes are reconstructed from memory, explicitly marked unreliable in WorkPlan. \\
 8. Resource count ($N_q,N_T$) & Not started & \\
 9. Readout cost & Not started & \\
 10. Sweeps \& write-up & Not started & \\
@@ -105,12 +110,13 @@ position, so this is not a rubber stamp). Nothing in Stages~4--9 can produce
 an actual number before this is fixed; right now they only have symbols.
 
 Two things should happen alongside it, not instead of it:
-\begin{itemize}[leftmargin=1.5em,nosep]
+\begin{itemize}
   \item Close the Stage~1 reference-document repairs (Eq.~20, Eqs.~26--27,
-        Eq.~32, the Drift sentence) --- small, independent of Stage~3.
+        Eq.~32, the Drift sentence) in Almgren--Chriss~\cite{almgrenchriss2000}
+        --- small, independent of Stage~3.
   \item Before trusting any Stage~7--9 number later, read the Jin--Liu--Yu
-        Schr\"odingerisation papers; everything there is currently
-        reconstructed from memory, not sourced.
+        Schr\"odingerisation papers~\cite{jin2024,jin2023}; everything there is
+        currently reconstructed from memory, not sourced.
 \end{itemize}
 
 \section*{Parameter glossary (Stage 3)}
@@ -126,10 +132,44 @@ $\rho$ & Correlation between the two assets' returns; builds the covariance matr
 $\lambda$ & Risk aversion. Larger $\lambda$ makes holding inventory costlier, pushes faster liquidation. \\
 $T$ & Horizon: time allowed to fully liquidate. \\
 $X$ & Starting inventory vector (shares held per asset) at $t=0$. \\
-$\kappa_i=\sqrt{\lambda\mu_i}$ & Decay rate of each decoupled trading mode (after diagonalising $H^{-1/2}CH^{-1/2}$); sets how fast that mode liquidates. $\mu_i$ are the eigenvalues of $H^{-1/2}CH^{-1/2}$. \\
+$\kappa_i=\sqrt{\lambda\mu_i}$ & Decay rate of each decoupled trading mode (after diagonalising $H^{-1/2}CH^{-1/2}$~\cite{almgrenchriss2000,bergault2022}); sets how fast that mode liquidates. $\mu_i$ are the eigenvalues of $H^{-1/2}CH^{-1/2}$. \\
 $v_j(t)=-\dot x_j(t)$ & Selling rate of asset $j$ at time $t$. Must stay $\ge0$ everywhere, or the sales-only assumption breaks (the model has no cost term for buying back). \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+\begin{thebibliography}{99}
+
+\bibitem{almgrenchriss2000} R.~Almgren and N.~Chriss, ``Optimal Execution of
+Portfolio Transactions,'' \emph{J. Risk} \textbf{3}(2), 5--39 (2000).
+
+\bibitem{bergault2022} P.~Bergault, F.~Drissi, and O.~Gu\'eant, ``Multi-asset
+Optimal Execution and Statistical Arbitrage Strategies under
+Ornstein--Uhlenbeck Dynamics,'' \emph{SIAM J. Financial Math.} \textbf{13}(1),
+353--390 (2022); arXiv:2103.13773.
+
+\bibitem{drissi2023} F.~Drissi, ``Solvability of Differential Riccati
+Equations and Applications to Algorithmic Trading with Signals,''
+\emph{Appl. Math. Finance} \textbf{29}(6), 457--493 (2023), arXiv:2202.07478.
+
+\bibitem{gueant2016} O.~Gu\'eant, \emph{The Financial Mathematics of Market
+Liquidity: From Optimal Execution to Market Making}, Chapman and Hall/CRC
+(2016).
+
+\bibitem{flemingsoner2006} W.~H.~Fleming and H.~M.~Soner, \emph{Controlled
+Markov Processes and Viscosity Solutions}, 2nd ed., Springer (2006).
+
+\bibitem{kappen2005} H.~J.~Kappen, ``Linear theory for control of nonlinear
+stochastic systems,'' \emph{Phys. Rev. Lett.} \textbf{95}, 200201 (2005).
+
+\bibitem{jin2024} S.~Jin, N.~Liu, and Y.~Yu, ``Quantum simulation of partial
+differential equations via Schr\"odingerization,'' \emph{Phys. Rev. Lett.}
+\textbf{133}, 230602 (2024).
+
+\bibitem{jin2023} S.~Jin, N.~Liu, and Y.~Yu, ``Quantum simulation of partial
+differential equations via Schr\"odingerisation: technical details,''
+\emph{Phys. Rev. A} \textbf{108}, 032603 (2023), arXiv:2212.14703.
+
+\end{thebibliography}
 
 \end{document}

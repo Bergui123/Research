@@ -15,7 +15,7 @@
 \hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
-\title{\textbf{Work Plan}\[0.3em]
+\title{\textbf{Work Plan}\\[0.3em]
 \large From Almgren--Chriss to a Fault-Tolerant Resource Estimate}
 \author{Step-by-step plan, status, sources, and open decisions}
 \date{}
@@ -471,7 +471,11 @@ applying Bellman's dynamic programming principle --- rather than
 Euler--Lagrange, since a state-space PDE in $(\mathbf x,t)$, not a two-point
 boundary-value ODE, is what Hamiltonian simulation requires downstream ---
 gives the Hamilton--Jacobi--Bellman equation, the optimal feedback control,
-the matrix Riccati equation, and the closed-form $\sinh/\cosh$ trajectory. All
+the matrix Riccati equation, and the closed-form $\sinh/\cosh$ trajectory.
+A full line-by-line derivation of this step --- the Taylor expansion of
+Bellman's principle, the pointwise minimisation, the quadratic-ansatz
+collapse to the Riccati ODE, and the simultaneous-diagonalisation argument
+for the closed form --- is given in \texttt{Proof\_HJB\_Riccati.tex}. All
 four are stated and proved for exactly this multi-asset mean-variance problem
 in Bergault, Drissi and Gu\'eant \cite{bergault2022} (Prop.~1--2 and App.~A);
 the one-asset case matches Almgren--Chriss \cite{almgrenchriss2000} Eq.~17.
@@ -1126,7 +1130,7 @@ constants for the chosen instance.
 \midrule
 $N_q=Mn_x+n_p+n_{\mathrm{anc}}$ & \eqref{eq:nq} & Direct sum of the registers
   introduced in Stages 6--7 plus the block-encoding's own ancilla count. \\
-Qubitization/QSVT query count & \eqref{eq:queries} & Best known scaling in both
+Qubitization/\allowbreak QSVT query count & \eqref{eq:queries} & Best known scaling in both
   $T$ (linear, provably optimal) and $\varepsilon$ (doubly logarithmic); the
   fairest lower bound to report for a non-speedup-claiming resource estimate. \\
 T-gates $=Q\times$cost + rotations & \eqref{eq:nt} & Separates the
@@ -1169,7 +1173,7 @@ added.
 rate $\mathbf v^*(\mathbf X,0)=-2\nu H^{-1}\nabla\ln\psi(\mathbf X)$
 (Stage~4), which requires $\nabla\ln\psi$ at $\mathbf x=\mathbf X$, i.e.\ the
 \emph{ratio} of amplitudes at neighbouring grid points (since
-$\nabla\ln\psi\approx[\ln\psi(\mathbf X+\Delta x\,\mathbf e_j)-\ln\psi(\mathbf
+$\nabla\ln\psi\approx[\ln\psi(\mathbf X+\Delta x\,\mathbf e_j)\allowbreak-\ln\psi(\mathbf
 X)]/\Delta x$ from a finite difference consistent with Stage~6's
 discretisation).
 
