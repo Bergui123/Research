@@ -1,0 +1,135 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\geometry{margin=2.3cm}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\title{\textbf{Summary} \\ \large Where the Project Stands}
+\author{Short version --- see WorkPlan.tex for derivations}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Step 1 --- Discrete objective}
+
+\begin{equation}
+U[\mathbf x]=\sum_{j=1}^{M}\Big[\tfrac12\gamma_jX_j^2+\varepsilon_j\sum_{k=1}^N|n_{jk}|
++\frac{\tilde\eta_j}{\tau}\sum_{k=1}^N n_{jk}^2\Big]+\lambda\sum_{k=1}^N\tau\,\mathbf
+x_k^\top C\mathbf x_k
+\end{equation}
+
+How we got here: taken directly from Almgren--Chriss (2000) --- Eq.~15
+($U=E+\lambda V$) applied to their Eqs.~29--30 (expected cost, variance),
+restricted to diagonal impact matrices (their Eq.~32).
+
+\section*{Step 2 --- Continuum running-cost integral}
+
+\begin{equation}
+J[\mathbf v]=\int_0^T\big(\mathbf v(t)^\top H\mathbf v(t)+\lambda\,\mathbf
+x(t)^\top C\mathbf x(t)\big)\,dt,\qquad \dot{\mathbf x}=-\mathbf v,\qquad
+\mathbf x(0)=\mathbf X,\ \mathbf x(T)=\mathbf 0
+\end{equation}
+
+How we got here: start from Step~1, drop the two terms that don't depend
+on the schedule (permanent impact, spread cost under sales-only), write
+$n_{jk}=\tau v_j(t_k)$, and take $\tau\to0$: the Riemann sum
+$\sum_k\tau f(t_k)$ becomes the integral $\int_0^Tf(t)\,dt$.
+
+\section*{Step 3 --- HJB equation and matrix Riccati ODE}
+
+\begin{equation}
+\partial_t\mathcal V-\tfrac14(\nabla_{\mathbf x}\mathcal V)^\top H^{-1}
+(\nabla_{\mathbf x}\mathcal V)+\lambda\,\mathbf x^\top C\mathbf x=0,
+\qquad
+\dot P=\tfrac12PH^{-1}P-2\lambda C,\qquad P(T)=\Phi
+\end{equation}
+
+How we got here: define the cost-to-go
+$\mathcal V(\mathbf x,t)=\min_{\mathbf v}\int_t^T(\cdots)\,ds$ on Step~2's
+integral, apply Bellman's dynamic programming principle (split the horizon
+into $[t,t+dt]+[t+dt,T]$, expand to first order) to get the HJB PDE, then
+substitute the quadratic ansatz $\mathcal V=\tfrac12\mathbf x^\top
+P(t)\mathbf x$ to collapse it to the Riccati ODE. Verified by hand against
+Bergault--Drissi--Gu\'eant (2022), Eqs.~13--14 and~20--21.
+
+\textbf{Reading the status column.} Three different kinds of claim get
+mixed together if not kept separate, so each row is tagged with which one
+applies:
+\begin{itemize}[leftmargin=1.5em,nosep]
+  \item \emph{Numerically validated} --- an actual number was computed
+        (by hand or by script) and compared against another number. This is
+        the only kind of ``done'' that means the formula was tested, not
+        just read.
+  \item \emph{Literature-matched} --- the AI assistant re-derived the
+        algebra this session and confirmed it agrees symbol-for-symbol with
+        a cited published paper. This means the formula is traceable to a
+        real source, \emph{not} that it has been independently tested by a
+        human or against your own numbers.
+  \item \emph{Derived, unchecked} --- written down (by this project or the
+        AI) but never compared against anything.
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{@{}L{3.0cm}L{3.0cm}L{9.0cm}@{}}
+\toprule
+\textbf{Stage} & \textbf{Status} & \textbf{Note} \\
+\midrule
+1. Discrete objective & Sourced; doc repairs open & Formula taken directly from Almgren--Chriss (2000). \textbf{Not fully done}: Eq.~20, Eqs.~26--27, Eq.~32 ($H$ vs.\ $\tilde H$), and the unfinished Drift sentence are still open repairs in the reference document (see WorkPlan Stage~1). \\
+2. HJB, Riccati, trajectory ($\Phi\to\infty$) & Literature-matched + partly numerically validated & HJB/Riccati/trajectory algebra matches Bergault--Drissi--Gu\'eant (2022) and Almgren--Chriss (2000) App.~A.2 (AI-checked this session). Separately, \emph{numerically} validated only for: one asset (exact), one asset vs.\ discrete cost at $N=4$ ($\sim\!3\times10^{-4}$ agreement), and two assets for \textbf{one} parameter set. Not a general proof. \\
+2 (finite $\Phi$) & Literature-matched only & Closed form in Bergault et al.\ App.~A, Cor.~1. AI-checked against the paper; \textbf{not yet numerically tested} against anything in this project. \\
+2b. Time-dependent $\lambda(t),H(t),C(t)$ & Literature-matched (Riccati form only) & Drissi (2023) confirmed real and on-topic (AI-checked). Closed form exists only in the special volume-time-clock case (derived here, standard calculus, \textbf{not numerically checked}). General case: no closed form, not implemented. \\
+3. Concrete instance & In progress, own work & No paper needed --- this is a parameter choice, not a result to cite. Known failure mode already observed: high correlation + small second position breaks the sales-only assumption. \\
+4. Cole--Hopf linearisation & Derived, unchecked & This project's own instantiation of a standard technique (Fleming--Soner, Kappen); \textbf{no numerical check has been run}. \\
+5. Oscillator spectrum / choose $\nu$ & Derived, unchecked & Own work; the $\nu$-sweep table (exit criterion) has not been produced. \\
+6. Discretisation & Not started & \\
+7. Schr\"odingerisation & Not started & Jin--Liu--Yu papers not yet read; current notes are reconstructed from memory, explicitly marked unreliable in WorkPlan. \\
+8. Resource count ($N_q,N_T$) & Not started & \\
+9. Readout cost & Not started & \\
+10. Sweeps \& write-up & Not started & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{Next step}
+
+The single blocking action is \textbf{Stage 3}: pick one concrete numeric
+instance ($\eta,\sigma,\rho,\lambda,T,X$) and check, for that instance only:
+$C\succeq0$, $\eta_j>0$, real $\kappa_i$, and $v_j(t)\ge0$ for all $t$ (the
+sales-only check --- known to fail at high correlation with an asymmetric
+position, so this is not a rubber stamp). Nothing in Stages~4--9 can produce
+an actual number before this is fixed; right now they only have symbols.
+
+Two things should happen alongside it, not instead of it:
+\begin{itemize}[leftmargin=1.5em,nosep]
+  \item Close the Stage~1 reference-document repairs (Eq.~20, Eqs.~26--27,
+        Eq.~32, the Drift sentence) --- small, independent of Stage~3.
+  \item Before trusting any Stage~7--9 number later, read the Jin--Liu--Yu
+        Schr\"odingerisation papers; everything there is currently
+        reconstructed from memory, not sourced.
+\end{itemize}
+
+\section*{Parameter glossary (Stage 3)}
+
+\begin{center}
+\begin{tabular}{@{}L{2cm}L{11cm}@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} \\
+\midrule
+$\eta_j$ & Temporary market impact of asset $j$; cost of trading fast. Larger $\eta_j$ penalises quick selling more. \\
+$\sigma_j$ & Volatility of asset $j$'s price, per unit time. \\
+$\rho$ & Correlation between the two assets' returns; builds the covariance matrix $C=\big(\begin{smallmatrix}\sigma_1^2&\rho\sigma_1\sigma_2\\\rho\sigma_1\sigma_2&\sigma_2^2\end{smallmatrix}\big)$. \\
+$\lambda$ & Risk aversion. Larger $\lambda$ makes holding inventory costlier, pushes faster liquidation. \\
+$T$ & Horizon: time allowed to fully liquidate. \\
+$X$ & Starting inventory vector (shares held per asset) at $t=0$. \\
+$\kappa_i=\sqrt{\lambda\mu_i}$ & Decay rate of each decoupled trading mode (after diagonalising $H^{-1/2}CH^{-1/2}$); sets how fast that mode liquidates. $\mu_i$ are the eigenvalues of $H^{-1/2}CH^{-1/2}$. \\
+$v_j(t)=-\dot x_j(t)$ & Selling rate of asset $j$ at time $t$. Must stay $\ge0$ everywhere, or the sales-only assumption breaks (the model has no cost term for buying back). \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

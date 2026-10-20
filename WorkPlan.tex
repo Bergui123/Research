@@ -511,14 +511,46 @@ natural frequency $\kappa_i=\sqrt{\lambda\mu_i}$:
   \label{eq:traj}
 \end{equation}
 and the optimal cost $\mathcal V(\mathbf{X},0)=\tfrac12\mathbf{X}^\top P(0)\mathbf{X}$.
+This is the hard-liquidation limit $\Phi\to\infty$. For a \emph{finite} terminal
+penalty $\Phi$, the matrix Riccati equation~\eqref{eq:ric} has an exact
+closed form in matrix-exponential rather than $\sinh/\cosh$ form. Writing
+$\hat\kappa=\sqrt{\lambda}\,(H^{-1/2}CH^{-1/2})^{1/2}$ (eigenvalues
+$\kappa_i$, same as above) and $\hat\Gamma=H^{-1/2}(\tfrac12\Phi)H^{-1/2}$,
+\begin{equation}
+  P(t) = -2H^{1/2}\left[\hat\kappa - \left(
+      \tfrac12\hat\kappa^{-1}\big(I-e^{-2\hat\kappa(T-t)}\big)
+      + e^{-\hat\kappa(T-t)}\big(\hat\Gamma+\hat\kappa^{-1}\big)e^{-\hat\kappa(T-t)}
+    \right)^{-1}\right]H^{1/2}
+  \label{eq:traj-finite-phi}
+\end{equation}
+(Bergault, Drissi and Gu\'eant \cite{bergault2022}, App.~A, Eqs.~31--34,
+Cor.~1.) It reduces to the $\sinh/\cosh$ form~\eqref{eq:traj} as $\Phi\to\infty$
+(i.e.\ $\hat\Gamma\to\infty$). This closed form should be used instead
+of~\eqref{eq:traj} whenever Stage~3--6 need a finite $\Phi$ (A10), since it
+removes the $\Phi\to\infty$ approximation entirely.
 
 \subsection*{Source}
 
-Almgren and Chriss \cite{almgrenchriss2000}, Sec.~2.2 and App.~A.2 (single
-asset); Bergault, Drissi and Gu\'eant \cite{bergault2022}, Prop.~1--2 and
-App.~A (multi-asset HJB PDE, Riccati ODE, closed-form trajectory); Schied,
+Almgren and Chriss \cite{almgrenchriss2000}, Sec.~2.2 (single-asset continuum
+limit) and App.~A.2 (multi-asset $\Phi\to\infty$ closed-form trajectory
+\eqref{eq:traj}: the diagonalisation of $\lambda H^{-1/2}CH^{-1/2}$ and the
+$\sinh\kappa_i(T-t)/\sinh\kappa_iT$ solution are given there explicitly, p.~39);
+Bergault, Drissi and Gu\'eant \cite{bergault2022}, Prop.~1--2 (multi-asset HJB
+PDE~\eqref{eq:pde} and Riccati ODE~\eqref{eq:ric}, specialised to their
+Eqs.~13--14 and~20--21 with no Ornstein--Uhlenbeck signal, i.e.\ $R=0$, under
+the identification $\eta=H$, $\Sigma=C$, $\gamma=2\lambda$, $\Gamma=\tfrac12\Phi$,
+$P=-2A$) and App.~A, Prop.~3/Cor.~1 (finite-$\Phi$ closed
+form~\eqref{eq:traj-finite-phi}, their Eqs.~31--34, again $R=0$); Schied,
 Sch\"oneborn and Tehranchi \cite{schied2010}, Secs.~2--3 (dynamic
 time-consistency).
+
+\textbf{Correction to a previous note in this document:} an earlier version
+of this Source paragraph stated that Bergault et al.\ ``do not give the
+closed-form trajectory, only an existence proof.'' That is true only for
+their general $R\neq0$ (Ornstein--Uhlenbeck signal) case. For the $R=0$
+case used throughout this project, their own Appendix~A gives the explicit
+closed form~\eqref{eq:traj-finite-phi} above --- confirmed by reading the
+full paper (arXiv:2103.13773v4) directly.
 
 \subsection*{Checks performed (why these count as validation)}
 
@@ -544,6 +576,96 @@ For one asset the trajectory equals $X\sinh(\kappa(T-t))/\sinh(\kappa T)$ (met);
 the two-asset case reproduces the direct minimisation of the discrete cost (met
 for one parameter set; should be extended to more parameter sets before being
 called fully locked).
+
+
+% =====================================================================
+\section{Stage 2b --- Time-dependent market parameters $\lambda(t),H(t),C(t)$}
+\label{sec:stage2b}
+
+\subsection*{What this stage needs}
+
+The constant-coefficient Riccati equation~\eqref{eq:ric} from Stage~2.
+
+\subsection*{Why this stage exists}
+
+Real intraday liquidity and volatility are not constant; this generalises
+Stage~2 to time-varying $H(t),C(t),\lambda(t)$ (permanent impact $\Gamma_{\rm
+perm}$ held constant, the standard convention).
+
+\subsection*{Core equations}
+
+Riccati equation keeps its exact form, coefficients now time-dependent:
+\begin{equation}
+  \dot P(t)=\tfrac12P(t)H(t)^{-1}P(t)-2\lambda(t)C(t),\qquad P(T)=\Phi.
+  \label{eq:ric-td}
+\end{equation}
+Existence/uniqueness on all of $[0,T]$ (no blow-up) holds since
+$H(t)^{-1}\succ0$, $\lambda(t)C(t)\succeq0$ for all $t$ (Drissi
+\cite{drissi2023}, Thm.~1, for $M_1,M_2,M_3\in C^1([0,T],\cdot)$).
+
+\textbf{General case (non-commuting $H(t)^{-1/2}C(t)H(t)^{-1/2}$):} no
+closed form; solve via the linear $2M\times2M$ Hamiltonian system
+(Radon's lemma; Abou-Kandil et al.\ \cite{abou-kandil2003}, Ch.~2,
+Thm.~2.2.1 for the classical, time-independent version of this
+linearisation --- this project's own extension to time-dependent
+coefficients is below and \textbf{not yet checked}):
+\begin{equation}
+  \frac{d}{dt}\begin{pmatrix}X(t)\\Y(t)\end{pmatrix}
+  = \begin{pmatrix}0 & -\tfrac12H(t)^{-1}\\ -2\lambda(t)C(t) & 0\end{pmatrix}
+    \begin{pmatrix}X(t)\\Y(t)\end{pmatrix},
+  \qquad P(t)=Y(t)X(t)^{-1}.
+\end{equation}
+
+\textbf{Case A --- common volume-time clock (closed form, this project's
+own derivation from the above, standard calculus):} if
+$H(t)=H_0/m(t)$ and $\lambda(t)C(t)=m(t)\lambda_0C_0$ for a common
+intraday activity profile $m(t)>0$, the volume-time change of variable
+$\tau(t)=\int_t^Tm(s)\,ds$ makes $m(t)$ cancel out of~\eqref{eq:ric-td}
+exactly, so Eq.~\eqref{eq:traj} holds verbatim with $(T-t)$ replaced by
+$\tau(t)$:
+\begin{equation}
+  \mathbf x(t) = H_0^{-1/2}U\,\mathrm{diag}\!\Big(
+    \frac{\sinh\kappa_i\tau(t)}{\sinh\kappa_i\tau(0)}\Big)U^\top H_0^{1/2}\mathbf X,
+  \qquad \kappa_i=\sqrt{\lambda_0\mu_i}.
+\end{equation}
+
+\subsection*{Status}
+
+Riccati generalisation and existence result: sourced, not yet implemented.
+Hamiltonian-system solution and Case~A volume-time reduction: derived here,
+not yet checked numerically. Case~B (commuting eigenbasis, time-varying
+eigenvalues $\mu_i(t)$) reduces to $M$ independent scalar Sturm--Liouville
+problems but has no closed form in general; not pursued further unless
+needed.
+
+\subsection*{Source}
+
+F.~Drissi, \emph{Solvability of Differential Riccati Equations and
+Applications to Algorithmic Trading with Signals}, Appl.\ Math.\ Finance
+\textbf{29}(6), 457--493 (2023), arXiv:2202.07478 (existence/uniqueness for
+time-dependent DRE coefficients --- verified: real paper, checked title,
+author, journal cite, and Theorem~1 statement directly). R.~Almgren,
+\emph{Optimal trading with stochastic liquidity and volatility}, SIAM J.\
+Financial Math.\ \textbf{3}(1), 163--181 (2012), Secs.~1.2--1.3 (time-varying
+$\eta(t),\sigma(t)$, volume-time reduction) --- \textbf{not independently
+verified, equation numbers unchecked}. O.~Gu\'eant \cite{gueant2016}, Ch.~3--4,
+and Cartea, Jaimungal \& Penalva \cite{cartea2015}, Ch.~6 (intraday seasonality
+profiles) --- \textbf{not independently verified}. H.~Abou-Kandil,
+G.~Freiling, V.~Ionescu, and G.~Jank, \emph{Matrix Riccati Equations in
+Control and Systems Theory}, Birkh\"auser (2003), Ch.~2 (classical Hamiltonian
+linearisation, time-independent case) --- \textbf{not independently
+verified}.
+
+\textbf{Open permanent-impact caveat.} If permanent impact $\Gamma_{\rm perm}$
+is itself time-dependent, integration by parts adds
+$\int_0^T\mathbf x^\top\dot\Gamma_{\rm perm}\mathbf x\,dt$ to the objective,
+i.e.\ an extra term folded into $2\lambda(t)C(t)$. Not modelled here; assumed
+$\Gamma_{\rm perm}$ constant (standard convention, Almgren 2012, Gu\'eant 2016).
+
+\subsection*{Exit criterion}
+
+Numerically verify the volume-time closed form (Case~A) against direct
+numerical integration of~\eqref{eq:ric-td} for a test $m(t)$ profile.
 
 
 % =====================================================================
@@ -909,14 +1031,16 @@ conditions on the $p$-domain and step $\Delta p$, the truncation error from a
 finite $p$-range, and the success probability of the final recovery step
 (including the factor from the norm decay $e^{-E_0T}$, Stage~5, which a
 constant shift of $\hat H$ removes without affecting $\nabla\ln\psi$) are
-taken from \cite{jin2024,jin2023,jin2023pra}.
+taken from \cite{jin2024,jin2023}.
 
 \subsection*{Source}
 
 S.~Jin, N.~Liu, Y.~Yu, \emph{Quantum simulation of partial differential
 equations via Schr\"odingerization}, Phys.\ Rev.\ Lett.\ 133, 230602 (2024)
-\cite{jin2024}; arXiv:2212.14703 \cite{jin2023}; Phys.\ Rev.\ A 108, 032603
-(2023) \cite{jin2023pra}.
+\cite{jin2024} (short paper, arXiv:2212.13969); Phys.\ Rev.\ A 108, 032603
+(2023) \cite{jin2023} (extended technical details, arXiv:2212.14703 --- this
+is one paper, not two; a previous version of this document wrongly cited it
+under two separate keys, \texttt{jin2023} and \texttt{jin2023pra}).
 
 \subsection*{Exit criterion}
 
@@ -1186,12 +1310,10 @@ S.~Jin, N.~Liu, Y.~Yu, \emph{Quantum simulation of partial differential equation
   via Schr\"odingerization}, Phys.\ Rev.\ Lett.\ 133, 230602.
   \url{https://link.aps.org/doi/10.1103/PhysRevLett.133.230602} &
   No & Stage 7 \\
-Jin, Liu, Yu, technical details, arXiv:2212.14703.
-  \url{https://arxiv.org/abs/2212.14703} &
-  Abstract only & Stage 7 \\
-Jin, Liu, Yu, applications and detailed analysis, Phys.\ Rev.\ A 108, 032603.
+Jin, Liu, Yu, extended technical details, Phys.\ Rev.\ A 108, 032603 (2023)
+  = arXiv:2212.14703 (same paper, not two).
   \url{https://journals.aps.org/pra/abstract/10.1103/PhysRevA.108.032603} &
-  No & Stages 7--8 \\
+  Abstract only & Stages 7--8 \\
 Hamiltonian simulation for nonlinear PDEs by Schr\"odingerization (arXiv:2508.01640;
   the PMC page appears to be its published version).
   \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC13061980/} &
@@ -1296,10 +1418,11 @@ stochastic systems,'' \emph{Phys. Rev. Lett.} \textbf{95}, 200201 (2005).
 differential equations via Schr\"odingerization,'' \emph{Phys. Rev. Lett.}
 \textbf{133}, 230602 (2024).
 
-\bibitem{jin2023} S.~Jin, N.~Liu, and Y.~Yu, arXiv:2212.14703.
-
-\bibitem{jin2023pra} S.~Jin, N.~Liu, and Y.~Yu, \emph{Phys. Rev. A}
-\textbf{108}, 032603 (2023).
+\bibitem{jin2023} S.~Jin, N.~Liu, and Y.~Yu, ``Quantum simulation of partial
+differential equations via Schr\"odingerisation: technical details,''
+\emph{Phys. Rev. A} \textbf{108}, 032603 (2023), arXiv:2212.14703. (One
+paper; verified real via arXiv metadata. A previous version of this
+document cited it twice, under two keys, as if it were two separate papers.)
 
 \bibitem{lowchuang2019} G.~H.~Low and I.~L.~Chuang, \emph{Quantum}
 \textbf{3}, 163 (2019).
@@ -1310,6 +1433,22 @@ differential equations via Schr\"odingerization,'' \emph{Phys. Rev. Lett.}
 \bibitem{brassard2002} G.~Brassard, P.~H\o yer, M.~Mosca, and A.~Tapp,
 ``Quantum Amplitude Amplification and Estimation,'' \emph{Contemp. Math.}
 \textbf{305}, 53--74 (2002).
+
+\bibitem{drissi2023} F.~Drissi, ``Solvability of Differential Riccati
+Equations and Applications to Algorithmic Trading with Signals,''
+\emph{Appl. Math. Finance} \textbf{29}(6), 457--493 (2023), arXiv:2202.07478.
+
+\bibitem{gueant2016} O.~Gu\'eant, \emph{The Financial Mathematics of Market
+Liquidity: From Optimal Execution to Market Making}, Chapman and Hall/CRC
+(2016).
+
+\bibitem{cartea2015} \'A.~Cartea, S.~Jaimungal, and J.~Penalva,
+\emph{Algorithmic and High-Frequency Trading}, Cambridge University Press
+(2015).
+
+\bibitem{abou-kandil2003} H.~Abou-Kandil, G.~Freiling, V.~Ionescu, and
+G.~Jank, \emph{Matrix Riccati Equations in Control and Systems Theory},
+Birkh\"auser (2003).
 
 \end{thebibliography}
 
