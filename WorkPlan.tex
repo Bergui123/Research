@@ -440,32 +440,43 @@ that the continuum limit below is valid.
 
 \subsection*{How it was achieved --- Part I: from the discrete sum to an integral}
 
-Dropping the schedule-independent terms of \eqref{eq:s1-objective} (the
-permanent-impact constant, and the spread cost under the sales-only assumption
-A7), writing $n_{jk}=\tau v_j(t_k)$, and taking the continuum limit
+Under sales-only trading with exact liquidation, the schedule-independent
+offset in \eqref{eq:s1-objective} is
+$K(\mathbf X)=\sum_j(\tfrac12\gamma_jX_j^2+\varepsilon_jX_j)$. Writing
+$n_{jk}=\tau v_j(t_k)$ and taking the continuum limit
 $\tau\to0$ ($N\to\infty$) turns the Riemann sum into an integral and the
 inventory recursion $\mathbf x_k=\mathbf x_{k-1}-\mathbf n_k$ into
-$\dot{\mathbf x}=-\mathbf v$. This continuum limit, and the resulting
-running-cost functional, is the multi-asset formulation of Bergault, Drissi
-and Gu\'eant \cite{bergault2022}, Sec.~2 and App.~A:
+$\dot{\mathbf x}=-\mathbf v$. The full cost and its schedule-dependent part are
+therefore
 \begin{equation}
-  \boxed{\;
-  J[\mathbf{v}]
-  = \int_0^T \Big( \mathbf{v}(t)^\top H\,\mathbf{v}(t)
-      + \lambda\,\mathbf{x}(t)^\top C\,\mathbf{x}(t) \Big)\,dt,
-  \quad \dot{\mathbf{x}}=-\mathbf{v},\quad
-  \mathbf{x}(0)=\mathbf{X},\quad \mathbf{x}(T)=\mathbf{0}\;}
+  J_{\mathrm{full}}[\mathbf v]=K(\mathbf X)+J[\mathbf v],
+  \label{eq:J-full}
+\end{equation}
+\begin{equation}
+  J[\mathbf v]=\int_0^T\Big(\mathbf v^\top H\mathbf v
+      +\lambda\,\mathbf x^\top C\mathbf x\Big)\,dt,
+  \quad \dot{\mathbf x}=-\mathbf v,\quad
+  \mathbf x(0)=\mathbf X,\quad \mathbf x(T)=\mathbf 0.
   \label{eq:J}
 \end{equation}
-This matches Almgren--Chriss \cite{almgrenchriss2000} Sec.~2.2 and App.~A.2 in
-the single-asset case. Validation against the discrete
+The spread contribution is constant only under the stated exact-liquidation
+constraint; it need not be constant for a finite terminal penalty that allows
+residual inventory. The running-cost functional is the multi-asset formulation
+of Bergault, Drissi and Gu\'eant \cite{bergault2022}, Sec.~2 and App.~A, and
+matches Almgren--Chriss \cite{almgrenchriss2000} Sec.~2.2 and App.~A.2 in the
+single-asset case. Validation against the discrete
 objective~\eqref{eq:s1-objective} at finite $N$ (below) is retained as this
 project's own correctness check, not as a substitute for the cited
 derivation.
 
 \subsection*{How it was achieved --- Part II: from the integral to the PDE and its solution}
 
-Defining the cost-to-go $\mathcal V(\mathbf x,t)=\min_{\mathbf v(\cdot)}
+The HJB is written for the schedule-dependent $J[\mathbf v]$; its PDE and
+Riccati equation are unchanged by the fixed offset. For exact liquidation, the
+full optimal initial cost is $K(\mathbf X)+\mathcal V(\mathbf X,0)$. A finite
+terminal penalty that allows residual inventory requires treating any spread
+cost as schedule-dependent. Defining the reduced cost-to-go
+$\mathcal V(\mathbf x,t)=\min_{\mathbf v(\cdot)}
 \int_t^T(\mathbf v^\top H\mathbf v+\lambda\,\mathbf x^\top C\mathbf x)\,ds$ and
 applying Bellman's dynamic programming principle --- rather than
 Euler--Lagrange, since a state-space PDE in $(\mathbf x,t)$, not a two-point
@@ -497,13 +508,19 @@ $\Phi$ large):
   (\nabla_{\mathbf{x}}\mathcal{V})+\lambda\,\mathbf{x}^\top C\,\mathbf{x}=0\;}
   \label{eq:pde}
 \end{equation}
-Matrix Riccati equation, from the quadratic ansatz
-$\mathcal V=\tfrac12\mathbf x^\top P(t)\mathbf x$:
+Matrix Riccati equation, from the quadratic ansatz (keeping the additive
+constant $c(t)$, since \eqref{eq:pde} has no $\mathbf x$-independent source
+term to cancel it)
+$\mathcal V=\tfrac12\mathbf x^\top P(t)\mathbf x+c(t)$:
 \begin{equation}
   \dot P=\tfrac12\,P\,H^{-1}P-2\lambda C,\qquad P(T)=\Phi,
+  \qquad \dot c=0,\quad c(T)=0,
   \qquad \mathbf v^*=\tfrac12 H^{-1}P\,\mathbf x .
   \label{eq:ric}
 \end{equation}
+The constant equation integrates to $c\equiv0$: unlike Stage~4's viscosity
+term, which sources $\dot c=\nu\,\mathrm{tr}(H^{-1}P)\neq0$, nothing here
+sources $c$, so it is identically zero rather than merely dropped.
 Closed-form trajectory, by simultaneously diagonalising
 $H^{-1/2}CH^{-1/2}=U\,\mathrm{diag}(\mu_i)U^\top$ (possible since $H$ is
 diagonal positive-definite, A2/A11, and $C$ is symmetric PSD, A13), which

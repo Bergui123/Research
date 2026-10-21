@@ -47,7 +47,7 @@ from running headers, to be verified against the PDF):
 The asset-by-asset form assumes diagonal permanent- and temporary-impact
 matrices (the diagonal case, Eq.~32 of the reference).
 
-\subsection*{I.1 Drop the terms that do not depend on the schedule}
+\subsection*{I.1 Separate the fixed offset from the schedule-dependent cost}
 
 \begin{itemize}[leftmargin=1.5em]
   \item $\tfrac12\gamma_jX_j^2$ is fixed by the number of shares to liquidate.
@@ -55,8 +55,13 @@ matrices (the diagonal case, Eq.~32 of the reference).
         sale ($n_{jk}\ge0$, no buying back).
 \end{itemize}
 
-A constant added to the cost does not change which schedule is cheapest.
-What remains:
+For sales-only trading with exact liquidation, define the fixed offset
+\[
+  K(\mathbf X)=\sum_{j=1}^{M}\left(\tfrac12\gamma_jX_j^2+\varepsilon_jX_j\right).
+\]
+The full discrete objective is this offset plus the schedule-dependent terms.
+The spread part is not constant if a finite terminal penalty allows residual
+inventory. For the exact-liquidation problem, the reduced objective is:
 
 \begin{equation}
   U'[\mathbf{x}] = \sum_{j=1}^{M}\frac{\tilde{\eta}_j}{\tau}\sum_{k=1}^{N} n_{jk}^2
@@ -102,6 +107,14 @@ the start and a flat position at the horizon.
 
 \subsection*{I.6 Result}
 
+For exact liquidation and sales-only trading, the continuum total cost is
+\begin{equation}
+  J_{\mathrm{full}}[\mathbf v]=K(\mathbf X)+J[\mathbf v].
+\end{equation}
+The fixed offset is retained in the total cost; only the schedule-dependent
+integral $J$ is passed to the HJB and Riccati derivation below. The spread
+offset is not fixed when the terminal inventory is allowed to vary.
+
 \begin{equation}
   \boxed{\;
   J[\mathbf{v}]
@@ -133,7 +146,9 @@ Chriss, who work in discrete time and solve by calculus of variations.
 \section*{Part II --- What is left to do with the integral}
 % =====================================================================
 
-The integral~\eqref{eq:J} defines one optimisation for one starting position.
+The reduced integral~\eqref{eq:J} defines the schedule optimization for one
+starting position. Under exact liquidation, add $K(\mathbf X)$ to its optimized
+value to recover the full initial cost.
 To get an equation that evolves in time, the cost must become a function of the
 current state and the current time.
 

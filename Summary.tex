@@ -29,16 +29,24 @@ How we got here: taken directly from Almgren--Chriss (2000)~\cite{almgrenchriss2
 ($U=E+\lambda V$) applied to their Eqs.~29--30 (expected cost, variance),
 restricted to diagonal impact matrices (their Eq.~32).
 
-\section*{Step 2 --- Continuum running-cost integral}
+\section*{Step 2 --- Continuum total cost and running-cost integral}
 
 \begin{equation}
-J[\mathbf v]=\int_0^T\big(\mathbf v(t)^\top H\mathbf v(t)+\lambda\,\mathbf
+J_{\mathrm{full}}[\mathbf v]=\sum_{j=1}^{M}\left(\tfrac12\gamma_jX_j^2+\varepsilon_jX_j\right)
++\int_0^T\big(\mathbf v(t)^\top H\mathbf v(t)+\lambda\,\mathbf
 x(t)^\top C\mathbf x(t)\big)\,dt,\qquad \dot{\mathbf x}=-\mathbf v,\qquad
 \mathbf x(0)=\mathbf X,\ \mathbf x(T)=\mathbf 0
 \end{equation}
 
-How we got here: start from Step~1, drop the two terms that don't depend
-on the schedule (permanent impact, spread cost under sales-only), write
+How we got here: retain the permanent-impact and sales-only spread constants
+from Step~1; the integral is the schedule-dependent part used for optimisation.
+The spread offset is constant only for sales-only trading with exact liquidation
+($\mathbf{x}(T)=\mathbf{0}$); a finite terminal penalty that permits residual
+inventory does not make it constant. The HJB below is for the schedule-dependent
+integral, so these offsets are not added to its PDE or Riccati equation. For the
+hard-liquidation problem, add the displayed offset to the optimized integral to
+recover the full objective.
+Write
 $n_{jk}=\tau v_j(t_k)$, and take $\tau\to0$: the Riemann sum
 $\sum_k\tau f(t_k)$ becomes the integral $\int_0^Tf(t)\,dt$. This is the
 multi-asset continuum limit of Bergault--Drissi--Gu\'eant (2022)
@@ -51,15 +59,19 @@ multi-asset continuum limit of Bergault--Drissi--Gu\'eant (2022)
 \partial_t\mathcal V-\tfrac14(\nabla_{\mathbf x}\mathcal V)^\top H^{-1}
 (\nabla_{\mathbf x}\mathcal V)+\lambda\,\mathbf x^\top C\mathbf x=0,
 \qquad
-\dot P=\tfrac12PH^{-1}P-2\lambda C,\qquad P(T)=\Phi
+\dot P=\tfrac12PH^{-1}P-2\lambda C,\qquad P(T)=\Phi,
+\qquad \dot c=0,\quad c(T)=0 \;\Rightarrow\; c\equiv0
 \end{equation}
+(ansatz $\mathcal V=\tfrac12\mathbf x^\top P(t)\mathbf x+c(t)$; status: matches Stage~2 derivation, constant term added this session, not yet independently re-checked.)
 
 How we got here: define the cost-to-go
 $\mathcal V(\mathbf x,t)=\min_{\mathbf v}\int_t^T(\cdots)\,ds$ on Step~2's
 integral, apply Bellman's dynamic programming principle (split the horizon
 into $[t,t+dt]+[t+dt,T]$, expand to first order) to get the HJB PDE, then
 substitute the quadratic ansatz $\mathcal V=\tfrac12\mathbf x^\top
-P(t)\mathbf x$ to collapse it to the Riccati ODE. Verified by hand against
+P(t)\mathbf x$ to collapse it to the Riccati ODE. Under exact liquidation,
+the full optimal initial cost is the fixed offset in Step~2 plus
+$\mathcal V(\mathbf X,0)$. Verified by hand against
 Bergault--Drissi--Gu\'eant (2022)~\cite{bergault2022}, Eqs.~13--14 and~20--21.
 
 \textbf{Reading the status column.} Three different kinds of claim get

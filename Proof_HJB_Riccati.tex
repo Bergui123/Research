@@ -67,13 +67,20 @@ U[\mathbf x]=\sum_{j=1}^{M}\Big[\tfrac12\gamma_jX_j^2+\varepsilon_j\sum_{k=1}^N
 \label{eq:s1}
 \end{equation}
 
-\textbf{1. Drop the two schedule-independent terms.} $\tfrac12\gamma_jX_j^2$
+\textbf{1. Separate the fixed offset.} Under sales-only trading and exact
+liquidation, the two schedule-independent terms have fixed value
+\[
+K(\mathbf X)=\sum_j\left(\tfrac12\gamma_jX_j^2+\varepsilon_jX_j\right).
+\]
+The spread term is not constant if a finite terminal penalty permits residual
+inventory. For exact liquidation, $K(\mathbf X)$ is kept in the total cost and
+omitted only from the optimization below. $\tfrac12\gamma_jX_j^2$
 (permanent impact) depends only on the total amount liquidated, not on how it
 is spread over time, so it is a constant over all schedules. Under the
 sales-only assumption A7 ($n_{jk}\ge0$ always), $|n_{jk}|=n_{jk}$ and
 $\sum_kn_{jk}=X_j$, so $\varepsilon_j\sum_k|n_{jk}|=\varepsilon_jX_j$ is also a
 constant. Neither term can be changed by choosing a different schedule, so
-both drop out of the optimization, leaving
+the schedule-dependent objective is
 \[
 \tilde U[\mathbf x]=\sum_{j}\frac{\tilde\eta_j}{\tau}\sum_kn_{jk}^2
 +\lambda\sum_k\tau\,\mathbf x_k^\top C\mathbf x_k .
@@ -113,6 +120,15 @@ the definition of the derivative,
 the boundary conditions carrying over directly from the discrete recursion's
 endpoints.
 
+Thus, for exact liquidation and sales-only trading,
+\begin{equation}
+J_{\mathrm{full}}[\mathbf v]=K(\mathbf X)+J[\mathbf v].
+\end{equation}
+The HJB and Riccati equations below optimize $J$; the full optimal initial cost
+is $K(\mathbf X)+\mathcal V(\mathbf X,0)$. A finite-$\Phi$ approximation that
+allows nonzero terminal inventory does not preserve the spread offset as a
+constant.
+
 This is the multi-asset continuum limit of
 Bergault--Drissi--Gu\'eant~\cite{bergault2022}, Sec.~2 and App.~A; the
 single-asset case matches Almgren--Chriss~\cite{almgrenchriss2000},
@@ -120,7 +136,8 @@ Sec.~2.2 and App.~A.2.
 
 \section*{Step 3 --- what is being proved next}
 
-Starting from Step~2's continuum objective \eqref{eq:J}--\eqref{eq:state},
+Starting from Step~2's schedule-dependent continuum objective
+\eqref{eq:J}--\eqref{eq:state},
 with $H$ diagonal positive-definite and $C$ symmetric positive semi-definite
 (assumptions A2/A11, A13), this note derives, by Bellman's dynamic
 programming principle (not Euler--Lagrange, since a state-space PDE is what
