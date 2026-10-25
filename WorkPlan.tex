@@ -41,41 +41,81 @@ precision $\varepsilon$, the horizon $T$, and the Almgren--Chriss parameters
 the count must be traceable to a numbered equation in Almgren and Chriss, or
 explicitly marked as derived in these notes.
 
-\textbf{Why this chain of formulas, end to end.} Each arrow below is forced by a
-specific mathematical need, not a stylistic choice:
-\begin{itemize}[leftmargin=1.5em]
-  \item The Almgren--Chriss \emph{discrete, finite-sum} objective
-        (Eqs.~15, 29, 30) is a static calculus-of-variations problem: it has no
-        time-evolving ``state,'' so it cannot be fed to a time-stepping quantum
-        simulation directly. It must first become a \textbf{running-cost
-        integral} (Stage~2, Part~I of the integral derivation).
-  \item A running-cost integral with free control $\mathbf v(t)$ is exactly the
-        setting of \textbf{Bellman's dynamic programming principle}, which is
-        the standard and essentially only systematic way to turn a minimisation
-        over trajectories into a \textbf{PDE} satisfied by the value function
-        $\mathcal V(\mathbf x,t)$ (Stage~2, Part~II).
-  \item That PDE is a \textbf{Hamilton--Jacobi--Bellman (HJB) equation}, which is
-        nonlinear (it has $(\nabla\mathcal V)^\top H^{-1}\nabla\mathcal V$, a
-        quadratic-in-gradient term). Quantum Hamiltonian simulation methods
-        (qubitization, QSVT, Trotterisation) are built for \textbf{linear}
-        evolution equations, so the nonlinearity must be removed before any
-        quantum algorithm applies. The standard tool for removing a
-        quadratic-in-gradient nonlinearity is the \textbf{Hopf--Cole
-        transform} (Stage~4), which is why it appears here rather than, e.g.,
-        a direct discretisation of the HJB equation.
-  \item After Hopf--Cole, the equation is linear but still \textbf{not unitary}
-        (it is a diffusion-type equation, $\partial_s\psi=-\hat H\psi$ with
-        $\hat H\ge0$, so the semigroup $e^{-s\hat H}$ shrinks norms rather than
-        rotating). Quantum computers natively implement unitary evolution.
-        \textbf{Schr\"odingerisation} (Jin--Liu--Yu; Stage~7) is the specific
-        published technique for embedding a non-unitary linear evolution into a
-        unitary one on an enlarged space, which is why it is the next step
-        rather than, e.g., ad-hoc normalisation.
-  \item Once the equation is unitary, qubit and T-gate counting is a standard
-        exercise in Hamiltonian-simulation complexity (qubitization/QSVT) plus a
-        standard circuit cost for the discretised operator (finite differences
-        and a quadratic term), which is Stage~8.
-\end{itemize}
+\subsection*{Physical interpretation and reading guide}
+
+The companion \texttt{Summary.tex} explains the project at the level of a
+second-year physics student. Its explanatory prose follows the user's
+request for a readable study guide; the full derivations and qualifications
+remain in the stages below. ``Step 3'' in the summary means the HJB/Riccati
+derivation (WorkPlan Stage~2); ``Stage 3'' means the concrete benchmark.
+
+\textbf{The object being optimized.} Inventory $\mathbf x(t)$ plays the
+role of a configuration coordinate, and $\mathbf v=-\dot{\mathbf x}$ is its
+selling rate. The trader balances market impact from selling quickly against
+risk from holding inventory for longer. The discrete objective is expected
+cost plus $\lambda$ times its variance. In the continuum, its
+schedule-dependent part is
+\[
+ J[\mathbf v]=\int_0^T\big(\mathbf v^\top H\mathbf v
+                  +\lambda\mathbf x^\top C\mathbf x\big)\,dt.
+\]
+This is a functional of a path, analogous in mathematical form to an action,
+but it is a positive trading-cost objective rather than a mechanical action.
+For two assets, $\mathbf x^\top C\mathbf x=C_{11}x_1^2+2C_{12}x_1x_2+C_{22}x_2^2$;
+the cross term expresses shared exposure to price uncertainty. The offsets
+removed in passing to $J$ remain part of the full cost under the conditions
+stated in Stage~2.
+
+\textbf{From a path to a cost surface.} The value function
+$\mathcal V(\mathbf x,t)$ is the least remaining cost from a given inventory
+and time. Bellman's principle compares a short initial decision with optimal
+continuation, producing a PDE. The quadratic structure permits
+$\mathcal V=\tfrac12\mathbf x^\top P(t)\mathbf x$; $P$ is its curvature
+matrix, and the Riccati equation determines how that curvature changes.
+The gradient gives the optimal control. Finite terminal penalty and exact
+liquidation are different boundary-value problems and must not be mixed in
+comparisons.
+
+\textbf{Normal modes as a classical check.} For the Stage~3 choice $H=I$,
+the coordinates $y_\pm=(x_1\pm x_2)/\sqrt2$ diagonalize $C$. This is the
+same linear-algebra operation used for coupled oscillators. The optimal
+inventory paths involve hyperbolic sines and end at zero; they are not
+oscillations of physical particles. The modal rates $\kappa_i$ quantify the
+risk/impact balance. The all-time sales-only proof applies to this chosen
+initial portfolio, not to every state in an inventory grid.
+
+\textbf{Why introduce a diffusion equation?} The selected quantum route
+requires linear evolution. Adding compatible diffusion with coefficient
+$\nu$ and applying $\psi=e^{-W/(4\nu)}$ cancels the squared-gradient
+nonlinearity. The diffusion is in inventory space; $\nu$ is not market
+volatility. For the full-space quadratic problem with fixed finite terminal
+penalty, the diffusion shifts only an inventory-independent part of $W$,
+so the control is recovered from $-2\nu H^{-1}\nabla\log\psi$.
+The impact matrix $H$ and the differential operator $\hat H$ are different
+objects. In normal-mode coordinates, $\hat H$ has harmonic-oscillator form,
+but $\psi_s=-\hat H\psi$ is imaginary-time decay, not real-time unitary
+Schr\"odinger evolution. Stage~4 proves the transformation; Stage~5 states
+the full-space spectrum and widths.
+
+\textbf{What the quantum stages must still supply.} Discretising inventory
+space gives a finite matrix, distinct from discretising time into a trade
+list. Schr\"odingerisation embeds its decay evolution in a larger unitary
+system with an auxiliary coordinate. The number of qubits counts inventory,
+auxiliary, and working registers; $N_T$ counts T gates, not time steps.
+Preparation, solution recovery, and measurement must all be included.
+Measurements sample normalized probabilities $|a_j|^2$, so producing a
+quantum state does not reveal every value of $\psi$. The required output is
+the selling rate, obtained through nearby amplitude ratios and a gradient.
+
+\textbf{Sources, limits, and immediate exit criterion.} This guide restates
+Stages~1--9 and their cited sources; it introduces no new numerical result.
+The classical checks pass, whereas the grid solver and numerical quantum
+resource counts remain open. The next calculation is a classical solution
+of the linear PDE for specified finite terminal data, followed by gradient
+recovery and comparison with the Riccati solution for the same penalty.
+Record the control error as grid spacing decreases and the domain grows,
+with the dependence on $\nu$ explicit. This is the Stage~4/6 validation gate
+before assigning numerical quantum resources.
 
 \textbf{What the paper does not claim.} It does not propose a new trading
 strategy, and it does not claim a quantum speedup. For this linear-quadratic

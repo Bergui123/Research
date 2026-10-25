@@ -1,144 +1,347 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath,amssymb,geometry,xcolor,hyperref}
+\usepackage{amsmath,amssymb,geometry,booktabs,array,parskip,xcolor,hyperref}
 \geometry{margin=2.3cm}
 \hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
-\title{\textbf{Summary}\\\large Verified status and next steps}
-\author{Short version of WorkPlan.tex}
-\date{Audit: 24 October 2026}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\title{\textbf{What We Are Doing, and Why}\\\large A physics student's guide to the project}
+\author{Companion to WorkPlan.tex}
+\date{Verified results: 24 October 2026}
 \begin{document}
-\maketitle
+\begin{center}
+{\LARGE\bfseries What We Are Doing, and Why}\\[0.5em]
+{\large A physics student's guide to the project}\\[0.4em]
+{\small Companion to WorkPlan.tex; verified results: 24 October 2026}
+\end{center}
 
-\section*{Step 1 --- Discrete objective}
-\begin{gather*}
- U[\mathbf x]=\sum_j\left[\tfrac12\gamma_jX_j^2+
- \varepsilon_j\sum_k|n_{jk}|+\frac{\tilde\eta_j}{\tau}\sum_k n_{jk}^2\right]
- +\lambda\tau\sum_k\mathbf x_k^\top C\mathbf x_k,\\
- \tilde\eta_j=\eta_j-\tfrac12\gamma_j\tau.
-\end{gather*}
-Status: algebra/source checked against Almgren--Chriss~\cite{ac}; locate the missing local reference document before repairing its quotations.
+\section*{The question we are trying to answer}
 
-\section*{Step 2 --- Continuum objective}
-\begin{gather*}
- J_{\rm full}=K(\mathbf X)+\int_0^T
- (\mathbf v^\top H\mathbf v+\lambda\mathbf x^\top C\mathbf x)\,dt,\quad
- H=\operatorname{diag}(\eta_j),\\
- K(\mathbf X)=\sum_j(\tfrac12\gamma_jX_j^2+\varepsilon_jX_j),\quad
- \dot{\mathbf x}=-\mathbf v,\quad\mathbf x(0)=\mathbf X,\quad\mathbf x(T)=0.
-\end{gather*}
-Status: verified continuum limit and fixed offset for sales-only exact liquidation.
+Suppose we hold two different stocks and want to sell them by a deadline.
+Selling everything immediately can move the market price against us.
+Selling slowly reduces that effect, but leaves us exposed to price changes
+for longer. We want the selling schedule that best balances these costs.
 
-\section*{Step 3 --- HJB and Riccati (WorkPlan Stage 2)}
-\begin{gather*}
- \mathcal V_\Phi(\mathbf x,t)=\inf_{\mathbf v(\cdot)}
- \left\{\int_t^T(\mathbf v^\top H\mathbf v+\lambda\mathbf x^\top C\mathbf x)\,ds
- +\tfrac12\mathbf x(T)^\top\Phi\mathbf x(T)\right\},\\
- \mathcal V_t-\tfrac14\nabla\mathcal V^\top H^{-1}\nabla\mathcal V
- +\lambda\mathbf x^\top C\mathbf x=0,\quad
- \mathbf v^*=\tfrac12H^{-1}P\mathbf x,\\
- \mathcal V=\tfrac12\mathbf x^\top P(t)\mathbf x+c(t),\quad
- \dot P=\tfrac12PH^{-1}P-2\lambda C,\quad P(T)=\Phi,\quad c\equiv0.
-\end{gather*}
-Status: unconstrained quadratic HJB/Riccati verified algebraically and symbolically; source mapping checked~\cite{bdg}.
+This is our \textbf{test problem}. The research question is then:
+\emph{how many qubits and quantum operations would a quantum computer need
+to solve a reformulation of this problem?}
+We already have a classical solution, so we can use it to check each later
+step. We are estimating the quantum cost; we have not demonstrated a quantum
+speedup.
 
+The route is:
+\begin{center}
+trading cost $\longrightarrow$ optimal-control equation\\
+$\longrightarrow$ linear diffusion equation $\longrightarrow$ quantum simulation\\
+$\longrightarrow$ qubit and gate counts.
+\end{center}
+
+\section*{The quantities to keep in mind}
+
+\begin{tabular}{@{}L{2.8cm}L{12cm}@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+$\mathbf x(t)=(x_1,x_2)^\top$ & Inventory: how much of each stock we still hold. \\
+$\mathbf X=\mathbf x(0)$ & The inventory at the beginning. \\
+$\mathbf v(t)=-\dot{\mathbf x}(t)$ & Selling rate. Positive means selling; negative means buying. \\
+$T$ & The deadline. Exact liquidation means $\mathbf x(T)=0$. \\
+$H$ & Matrix describing the cost of trading quickly. \\
+$C$ & Covariance matrix: price uncertainty and how the two prices move together. \\
+$\lambda$ & How strongly we penalize risk relative to trading cost. \\
+\bottomrule
+\end{tabular}
+
+Bold letters are vectors. A transpose, $\top$, turns a column into a row,
+so $\mathbf x^\top C\mathbf x$ is a single number, like the quadratic forms
+used for kinetic or potential energy.
+
+\section*{Step 1 --- Start with a list of trades}
+
+Divide the available time into $N$ intervals of length $\tau=T/N$.
+If $n_{jk}$ is the amount of stock $j$ sold in interval $k$, then
 \[
- \mathcal V_{+,t}+\lambda\mathbf x^\top C\mathbf x
- -\sum_j\frac{[\max(\partial_{x_j}\mathcal V_+,0)]^2}{4\eta_j}=0.
+ n_{jk}=x_{j,k-1}-x_{jk},\qquad
+ U=\underbrace{\mathbb E[\text{cost}]}_{\text{average trading cost}}
+   +\lambda\underbrace{\operatorname{Var}(\text{cost})}_{\text{risk}}.
 \]
-Status: sales-constrained Hamiltonian distinguished from the quadratic relaxation; the selected Stage~3 path is feasible.
+The expectation is an average over possible price changes. The variance
+measures how uncertain the final cost is. This objective comes from
+Almgren--Chriss~\cite{ac}; its expanded sum is in WorkPlan Stage~1.
 
-\subsection*{Finite terminal penalty: corrected closed form}
-\begin{gather*}
- s=T-t,\quad K=\sqrt\lambda(H^{-1/2}CH^{-1/2})^{1/2},\quad
- G=\tfrac12H^{-1/2}\Phi H^{-1/2},\\
- B(s)=\tfrac12K^{-1}(I-e^{-2Ks})+e^{-Ks}(G+K)^{-1}e^{-Ks},\\
- P(t)=2H^{1/2}(B(s)^{-1}-K)H^{1/2}\qquad(\lambda>0,\ C\succ0).
-\end{gather*}
-Status: source transcription corrected~\cite{bdg}; noncommuting test gives terminal error $<10^{-15}$ and ODE error $<1.5\times10^{-11}$.
+\textbf{Where we are:} the discrete objective and its source have been checked.
 
+\newpage
+\section*{Step 2 --- Replace the trade list by a smooth path}
+
+Let the time intervals become very small. A trade becomes a rate times a
+time interval, $n_{jk}\approx v_j(t_k)\tau$, and the sum becomes an integral:
+\begin{equation*}
+ \boxed{J[\mathbf v]=\int_0^T
+ \left(\mathbf v^\top H\mathbf v+\lambda\mathbf x^\top C\mathbf x\right)dt,}
+ \qquad \dot{\mathbf x}=-\mathbf v.
+\end{equation*}
+This is a \emph{functional}: it assigns a number to an entire path, much like
+an action in mechanics. Here we minimize a cost, not a mechanical action.
+
+For diagonal $H=\operatorname{diag}(\eta_1,\eta_2)$, the first term is
+$\eta_1v_1^2+\eta_2v_2^2$: trading twice as fast costs four times as much
+per unit time. The second term penalizes inventory that remains exposed to
+uncertain prices. For two assets,
 \[
- \begin{pmatrix}Y\\Z\end{pmatrix}
- =e^{s\left(\begin{smallmatrix}0&H^{-1}/2\\2\lambda C&0\end{smallmatrix}\right)}
- \begin{pmatrix}I\\\Phi\end{pmatrix},\quad P(T-s)=ZY^{-1}.
+ \mathbf x^\top C\mathbf x=C_{11}x_1^2+2C_{12}x_1x_2+C_{22}x_2^2.
 \]
-Status: derived finite-penalty representation covers semidefinite risk; zero-risk hard-liquidation modes use $x(t)=X(T-t)/T$.
+The cross term couples the two assets. When their prices tend to move
+together, holding both long positions does less to diversify the risk.
 
-\subsection*{Time-dependent parameters (Stage 2b)}
+For sales-only trading that finishes at zero inventory, the full objective
+also contains a fixed offset: $J_{\rm full}=K(\mathbf X)+J$.
+It changes the reported total cost, but cannot change which schedule is best.
+
+\textbf{Where we are:} this continuum limit is checked. We optimize $J$ below.
+
+\section*{Step 3 --- Find an equation for the best remaining cost}
+
+Define $\mathcal V(\mathbf x,t)$ as the \textbf{smallest possible remaining
+cost} if we hold $\mathbf x$ at time $t$. It is a function of inventory and
+time, rather than a functional of a whole path.
+
+Bellman's idea is simple: make the best choice over the next short interval,
+then follow the best schedule from the state reached. Expanding this statement
+to first order in time gives the Hamilton--Jacobi--Bellman (HJB) equation:
 \[
- \dot P=\tfrac12PH(t)^{-1}P-2\lambda(t)C(t),\qquad P(T)=\Phi.
+ \boxed{\partial_t\mathcal V
+ -\tfrac14(\nabla\mathcal V)^\top H^{-1}\nabla\mathcal V
+ +\lambda\mathbf x^\top C\mathbf x=0.}
 \]
-Status: derived form; numerical validation of the time-dependent extension remains open.
+Here $\nabla\mathcal V$ means derivatives with respect to inventory:
+it measures how much extra cost comes from holding a little more of each
+asset. The equation is nonlinear because this gradient is squared.
+
+Because our cost is quadratic and our inventory dynamics are linear, we
+can solve it with a quadratic value function:
 \[
- \Delta J_{\rm perm}=\tfrac12\int_0^T\mathbf x^\top\dot\Gamma_{\rm perm}\mathbf x\,dt.
+ \mathcal V(\mathbf x,t)=\tfrac12\mathbf x^\top P(t)\mathbf x,
+ \qquad
+ \boxed{\dot P=\tfrac12PH^{-1}P-2\lambda C,\quad
+ \mathbf v^*=\tfrac12H^{-1}P\mathbf x.}
 \]
-Status: factor corrected for symmetric time-dependent permanent impact with exact liquidation; this extension remains outside the benchmark.
+$P(t)$ describes the curvature of the cost surface. Its equation is called a
+\emph{matrix Riccati equation}. We have reduced a partial differential
+equation (PDE) in inventory and time to an ordinary differential equation
+(ODE) for matrix entries that depend only on time.
 
-\section*{Stage 3 --- Concrete benchmark}
-\begin{gather*}
- H=I_2,\quad C=\begin{pmatrix}1&0.4\\0.4&1\end{pmatrix},\quad
- \lambda=T=1,\quad\mathbf X=(3,1)^\top,\quad\mathbf x(1)=0,\\
- (\mu_+,\mu_-)=(1.4,0.6),\quad
- (\kappa_+,\kappa_-)=(1.1832159566,0.7745966692),\\
- R=\frac{\kappa_-\sinh\kappa_+}{\kappa_+\sinh\kappa_-}=1.133429601920,
- \quad\theta=3<\theta_{\max}=\frac{R+1}{R-1}=15.989177598,\\
- \min_{0\le t\le1}v_1(t)=2.5062988967,\quad
- \min_{0\le t\le1}v_2(t)=0.6931333103,\quad
- J^*=13.810512031917.
-\end{gather*}
-Status: synthetic hard-liquidation instance verified analytically for all times; discrete trajectory error $1.704\times10^{-8}$ at $N=1024$.
+To set the terminal condition, we can charge a penalty
+$\tfrac12\mathbf x(T)^\top\Phi\mathbf x(T)$ for leftover inventory; then
+$P(T)=\Phi$. Finite $\Phi$ can leave stock unsold. Exact liquidation is a
+separate boundary condition, recovered as the penalty becomes arbitrarily
+large in every direction.
 
+\textbf{Where we are:} the HJB and Riccati equations are verified~\cite{bdg}.
+They allow buying as well as selling, so we must check that our chosen
+solution actually sells throughout. This is the purpose of the next stage.
+
+\newpage
+\section*{Stage 3 --- Choose a small example we can check completely}
+
+\emph{Numbering note: ``Step 3'' above is the derivation; ``Stage 3'' in
+WorkPlan is the numerical example. They are different tasks.}
+
+We choose a synthetic two-asset example:
 \[
- \bar H=L^\top HL/(J_0t_0),\quad
- \bar Q=t_0\lambda L^\top CL/J_0,\quad \bar\kappa_i\bar T=\kappa_iT.
+ H=\begin{pmatrix}1&0\\0&1\end{pmatrix},\qquad
+ C=\begin{pmatrix}1&0.4\\0.4&1\end{pmatrix},\qquad
+ \lambda=T=1,\qquad \mathbf X=\begin{pmatrix}3\\1\end{pmatrix}.
 \]
-Status: benchmark parameters are project choices; consistent changes of units preserve the dimensionless modal time scales.
+These are convenient dimensionless parameters, not measurements from a real
+market. The assets have equal individual volatility and trading impact, but
+positively correlated price changes. The unequal starting positions make
+both collective modes matter.
 
-\section*{Stage 4 --- Cole--Hopf}
-\begin{gather*}
- \psi=e^{-W/(4\nu)},\quad \psi_s=-\hat H\psi,\quad
- \hat H=-\nu\nabla\cdot(H^{-1}\nabla)+\frac{\lambda}{4\nu}\mathbf x^\top C\mathbf x,\\
- P_s'=2\lambda C-\tfrac12P_sH^{-1}P_s,\quad
- c'=\nu\operatorname{tr}(H^{-1}P_s),\quad -4\nu\nabla\log\psi=P_s\mathbf x.
-\end{gather*}
-Status: full-space quadratic algebra checked~\cite{kappen}; choose terminal data and validate a numerical PDE solver next.
+\subsection*{Think of coupled oscillators and normal modes}
 
-\section*{Stages 5--9 --- Remaining work}
+For this example, change coordinates to
 \[
- E_{\mathbf n}=\sum_i\kappa_i(n_i+\tfrac12)\ (\lambda C\succ0),\quad
- \ell_i=\sqrt{2\nu/\kappa_i},\quad
- a_j=\frac{\psi(\mathbf x_j)}{\sqrt{\sum_k|\psi(\mathbf x_k)|^2}}.
+ y_+=\frac{x_1+x_2}{\sqrt2},\qquad
+ y_-=\frac{x_1-x_2}{\sqrt2}.
 \]
-Status: spectrum and normalized readout formulas recorded; $\nu$/domain/grid sweeps and error budgets remain open.
+These are the symmetric and antisymmetric combinations familiar from two
+coupled oscillators. They diagonalize $C$: its eigenvalues are
+$\mu_+=1.4$ and $\mu_-=0.6$. Each mode then evolves independently.
+
+With exact liquidation, the solution is
 \[
- w(0,p)=e^{-|p|}\psi(0),\quad H_S=-\hat H_d\otimes D_\eta,\quad
+ y_\pm(t)=y_\pm(0)
+ \frac{\sinh[\kappa_\pm(T-t)]}{\sinh(\kappa_\pm T)},\qquad
+ \kappa_\pm=\sqrt{\lambda\mu_\pm},
+\]
+\[
+ \kappa_+\approx1.1832,\qquad \kappa_-\approx0.7746.
+\]
+The $\kappa$'s are inverse time scales. Unlike a freely vibrating oscillator,
+these inventory modes do not oscillate: we choose paths that end at zero.
+The more strongly risk-penalized symmetric mode is reduced more quickly.
+
+\subsection*{Does the solution ever buy stock back?}
+
+We differentiate the inventory path and check
+$\mathbf v=-\dot{\mathbf x}$. The all-time proof gives
+\[
+ \min_{0\le t\le1}v_1(t)\approx2.5063>0,\qquad
+ \min_{0\le t\le1}v_2(t)\approx0.6931>0.
+\]
+Both stocks are therefore sold throughout the interval. For this particular
+family of equal-impact, equal-volatility examples with $X_1\ge X_2>0$, the starting ratio must satisfy
+\[
+ \frac{X_1}{X_2}\le15.9892.
+\]
+Our ratio is $3$, so it passes comfortably. The proof is in WorkPlan Stage~3.
+
+The optimized running cost is $J^*\approx13.810512$. As an independent
+check, we minimized the original discrete quadratic cost on increasingly
+fine time grids. At $N=1024$, the largest inventory difference from the
+continuous solution is about $1.7\times10^{-8}$.
+
+\textbf{Where we are:} this classical example is verified, including the
+sales-only condition for the entire path. It is our reference answer for
+testing the later numerical method. This does not establish sales-only
+behavior for every possible inventory on a PDE grid.
+
+\newpage
+\section*{Stage 4 --- Turn the nonlinear equation into a linear one}
+
+The quantum simulation methods we want to use evolve linear equations.
+The squared-gradient term in the HJB is therefore an obstacle.
+
+First use the time remaining, $s=T-t$, so that the terminal data become
+initial data at $s=0$. Then introduce a mathematical diffusion coefficient
+$\nu>0$. With $W(\mathbf x,s)$ denoting the resulting regularized value
+function, the equation is
+\[
+ \partial_sW=\nu\nabla\!\cdot(H^{-1}\nabla W)
+ -\tfrac14(\nabla W)^\top H^{-1}\nabla W
+ +\lambda\mathbf x^\top C\mathbf x.
+\]
+The diffusion acts in \emph{inventory space}, not ordinary physical space.
+$\nu$ is an adjustable parameter in the mathematical reformulation; it is
+not the stock-price volatility contained in $C$.
+
+Now make the Cole--Hopf change of variables~\cite{kappen}:
+\[
+ \boxed{\psi=e^{-W/(4\nu)},\qquad \partial_s\psi=-\hat H\psi,}
+ \qquad
+ \hat H=-\nu\nabla\!\cdot(H^{-1}\nabla)
+       +\frac{\lambda}{4\nu}\mathbf x^\top C\mathbf x.
+\]
+Differentiating the exponential produces a squared-gradient term that
+cancels the nonlinear one. The resulting equation is linear in $\psi$.
+The matrix $H$ describes trading impact; the operator $\hat H$ acts on
+functions of inventory. They are different objects.
+
+Adding diffusion usually changes an optimization problem. Here, on the full
+inventory space with fixed finite terminal penalty, it only adds an
+inventory-independent term to the quadratic value function. Its gradient
+is unchanged. We can therefore recover the same optimal control through
+\[
+ \boxed{\mathbf v^*=-2\nu H^{-1}\nabla\log\psi.}
+\]
+This exact statement uses our quadratic structure. It does not automatically
+extend to a bounded numerical grid or to a globally sales-constrained problem.
+
+\textbf{Where we are:} the transformation and recovered control are checked
+algebraically. Solving the transformed PDE numerically is still to do.
+
+\section*{Stage 5 --- Why a harmonic oscillator appears}
+
+In the normal-mode coordinates of our example,
+\[
+ \hat H=\sum_{i=+,-}\left[-\nu\frac{\partial^2}{\partial y_i^2}
+                    +\frac{\kappa_i^2}{4\nu}y_i^2\right].
+\]
+This has the familiar harmonic-oscillator form: a second-derivative term
+plus a quadratic potential. Its eigenvalues and natural Gaussian widths are
+\[
+ E_{n_+,n_-}=\kappa_+(n_++\tfrac12)+\kappa_-(n_-+\tfrac12),
+ \qquad \ell_i=\sqrt{\frac{2\nu}{\kappa_i}}.
+\]
+Here the $E$'s describe decay rates in $\psi_s=-\hat H\psi$. This is
+\emph{imaginary-time} evolution: a mode decays as $e^{-E s}$ instead of
+acquiring a phase $e^{-iEt/\hbar}$ as in ordinary quantum mechanics.
+
+\textbf{Next step:} choose $\nu$ and a sufficiently large, fine inventory
+grid to represent these Gaussians and recover their gradients accurately.
+
+\newpage
+\section*{Stages 6--9 --- From a PDE to a quantum resource estimate}
+
+\textbf{6. Put inventory space on a grid.}
+Represent $\psi(\mathbf x)$ at finitely many inventory values and replace
+derivatives by finite differences. This produces a matrix $\hat H_d$.
+The grid is in inventory, unlike the time grid used for the original trade
+list. Check the recovered selling rate against our classical answer while
+refining the grid and enlarging the domain.
+
+\textbf{7. Embed the decay into unitary evolution.}
+A quantum state evolves by a norm-preserving unitary transformation, whereas
+$e^{-s\hat H_d}$ shrinks norms. Schr\"odingerisation~\cite{jin} adds an
+auxiliary coordinate, then uses a Fourier transform to build an enlarged
+unitary evolution. Recovering the desired solution from this larger system
+is part of the algorithm and has a cost.
+
+\textbf{8. Count the resources.}
+If each of the $M$ assets uses $2^{n_x}$ inventory-grid points, the auxiliary
+coordinate uses $n_p$ qubits, and the circuit needs $n_{\rm anc}$ working
+qubits, then
+\[
  N_q=Mn_x+n_p+n_{\rm anc}.
 \]
-Status: generator source-checked~\cite{jin}; recovery, block encoding, circuits, and numerical resource counts remain open.
+A qubit is a quantum two-state system. We also want $N_T$, the number of
+T gates, which are costly operations in fault-tolerant quantum computation.
+The subscript here names a gate; it is not the liquidation deadline $T$.
+An actual gate count needs an explicit circuit and a target accuracy.
 
+\textbf{9. Read out a useful answer.}
+Preparing a quantum state is not the same as reading its whole function.
+The encoded amplitudes are normalized:
 \[
- \psi(\mathbf X,s)=\exp\!\left[-\frac{\mathbf X^\top P_s\mathbf X}{8\nu}
- -\frac14\int_0^s\operatorname{tr}(H^{-1}P_r)\,dr\right].
+ a_j=\frac{\psi(\mathbf x_j)}{\sqrt{\sum_k|\psi(\mathbf x_k)|^2}},
+ \qquad \Pr(\text{grid point }j)=|a_j|^2.
 \]
-Status: corrected fixed-penalty dependence on $\nu$; normalized probabilities and domain size are needed for readout estimates.
+We want the logarithmic gradient near the starting inventory, because it
+gives the selling rate. Estimating ratios of nearby amplitudes may be
+expensive when their probabilities are small. This measurement cost must
+be included in the total resource estimate.
 
-\section*{Verification command}
-\texttt{python3 verify\_research.py}
+\section*{Where to resume the project}
 
-Status: symbolic HJB, discrete minimization, cost quadrature, finite-penalty ODE, and symbolic Cole--Hopf checks pass with NumPy, SciPy and SymPy.
+The classical solution and the chosen two-asset example are checked.
+The Cole--Hopf algebra is checked. We do not yet have a validated numerical
+PDE solver or numerical quantum resource counts.
 
+The next concrete calculation is to \textbf{choose finite terminal data,
+solve the linear PDE on a small classical grid, and recover the selling
+rate}. Compare it with the Riccati solution using the \emph{same} terminal
+penalty. A finite penalty must not be compared as if it imposed exact
+liquidation. Then measure how the error changes with grid spacing, domain
+size, and $\nu$.
+
+To rerun the existing checks in this checkout:
+\texttt{.venv/bin/python -B verify\_research.py}.
+Full derivations, corrected finite-penalty formulas, source checks, and
+remaining assumptions are in \texttt{WorkPlan.tex}.
+
+\begingroup
+\small
 \begin{thebibliography}{9}
 \bibitem{ac} R.~Almgren and N.~Chriss, \emph{Optimal Execution of Portfolio
-Transactions}, J.~Risk 3(2), 5--39 (2000), App.~A.3.
-\bibitem{bdg} P.~Bergault, F.~Drissi and O.~Gu\'eant,
-\emph{Multi-asset Optimal Execution and Statistical Arbitrage Strategies
-under Ornstein--Uhlenbeck Dynamics} (2022), App.~A.
+Transactions} (2000). Trading objective and classical trajectories.
+\bibitem{bdg} P.~Bergault, F.~Drissi and O.~Gu\'eant (2022).
+Multi-asset HJB and Riccati equations; Appendix A is the relevant special case.
 \url{https://arxiv.org/abs/2103.13773}.
-\bibitem{kappen} H.~J.~Kappen, \emph{Linear Theory for Control of Nonlinear
-Stochastic Systems}, PRL 95, 200201 (2005).
-\url{https://arxiv.org/abs/physics/0411119}.
-\bibitem{jin} S.~Jin, N.~Liu and Y.~Yu,
-\emph{Quantum simulation of partial differential equations via
-Schr\"odingerisation: technical details}, PRA 108, 032603 (2023), Sec.~3.1.
+\bibitem{kappen} H.~J.~Kappen (2005). Exponential transformation of suitable
+stochastic-control equations. \url{https://arxiv.org/abs/physics/0411119}.
+\bibitem{jin} S.~Jin, N.~Liu and Y.~Yu (2023).
+Schr\"odingerisation: technical details, especially Section 3.1.
 \url{https://arxiv.org/abs/2212.14703}.
 \end{thebibliography}
+\endgroup
 \end{document}
