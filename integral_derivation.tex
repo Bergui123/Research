@@ -21,7 +21,9 @@
 \noindent\textbf{Purpose.} These notes record (i) exactly how the discrete
 Almgren--Chriss objective becomes a continuous-time integral, and (ii) what
 remains to be done with that integral to obtain the time-dependent
-(Hamilton--Jacobi) equation. Nothing in Part~II has been checked numerically yet.
+(Hamilton--Jacobi) equation. The current verification results are in WorkPlan.tex and Summary.tex;
+\texttt{verify\_research.py} supplies reproducible checks for the quadratic
+HJB and the chosen hard-liquidation instance.
 
 % =====================================================================
 \section*{Part I --- How we arrive at the integral}
@@ -217,9 +219,9 @@ If it does not, the derivation has an error.
 \textbf{Item} & \textbf{Status} \\
 \midrule
 Integral from discrete objective (Part~I) & Derived by hand; algebra reviewed \\
-Bellman equation and PDE (II.1--II.4) & Derived by hand; \textbf{not verified numerically} \\
-Riccati check against Eq.~(17) (II.5) & \textbf{To do}; gate for everything after \\
-Next stage: linearise the PDE (Cole--Hopf with viscosity) & Not started \\
+Bellman equation and PDE (II.1--II.4) & Unconstrained quadratic algebra verified; see WorkPlan.tex \\
+Riccati check against Eq.~(17) (II.5) & Continuum limit checked; discrete convergence reproduced \\
+Next stage: linearise the PDE (Cole--Hopf with viscosity) & Algebra checked; numerical PDE solver pending \\
 \bottomrule
 \end{tabular}
 \end{center}

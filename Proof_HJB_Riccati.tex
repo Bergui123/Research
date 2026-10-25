@@ -13,9 +13,9 @@
 
 \newtheorem*{claim}{Claim}
 
-\title{\textbf{Proof} \\ \large Steps 2--3: from the discrete objective to the
-continuum integral, the HJB equation, and the matrix Riccati ODE}
-\author{Full derivation --- see WorkPlan.tex Stage~2 for the condensed version
+\title{\textbf{Proof} \\ \large Steps 2--3: from the discrete objective\\
+to the continuum integral, HJB equation,\\and matrix Riccati ODE}
+\author{Full derivation --- see WorkPlan.tex Stage~2\\
 and Summary.tex for the one-line status}
 \date{}
 
@@ -34,7 +34,7 @@ $N$, $\tau$ & Number of discrete time steps, and the step size ($\tau=T/N$), in 
 $j$, $k$ & Asset index ($j=1,\dots,M$) and time-step index ($k=1,\dots,N$). \\
 $\gamma_j$ & Permanent-impact coefficient for asset $j$. \\
 $\varepsilon_j$ & Spread-cost coefficient for asset $j$. \\
-$\tilde\eta_j$ & Temporary-impact coefficient for asset $j$; $H=\mathrm{diag}(\tilde\eta_j)$. \\
+$\tilde\eta_j$ & Temporary-impact coefficient for asset $j$; $\widetilde H_\tau=\mathrm{diag}(\tilde\eta_j)$. \\
 $n_{jk}$ & Shares of asset $j$ traded at step $k$ (discrete). \\
 $\mathbf x_k$, $\mathbf x(t)$ & Inventory vector at step $k$ (discrete) / time $t$ (continuous). \\
 $\mathbf v(t)$ & Selling-rate vector, $\mathbf v(t)=-\dot{\mathbf x}(t)$. \\
@@ -42,7 +42,7 @@ $\mathbf X$ & Initial inventory vector, $\mathbf x(0)=\mathbf X$. \\
 $T$ & Liquidation horizon. \\
 $\lambda$ & Risk-aversion parameter. \\
 $C$ & Risk/covariance matrix ($M\times M$, symmetric, positive semi-definite). \\
-$H$ & Temporary-impact matrix ($M\times M$, diagonal, positive-definite), $H=\mathrm{diag}(\tilde\eta_j)$. \\
+$H$ & Continuum temporary-impact matrix $\mathrm{diag}(\eta_j)\succ0$; $\widetilde H_\tau\to H$ as $\tau\to0$. \\
 $J[\mathbf v]$ & The continuum objective, \eqref{eq:J}, to be minimised over schedules $\mathbf v(\cdot)$. \\
 $\Phi$ & Terminal penalty matrix; $\mathcal V(\mathbf x,T)=\tfrac12\mathbf x^\top\Phi\mathbf x$ enforces $\mathbf x(T)=\mathbf 0$ as $\Phi\to\infty$. \\
 $\mathcal V(\mathbf x,t)$ & Cost-to-go (value function) from state $\mathbf x$ at time $t$. \\
@@ -92,12 +92,14 @@ time-step):
 \frac{\tilde\eta_j}{\tau}\sum_kn_{jk}^2=\frac{\tilde\eta_j}{\tau}\sum_k\tau^2
 v_j(t_k)^2=\sum_k\tau\,\tilde\eta_j\,v_j(t_k)^2 .
 \]
-Stacking over $j$ with $H=\mathrm{diag}(\tilde\eta_j)$:
+At a fixed time step, stacking over $j$ with $\widetilde H_\tau=\mathrm{diag}(\tilde\eta_j)$:
 \[
 \tilde U=\sum_k\tau\Big(\mathbf v(t_k)^\top H\,\mathbf v(t_k)+\lambda\,\mathbf
 x(t_k)^\top C\,\mathbf x(t_k)\Big),
 \]
-a Riemann sum with step size $\tau$.
+a Riemann sum with step size $\tau$ (using $H=\widetilde H_\tau$
+in this discrete display). In the continuum equations below,
+$H=\lim_{\tau\to0}\widetilde H_\tau=\operatorname{diag}(\eta_j)$.
 
 \textbf{3. Take the continuum limit $\tau\to0$} ($N=T/\tau\to\infty$). A
 Riemann sum $\sum_k\tau f(t_k)\to\int_0^Tf(t)\,dt$ for bounded, (piecewise)
@@ -159,10 +161,18 @@ Stage~2--3, for the hard-liquidation limit $\Phi\to\infty$.
 
 Define the cost-to-go from state $\mathbf x$ at time $t$:
 \[
-\mathcal V(\mathbf x,t)=\min_{\mathbf v(\cdot)}\int_t^T\big(\mathbf
-v(s)^\top H\mathbf v(s)+\lambda\,\mathbf x(s)^\top C\mathbf x(s)\big)\,ds,
+\mathcal V_\Phi(\mathbf x,t)=\inf_{\mathbf v(\cdot)}\left\{\int_t^T\big(\mathbf
+v(s)^\top H\mathbf v(s)+\lambda\,\mathbf x(s)^\top C\mathbf x(s)\big)\,ds
++\tfrac12\mathbf x(T)^\top\Phi\mathbf x(T)\right\},
 \qquad \dot{\mathbf x}=-\mathbf v,\ \ \mathbf x(t)=\mathbf x .
 \]
+Here the controls are unconstrained real vectors and $\Phi\succeq0$.
+Exact liquidation instead restricts paths to $\mathbf x(T)=0$ and uses
+singular terminal data. For sales-only controls, the minimum must be over
+$\mathbf v\ge0$; the quadratic feedback below solves that problem at an
+initial state only if its resulting path is feasible. The all-time check
+for the chosen portfolio is in WorkPlan.tex Stage~3.
+
 Split the horizon into $[t,t+dt]$ and $[t+dt,T]$ and use that the second
 piece, started from whatever state the first piece reaches, is again optimal
 (Bellman's principle):
@@ -205,20 +215,21 @@ Plugging this into \eqref{eq:pre-hjb} gives exactly \eqref{eq:hjb}, with
 terminal condition $\mathcal V(\mathbf x,T)=\tfrac12\mathbf x^\top\Phi\mathbf
 x$ (the penalty form of the hard constraint $\mathbf x(T)=\mathbf 0$, A10).
 This matches Almgren--Chriss~\cite{almgrenchriss2000}, App.~A.2, and
-Bergault--Drissi--Gu\'eant~\cite{bergault2022}, Prop.~1 (their Eqs.~13--14,
+Bergault--Drissi--Gu\'eant~\cite{bergault2022}, Prop.~1 (their Eqs.~16--17,
 under the identification $\eta=H$, $\Sigma=C$, $\gamma=2\lambda$, no
 Ornstein--Uhlenbeck signal, i.e.\ $R=0$).
 
 \section*{Step C --- the quadratic ansatz collapses the PDE to a Riccati ODE}
 
-Try $\mathcal V(\mathbf x,t)=\tfrac12\mathbf x^\top P(t)\mathbf x$ with
+Try $\mathcal V(\mathbf x,t)=\tfrac12\mathbf x^\top P(t)\mathbf x+c(t)$ with
 $P(t)$ symmetric. Then $\partial_t\mathcal V=\tfrac12\mathbf x^\top\dot
-P\mathbf x$ and $\nabla_{\mathbf x}\mathcal V=P(t)\mathbf x$. Substituting
+P\mathbf x+\dot c$ and $\nabla_{\mathbf x}\mathcal V=P(t)\mathbf x$. Substituting
 into \eqref{eq:hjb}:
 \[
 \tfrac12\mathbf x^\top\dot P\mathbf x-\tfrac14\mathbf x^\top PH^{-1}P\mathbf
-x+\lambda\,\mathbf x^\top C\mathbf x=0\qquad\text{for all }\mathbf x.
+x+\lambda\,\mathbf x^\top C\mathbf x+\dot c=0\qquad\text{for all }\mathbf x.
 \]
+At $\mathbf x=0$ this gives $\dot c=0$; $c(T)=0$ implies $c\equiv0$.
 A quadratic form $\mathbf x^\top M\mathbf x$ vanishes for all $\mathbf x$ iff
 the symmetric part of $M$ is zero; since $\dot P$, $PH^{-1}P$ and $C$ are
 each already symmetric, this forces
@@ -258,12 +269,12 @@ $\hat Q=U^\top QU$; since $U$ is constant,
 \[
 \dot{\hat Q}=\tfrac12\hat Q^2-2\lambda\,\mathrm{diag}(\mu_i).
 \]
-As $\Phi\to\infty$, $Q(T)\to\infty\, I$, so $\hat Q(T)\to\infty\,I$, which is
-diagonal. The diagonal matrices are an invariant subspace of this ODE (a
-diagonal $\hat Q$ keeps $\hat Q^2$, hence $\dot{\hat Q}$, diagonal), so by
-uniqueness $\hat Q(t)=\mathrm{diag}(q_i(t))$ for all $t\le T$, with each
-$q_i$ solving the decoupled scalar Riccati equation
-$\dot q_i=\tfrac12q_i^2-2\lambda\mu_i$, $q_i(T)\to\infty$.
+To construct the hard-liquidation solution, choose the penalty sequence
+$\Phi_a=aH$ with $a\to\infty$. Then $Q(T)=aI$ is diagonal in the $U$
+basis. Diagonal matrices are an invariant subspace of the finite-$a$ ODE,
+so uniqueness gives diagonal $\hat Q$; taking the limit yields scalar
+modes $\dot q_i=\tfrac12q_i^2-2\lambda\mu_i$ with $q_i(T)\to+\infty$.
+This argument does not treat infinity as a finite initial condition.
 
 For a scalar Riccati $\dot q=\tfrac12q^2-2\lambda\mu$, substitute
 $q=-2\dot\phi/\phi$ (the standard Riccati-to-linear-ODE substitution):
@@ -278,23 +289,28 @@ $\phi(t)=\sinh(\kappa_i(T-t))$ (solves $\ddot\phi=\kappa_i^2\phi$ and
 vanishes at $t=T$), giving $q_i(t)=2\kappa_i\coth(\kappa_i(T-t))$.
 
 In the decoupled coordinates $\mathbf z(t)=U^\top H^{1/2}\mathbf x(t)$, the
-feedback law $\mathbf v^*=\tfrac12H^{-1}P\mathbf x=H^{-1/2}U\,\mathrm{diag}
-(\tfrac12q_i)\,U^\top H^{1/2}\mathbf x$ together with $\dot{\mathbf x}=
--\mathbf v^*$ gives $\dot z_i=-\kappa_i\coth(\kappa_i(T-t))\,z_i$. Integrating,
-$\ln z_i(t)=\ln\sinh(\kappa_i(T-t))+\text{const}$, so $z_i(t)=K_i\sinh(\kappa_i
+feedback law is
+\[
+\mathbf v^*=\tfrac12H^{-1}P\mathbf x
+=H^{-1/2}U\,\mathrm{diag}(\tfrac12q_i)\,U^\top H^{1/2}\mathbf x.
+\]
+Together with $\dot{\mathbf x}=-\mathbf v^*$ this gives $\dot z_i=-\kappa_i\coth(\kappa_i(T-t))\,z_i$. Integrating,
+$z_i(t)/\sinh(\kappa_i(T-t))=\text{const}$, so $z_i(t)=K_i\sinh(\kappa_i
 (T-t))$; matching $z_i(0)=X_i$ (the $i$-th component of $U^\top
 H^{1/2}\mathbf X$) fixes $K_i=X_i/\sinh(\kappa_iT)$. Converting back,
 $\mathbf x(t)=H^{-1/2}U\mathbf z(t)$, gives the claimed formula.
 \end{proof}
 
-For $M=1$ (scalar $H=\tilde\eta$, $C=\sigma^2$) this reduces to
+For $M=1$ (scalar $H=\eta$, $C=\sigma^2$) this reduces to
 $x(t)=X\sinh(\kappa(T-t))/\sinh(\kappa T)$ with
-$\kappa=\sqrt{\lambda\sigma^2/\tilde\eta}$ --- Almgren--Chriss
-\cite{almgrenchriss2000} Eq.~17, exactly. For finite $\Phi$ the same
-diagonalization argument applies to \eqref{eq:ric} directly (without the
-$\Phi\to\infty$ shortcut); see Bergault--Drissi--Gu\'eant
-\cite{bergault2022}, App.~A, Eqs.~31--34, Cor.~1, and WorkPlan.tex
-eq.~\texttt{eq:traj-finite-phi}.
+$\kappa=\sqrt{\lambda\sigma^2/\eta}$ --- the continuum limit of Almgren--Chriss
+\cite{almgrenchriss2000} Eq.~17. Their finite-step rate instead satisfies
+$2(\cosh(\kappa_\tau\tau)-1)/\tau^2=\lambda\sigma^2/\tilde\eta$.
+For $\kappa_i=0$, interpret the trajectory ratio as $(T-t)/T$ and
+$q_i(t)$ as $2/(T-t)$. For finite $\Phi$, scalar diagonalization requires
+$H^{-1/2}\Phi H^{-1/2}$ to commute with $H^{-1/2}CH^{-1/2}$.
+Otherwise use the corrected matrix formula in WorkPlan.tex, derived from
+Bergault--Drissi--Gu\'eant \cite{bergault2022}, App.~A, Cor.~1.
 
 \section*{Cross-check against the literature}
 
@@ -303,13 +319,13 @@ against a published source are: (i) Step~2's continuum limit is the
 multi-asset formulation of Bergault--Drissi--Gu\'eant~\cite{bergault2022},
 Sec.~2/App.~A, and matches Almgren--Chriss~\cite{almgrenchriss2000},
 Sec.~2.2/App.~A.2, in the single-asset case; (ii) Step~B/C's PDE and Riccati
-ODE match Bergault--Drissi--Gu\'eant~\cite{bergault2022} Eqs.~13--14
-and~20--21 under the stated parameter identification (AI-checked
-symbol-for-symbol this session); (iii) the one-asset trajectory in the
-Corollary matches Almgren--Chriss~\cite{almgrenchriss2000} Eq.~17 exactly.
-None of these checks is a numerical validation --- see Summary.tex's
-status-column legend for what each kind of check does and does not
-establish.
+ODE match Bergault--Drissi--Gu\'eant~\cite{bergault2022} Eqs.~16--17
+and~20--21 under the stated parameter identification (checked
+in the 24 October 2026 audit); (iii) the one-asset trajectory in the
+Corollary matches Almgren--Chriss~\cite{almgrenchriss2000} Eq.~17 in the continuum limit.
+The symbolic and numerical audit is reproducible with
+\texttt{python3 verify\_research.py}; see WorkPlan.tex for the tested
+instances, tolerances and remaining limitations.
 
 \begin{thebibliography}{9}
 

@@ -92,48 +92,38 @@ $\to\;$ qubit and T-gate count
 \end{tabular}
 \end{center}
 
-\textbf{Where we are.}
+\textbf{Where we are (audit: 24 October 2026).}
 
-\begin{longtable}{@{}L{5.0cm}L{3.0cm}L{7.4cm}@{}}
+\begin{longtable}{@{}L{4.7cm}L{3cm}L{7.7cm}@{}}
 \toprule
-\textbf{Item} & \textbf{Status} & \textbf{Evidence and caveats} \\
+Item & Status & Evidence and limits \\
 \midrule
 \endhead
-Starting formula and its source (Stage~1) & Done &
-  Almgren--Chriss Eqs.~15, 29, 30. Page numbers were read from a machine
-  extraction and must be verified against the PDF. \\
-Discrete objective $\to$ integral (Stage~2, Part~I) & Done, checked &
-  Checked by hand on small numbers (telescoping identity, Riemann sum). \\
-Integral $\to$ PDE $\to$ Riccati $\to$ trajectory (Stage~2, Part~II) & Done, checked &
-  One asset: checked by hand, including a direct minimisation of the discrete
-  cost (matches to $\sim\!3\times10^{-4}$ at $N=4$). Two assets: checked by
-  computer for one parameter set. \\
-Sales-only assumption (A7, Stage~3) & \textbf{Fails in some cases} &
-  With $|\rho|=0.9$ and a small second position, the optimum buys back or shorts
-  asset~2. Must be checked for the chosen parameters. \\
-Reference LaTeX document (Stage~1) & Open defects &
-  Eq.~20, Eqs.~26--27 (placeholders), $H$ vs.\ $\tilde H$ in Eq.~32, unfinished
-  Drift sentence, definition of $x_k$. \\
-Cole--Hopf stage (Stage~4) & Derived by hand, \textbf{not checked} & See Stage~4. \\
-Discretisation, Schr\"odingerisation, resource count, readout
-  (Stages~6--9) &
-  \textbf{Not started} &
-  The Schr\"odingerisation equations in these notes are from memory; the primary
-  papers have not been read. \\
+Discrete objective and continuum limit & Checked algebra &
+Almgren--Chriss Eqs.~8, 15, 29--32; $\widetilde H_\tau\to H$. \\
+HJB and Riccati (Summary Step~3) & Verified &
+Symbolic check and square-completion proof; unconstrained quadratic control. \\
+Finite terminal penalty & Corrected and tested &
+Source transcription repaired; noncommuting test against ODE integration. \\
+Concrete instance (Stage~3) & Verified &
+$H=I$, $\rho=.4$, $\mathbf X=(3,1)^\top$; all-time sales-only proof. \\
+Reference-document repairs & Unresolved provenance &
+The separate defective reference described in earlier notes is absent from
+this checkout; the published Eq.~32 is not itself defective. \\
+Cole--Hopf (Stage~4) & Algebra checked &
+Time orientation and gradient scaling corrected; PDE implementation pending. \\
+Stages~5--9 & Preparatory formulas only &
+No sweep, PDE convergence study, circuit, or numerical resource count. \\
 \bottomrule
 \end{longtable}
 
-\textbf{How this plan is organised.} Each stage lives in its own file under
-\texttt{stages/}, included from \texttt{WorkPlan.tex}. Every stage file states,
-in this order: (1)~\emph{what it needs} from the previous stage, (2)~\emph{how
-it was (or will be) achieved}, with the full derivation when the stage is done,
-(3)~\emph{which formula is used and why}, i.e.\ the mathematical reason that
-formula and no other is the right tool, (4)~\emph{source}, and (5)~\emph{exit
-criterion}. This keeps a single stage's detail from burying the others, and
-lets each stage be revised independently as primary sources are read.
+The detailed stages are written directly in \texttt{WorkPlan.tex}; no
+\texttt{stages/} directory exists in this checkout. \texttt{Summary.tex}
+is the short version; \texttt{Stage3.tex} is a standalone copy of the
+verified benchmark. \texttt{verify\_research.py} reproduces this audit's
+symbolic and numerical checks.
 
 
-% =====================================================================
 \section{Notation and background concepts}\label{sec:notation}
 % =====================================================================
 
@@ -318,7 +308,7 @@ results in the paper, combined into one objective:
         counted inside the permanent-impact term; this is exactly the
         correction worked out in the paper's Sec.~1.5.
   \item \textbf{Variance of the cost} (their Eq.~5, generalised to Eq.~30): the
-        quadratic form $\lambda\sum_k\tau\,\mathbf x_k^\top C\mathbf x_k$, where
+        quadratic form $\sum_k\tau\,\mathbf x_k^\top C\mathbf x_k$, where
         $C=\sigma\sigma^\top$ is the covariance matrix of the asset return
         shocks. This term exists because the execution cost is random (it
         depends on the realised price path), and a risk-averse trader cares
@@ -409,11 +399,18 @@ from a machine extraction of the PDF; verify them against the PDF before citing.
 
 \subsection*{Outstanding repairs to the reference document}
 
+The separate defective reference document mentioned in the historical notes
+is not present in this checkout. The list below records tasks against that
+missing local document, not corrections to the published paper.
+Published Eq.~32 correctly states $H_{jj}=\eta_j$; the effective
+$\widetilde H$ is introduced separately. Do not change the source's Eq.~32.
+
+
 \begin{enumerate}[leftmargin=1.5em,nosep]
   \item Eq.~20: compare line by line with the paper; the continuous-time optimal
         cost for one asset should equal $\eta\kappa X^2\coth(\kappa T)$.
   \item Eqs.~26--27: write out the full expressions from the paper, or remove them.
-  \item Eq.~32: use $\tilde H$ (not $\eta_j$) so it agrees with Eq.~31.
+  \item Check any local Eq.~32 quotation against the source; distinguish raw $H$ from effective $\widetilde H$ in the local trajectory formulas.
   \item Finish the unfinished sentence in the Drift definition.
   \item Confirm the definition of $x_k$ as the holding \emph{after} trade $k$
         everywhere in the glossary (currently it says ``start of interval $k$''
@@ -476,8 +473,9 @@ Riccati equation are unchanged by the fixed offset. For exact liquidation, the
 full optimal initial cost is $K(\mathbf X)+\mathcal V(\mathbf X,0)$. A finite
 terminal penalty that allows residual inventory requires treating any spread
 cost as schedule-dependent. Defining the reduced cost-to-go
-$\mathcal V(\mathbf x,t)=\min_{\mathbf v(\cdot)}
-\int_t^T(\mathbf v^\top H\mathbf v+\lambda\,\mathbf x^\top C\mathbf x)\,ds$ and
+$\mathcal V_\Phi(\mathbf x,t)=\inf_{\mathbf v(\cdot)}
+\{\int_t^T(\mathbf v^\top H\mathbf v+\lambda\,\mathbf x^\top C\mathbf x)\,ds
++\tfrac12\mathbf x(T)^\top\Phi\mathbf x(T)\}$ and
 applying Bellman's dynamic programming principle --- rather than
 Euler--Lagrange, since a state-space PDE in $(\mathbf x,t)$, not a two-point
 boundary-value ODE, is what Hamiltonian simulation requires downstream ---
@@ -486,13 +484,13 @@ the matrix Riccati equation, and the closed-form $\sinh/\cosh$ trajectory.
 A full line-by-line derivation of this step --- the Taylor expansion of
 Bellman's principle, the pointwise minimisation, the quadratic-ansatz
 collapse to the Riccati ODE, and the simultaneous-diagonalisation argument
-for the closed form --- is given in \texttt{Proof\_HJB\_Riccati.tex}. All
-four are stated and proved for exactly this multi-asset mean-variance problem
-in Bergault, Drissi and Gu\'eant \cite{bergault2022} (Prop.~1--2 and App.~A);
-the one-asset case matches Almgren--Chriss \cite{almgrenchriss2000} Eq.~17.
-Dynamic time-consistency of this HJB formulation for CARA-type basket
-liquidation is established in Schied, Sch\"oneborn and Tehranchi
-\cite{schied2010}, Secs.~2--3.
+for the closed form --- is given in \texttt{Proof\_HJB\_Riccati.tex}. The HJB and Riccati equations follow from the $R=0$ specialization of
+Bergault, Drissi and Gu\'eant \cite{bergault2022}, Eqs.~16--21 and App.~A;
+the one-asset trajectory is the continuum limit of Almgren--Chriss
+\cite{almgrenchriss2000}, Eq.~17. The present deterministic additive-cost
+problem admits Bellman's principle directly. The separate CARA result of
+Schied, Sch\"oneborn and Tehranchi \cite{schied2010} is contextual; it is
+not a justification for a general adaptive mean--variance HJB.
 
 Optimal control:
 \begin{equation}
@@ -519,12 +517,12 @@ $\mathcal V=\tfrac12\mathbf x^\top P(t)\mathbf x+c(t)$:
   \label{eq:ric}
 \end{equation}
 The constant equation integrates to $c\equiv0$: unlike Stage~4's viscosity
-term, which sources $\dot c=\nu\,\mathrm{tr}(H^{-1}P)\neq0$, nothing here
+term, which sources $dc/ds=\nu\,\mathrm{tr}(H^{-1}P)$ in time-to-go $s$, nothing here
 sources $c$, so it is identically zero rather than merely dropped.
 Closed-form trajectory, by simultaneously diagonalising
 $H^{-1/2}CH^{-1/2}=U\,\mathrm{diag}(\mu_i)U^\top$ (possible since $H$ is
 diagonal positive-definite, A2/A11, and $C$ is symmetric PSD, A13), which
-decouples~\eqref{eq:ric} into $M$ independent scalar Riccati equations with
+decouples the hard-liquidation problem into $M$ scalar modes with
 natural frequency $\kappa_i=\sqrt{\lambda\mu_i}$:
 \begin{equation}
   \mathbf{x}(t) = H^{-1/2}U\,\mathrm{diag}\!\Big(\frac{\sinh\kappa_i(T-t)}
@@ -540,63 +538,131 @@ $\kappa_i$, same as above) and $\hat\Gamma=H^{-1/2}(\tfrac12\Phi)H^{-1/2}$,
 \begin{equation}
   P(t) = -2H^{1/2}\left[\hat\kappa - \left(
       \tfrac12\hat\kappa^{-1}\big(I-e^{-2\hat\kappa(T-t)}\big)
-      + e^{-\hat\kappa(T-t)}\big(\hat\Gamma+\hat\kappa^{-1}\big)e^{-\hat\kappa(T-t)}
+      + e^{-\hat\kappa(T-t)}\big(\hat\Gamma+\hat\kappa\big)^{-1}e^{-\hat\kappa(T-t)}
     \right)^{-1}\right]H^{1/2}
   \label{eq:traj-finite-phi}
 \end{equation}
 (Bergault, Drissi and Gu\'eant \cite{bergault2022}, App.~A, Eqs.~31--34,
 Cor.~1.) It reduces to the $\sinh/\cosh$ form~\eqref{eq:traj} as $\Phi\to\infty$
 (i.e.\ $\hat\Gamma\to\infty$). This closed form should be used instead
-of~\eqref{eq:traj} whenever Stage~3--6 need a finite $\Phi$ (A10), since it
-removes the $\Phi\to\infty$ approximation entirely.
+to obtain the feedback matrix whenever Stages~3--6 use finite $\Phi$ (A10);
+the corresponding inventory trajectory must then be obtained from
+$\dot{\mathbf x}=-H^{-1}P(t)\mathbf x/2$.
+
+\subsection*{Verification of Step 3: scope, boundary data, and optimality}
+
+The audit of 24 October 2026 confirms the HJB and Riccati coefficients,
+including $c\equiv0$. Here $H=\operatorname{diag}(\eta_j)\succ0$ is the
+continuum impact matrix, $C\succeq0$, $\lambda\ge0$, and $\Phi\succeq0$.
+The discrete matrix is instead
+$\widetilde H_\tau=\operatorname{diag}(\eta_j-\gamma_j\tau/2)$ and tends to $H$.
+The finite-penalty value must include the terminal cost in its definition;
+exact liquidation instead restricts the admissible paths to $\mathbf x(T)=0$.
+
+For $g=\nabla\mathcal V$, completing the square gives
+\[
+ \mathbf v^\top H\mathbf v-\mathbf v^\top g
+ = (\mathbf v-\tfrac12H^{-1}g)^\top H(\mathbf v-\tfrac12H^{-1}g)
+   -\tfrac14 g^\top H^{-1}g.
+\]
+Thus the displayed feedback is the unique unconstrained minimizer.
+Substitution of $\mathcal V=\tfrac12\mathbf x^\top P\mathbf x+c$ gives
+$\tfrac12\dot P-\tfrac14PH^{-1}P+\lambda C=0$ and $\dot c=0$.
+Along any admissible path for the finite-penalty quadratic problem,
+\[
+ J_\Phi[\mathbf v]-\mathcal V_\Phi(\mathbf X,0)
+ =\int_0^T(\mathbf v-\tfrac12H^{-1}P\mathbf x)^\top
+ H(\mathbf v-\tfrac12H^{-1}P\mathbf x)\,dt\ge0.
+\]
+This establishes optimality, rather than merely a stationary solution.
+
+\textbf{Sales-only scope.} The minimization above is over $\mathbb R^M$.
+For a control constrained to $v_j\ge0$, the diagonal-$H$ Hamiltonian is
+instead
+\[
+ \partial_t\mathcal V_++\lambda\mathbf x^\top C\mathbf x
+ -\sum_j\frac{[\max(\partial_{x_j}\mathcal V_+,0)]^2}{4\eta_j}=0.
+\]
+A feasible unconstrained optimum also solves the constrained problem at that
+initial state. Stage~3 proves this feasibility for its chosen portfolio;
+it does not prove equality of the two value functions on an entire PDE grid.
+The original discrete objective already charges buys through $|n_{jk}|$
+and $n_{jk}^2$; the issue is the removal of the variable spread term, not
+an absence of all buying costs.
+
+\textbf{Finite-penalty correction.} Equation~\eqref{eq:traj-finite-phi}
+previously contained $(\hat\Gamma+\hat\kappa^{-1})$ where the source has
+$(\hat\Gamma+\hat\kappa)^{-1}$. At $t=T$ the corrected inner matrix is
+$(\hat\Gamma+\hat\kappa)^{-1}$, hence $P(T)=2H^{1/2}\hat\Gamma H^{1/2}=\Phi$.
+As $\Phi=aI$, $a\to\infty$, its second term vanishes and
+\[
+ P(t)\longrightarrow 2H^{1/2}\hat\kappa\coth(\hat\kappa(T-t))H^{1/2}.
+\]
+The inverse-$\hat\kappa$ expression assumes $\lambda>0$ and $C\succ0$.
+For zero risk modes use analytic limits, including
+$\sinh(\kappa s)/\sinh(\kappa T)\to s/T$ and
+$\kappa\coth(\kappa s)\to1/s$. A finite-$\Phi$ formula that also handles
+$C\succeq0$ without inverse square roots is
+\[
+ \begin{pmatrix}Y(s)\\ Z(s)\end{pmatrix}
+ =\exp\!\left[s\begin{pmatrix}0&\tfrac12H^{-1}\\2\lambda C&0\end{pmatrix}\right]
+ \begin{pmatrix}I\\\Phi\end{pmatrix},\qquad
+ P(T-s)=Z(s)Y(s)^{-1}.
+\]
+Indeed $Y'=H^{-1}Z/2$, $Z'=2\lambda CY$ give
+$(ZY^{-1})'=2\lambda C-(ZY^{-1})H^{-1}(ZY^{-1})/2$ and $P(T)=\Phi$.
+For finite penalties, diagonalization into scalar Riccati equations requires
+$H^{-1/2}\Phi H^{-1/2}$ to commute with $H^{-1/2}CH^{-1/2}$; it is not
+valid for an arbitrary symmetric penalty. The matrix formulas above do not
+require commutation.
 
 \subsection*{Source}
 
 Almgren and Chriss \cite{almgrenchriss2000}, Sec.~2.2 (single-asset continuum
-limit) and App.~A.2 (multi-asset $\Phi\to\infty$ closed-form trajectory
+limit) and App.~A.3 (continuum limit of the multi-asset closed-form trajectory
 \eqref{eq:traj}: the diagonalisation of $\lambda H^{-1/2}CH^{-1/2}$ and the
 $\sinh\kappa_i(T-t)/\sinh\kappa_iT$ solution are given there explicitly, p.~39);
 Bergault, Drissi and Gu\'eant \cite{bergault2022}, Prop.~1--2 (multi-asset HJB
 PDE~\eqref{eq:pde} and Riccati ODE~\eqref{eq:ric}, specialised to their
-Eqs.~13--14 and~20--21 with no Ornstein--Uhlenbeck signal, i.e.\ $R=0$, under
+Eqs.~16--17 and~20--21 with no Ornstein--Uhlenbeck signal, i.e.\ $R=0$, under
 the identification $\eta=H$, $\Sigma=C$, $\gamma=2\lambda$, $\Gamma=\tfrac12\Phi$,
 $P=-2A$) and App.~A, Prop.~3/Cor.~1 (finite-$\Phi$ closed
 form~\eqref{eq:traj-finite-phi}, their Eqs.~31--34, again $R=0$); Schied,
-Sch\"oneborn and Tehranchi \cite{schied2010}, Secs.~2--3 (dynamic
-time-consistency).
+Sch\"oneborn and Tehranchi \cite{schied2010} concerns deterministic optimality
+under CARA utility; its detailed theorem hypotheses were not re-audited here.
 
 \textbf{Correction to a previous note in this document:} an earlier version
 of this Source paragraph stated that Bergault et al.\ ``do not give the
 closed-form trajectory, only an existence proof.'' That is true only for
 their general $R\neq0$ (Ornstein--Uhlenbeck signal) case. For the $R=0$
 case used throughout this project, their own Appendix~A gives the explicit
-closed form~\eqref{eq:traj-finite-phi} above --- confirmed by reading the
-full paper (arXiv:2103.13773v4) directly.
+closed form~\eqref{eq:traj-finite-phi} above --- confirmed by inspecting Appendix~A of arXiv:2103.13773v4 directly.
 
-\subsection*{Checks performed (why these count as validation)}
+\subsection*{Checks performed in the 24 October 2026 audit}
 
-\begin{itemize}[leftmargin=1.5em]
-  \item \textbf{One asset, closed form.} For $M=1$ ($C=\sigma^2$, $H=\tilde\eta$),
-        \eqref{eq:traj} reduces to $x(t)=X\sinh(\kappa(T-t))/\sinh(\kappa T)$
-        with $\kappa=\sqrt{\lambda\sigma^2/\tilde\eta}$, which is Almgren and
-        Chriss Eq.~(17). Matching this known published result is the strongest
-        available check, since it is independent of this project's own algebra.
-  \item \textbf{One asset, against the discrete objective.} The continuous
-        trajectory was compared against a \emph{direct numerical minimisation}
-        of the discrete objective~\eqref{eq:s1-objective} at $N=4$; the two
-        agree to $\sim\!3\times10^{-4}$. This checks the full discrete-to-continuum
-        chain (Part~I), not just the PDE algebra.
-  \item \textbf{Two assets.} Checked by computer for one parameter set, matching
-        \eqref{eq:traj} against a direct minimisation of the two-asset discrete
-        objective.
-\end{itemize}
+Run \texttt{python3 verify\_research.py} with NumPy, SciPy and SymPy installed.
+The script checks the two-asset HJB through \texttt{BellmanPrinciple.py},
+verifies the Riccati polynomial residual symbolically, compares the Stage~3
+trajectory with a separately assembled discrete quadratic minimization, checks the corrected finite-penalty formula against numerical ODE integration,
+and verifies the two-asset Cole--Hopf PDE and recovered gradient symbolically.
+For the last check, $H=\operatorname{diag}(1,2)$,
+$C=\left(\begin{smallmatrix}1&.4\\.4&1\end{smallmatrix}\right)$,
+$\Phi=\left(\begin{smallmatrix}3&.3\\.3&2\end{smallmatrix}\right)$,
+$\lambda=T=1$; the whitened penalty and covariance do not commute.
+The terminal error is $5.6\times10^{-17}$ and the maximum ODE comparison
+error on 101 times is $1.5\times10^{-11}$ or less. The old formula's terminal
+error on this same instance is $4.1861$ in the maximum-entry norm.
+
+Earlier notes claimed agreement of $3\times10^{-4}$ at $N=4$ and an
+unspecified two-asset test. Their parameters and executable checks are absent
+from the supplied files, so those historical numbers are not independently
+reproducible and are not used as evidence here.
 
 \subsection*{Exit criterion}
 
-For one asset the trajectory equals $X\sinh(\kappa(T-t))/\sinh(\kappa T)$ (met);
-the two-asset case reproduces the direct minimisation of the discrete cost (met
-for one parameter set; should be extended to more parameter sets before being
-called fully locked).
+The HJB/Riccati algebra and selected finite-penalty and hard-liquidation
+instances pass the reproducible checks above. This does not validate a PDE
+solver, arbitrary constrained portfolios, or downstream quantum resources.
 
 
 % =====================================================================
@@ -620,7 +686,7 @@ Riccati equation keeps its exact form, coefficients now time-dependent:
   \dot P(t)=\tfrac12P(t)H(t)^{-1}P(t)-2\lambda(t)C(t),\qquad P(T)=\Phi.
   \label{eq:ric-td}
 \end{equation}
-Existence/uniqueness on all of $[0,T]$ (no blow-up) holds since
+For finite $\Phi\succeq0$ and continuous coefficients with uniformly positive $H$, existence/uniqueness on $[0,T]$ holds in this positive-cost LQR setting since
 $H(t)^{-1}\succ0$, $\lambda(t)C(t)\succeq0$ for all $t$ (Drissi
 \cite{drissi2023}, Thm.~1, for $M_1,M_2,M_3\in C^1([0,T],\cdot)$).
 
@@ -679,7 +745,7 @@ verified}.
 
 \textbf{Open permanent-impact caveat.} If permanent impact $\Gamma_{\rm perm}$
 is itself time-dependent, integration by parts adds
-$\int_0^T\mathbf x^\top\dot\Gamma_{\rm perm}\mathbf x\,dt$ to the objective,
+$\tfrac12\int_0^T\mathbf x^\top\dot\Gamma_{\rm perm}\mathbf x\,dt$ to the objective,
 i.e.\ an extra term folded into $2\lambda(t)C(t)$. Not modelled here; assumed
 $\Gamma_{\rm perm}$ constant (standard convention, Almgren 2012, Gu\'eant 2016).
 
@@ -690,72 +756,157 @@ numerical integration of~\eqref{eq:ric-td} for a test $m(t)$ profile.
 
 
 % =====================================================================
-\section{Stage 3 --- Choose a concrete instance}
+\section{Stage 3 --- Verified concrete instance}
 \label{sec:stage3}
-% =====================================================================
 
 \subsection*{What this stage needs}
 
-The benchmark formulas from Stage~2 (trajectory~\eqref{eq:traj}, frequencies
-$\kappa_i$), so that candidate parameters can be checked before use downstream.
+The hard-liquidation trajectory from Stage~2 with constant coefficients,
+$H\succ0$, $C\succeq0$ and $\lambda\ge0$.
 
-\subsection*{How it is to be achieved}
+\subsection*{Parameter choice and scope}
 
-\begin{enumerate}[leftmargin=1.5em,nosep]
-  \item Choose $\eta_1,\eta_2$ (temporary impact), volatilities
-        $\sigma_1,\sigma_2$, correlation $\rho$ (so $C=\left(\begin{smallmatrix}
-        \sigma_1^2 & \rho\sigma_1\sigma_2\\ \rho\sigma_1\sigma_2 &
-        \sigma_2^2\end{smallmatrix}\right)$), risk aversion $\lambda$, horizon $T$,
-        starting positions $X_1,X_2$.
-  \item Check $C$ is symmetric positive semidefinite and $\eta_j>0$. This is
-        required because Stage~2's diagonalisation
-        $H^{-1/2}CH^{-1/2}=U\,\mathrm{diag}(\mu_i)U^\top$ needs real
-        nonnegative eigenvalues $\mu_i$ for $\kappa_i=\sqrt{\lambda\mu_i}$ to be
-        real (A13); a complex $\kappa_i$ would turn the $\sinh$ trajectory into
-        an oscillating (and generally unstable-looking) one with no financial
-        meaning.
-  \item Compute $\kappa_1,\kappa_2$ and $\kappa_iT$ from Stage~2. These set the
-        natural time scale of the trade schedule and, later, the harmonic
-        oscillator frequencies in Stage~5 and the required grid resolution in
-        Stage~6.
-  \item \textbf{Check the sales-only assumption:} the selling rate $v_j(t)\ge0$
-        (from~\eqref{eq:traj} differentiated in $t$) for both assets at all
-        $t\in[0,T]$. This check exists because Stage~2, Part~I silently
-        assumed $n_{jk}\ge0$ to drop the spread term; if the optimal
-        \emph{unconstrained} schedule ever buys back or shorts an asset, the
-        objective used is no longer the one actually being solved, and the
-        whole chain from Stage~1 onward needs the spread term kept in (or the
-        parameters changed).
-\end{enumerate}
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Parameter & Chosen value \\
+\midrule
+$M,\ T,\ \lambda$ & $2,\ 1,\ 1$ \\
+$\eta_1,\eta_2$ & $1,1$, so $H=I_2$ \\
+$\sigma_1,\sigma_2,\rho$ & $1,1,0.4$ \\
+$C$ & $\left(\begin{smallmatrix}1&0.4\\0.4&1\end{smallmatrix}\right)$ \\
+$\mathbf X$ & $(3,1)^\top$ \\
+Terminal condition & Exact liquidation, $\mathbf x(1)=0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-\subsection*{Which formula is used, and why}
+These are this project's synthetic, dimensionless benchmark choices, not
+calibrated market parameters or values prescribed by Jin--Liu--Yu or Bergault
+et al. Both eigenmodes are excited and $C$ is not diagonal in asset
+coordinates. However, $H=I$ commutes with $C$; this benchmark alone cannot
+test arbitrary noncommuting matrix implementations. Stage~2's separate
+finite-penalty test covers one such case.
 
-No new formula is introduced in this stage; it reuses $\kappa_i$ and
-$\mathbf x(t)$ from Stage~2 purely as \emph{diagnostics} to validate a choice of
-numbers, because those are the only closed-form objects available before
-discretisation.
+Changing units does not by itself reduce the intrinsic simulation difficulty.
+If $\mathbf x=L\mathbf z$, $t=t_0u$, and costs are divided by $J_0>0$, then
+\[
+ \bar H=\frac{L^\top HL}{J_0t_0},\qquad
+ \bar Q=\frac{t_0\lambda L^\top CL}{J_0},\qquad
+ J/J_0=\int(\mathbf z'{}^\top\bar H\mathbf z'
+               +\mathbf z^\top\bar Q\mathbf z)\,du.
+\]
+The dimensionless products $\kappa_iT$ are unchanged by a consistent
+rescaling. No conversion of empirical data to this instance has been made.
 
-\subsection*{Known failure mode (already observed)}
+\subsection*{Derivation and sales-only proof}
 
-With $|\rho|=0.9$ and a small second position, the optimum buys back or shorts
-asset~2: a highly correlated, small position is cheaper to hedge by trading
-against the dominant asset than to liquidate outright under the unconstrained
-quadratic cost. This must be checked explicitly for whatever parameters are
-finally chosen; see assumption A7.
+The orthonormal covariance eigenvectors are
+$u_+=(1,1)^\top/\sqrt2$ and $u_-=(1,-1)^\top/\sqrt2$ with
+\[
+ \mu_+=1.4,\quad\mu_-=0.6,\qquad
+ \kappa_+=\sqrt{1.4}=1.1832159566,\quad
+ \kappa_-=\sqrt{0.6}=0.7745966692.
+\]
+Thus $C\succ0$, $\eta_j>0$, and both rates are real. Set $s=1-t$ and
+\[
+ f_\pm(s)=\frac{\sinh(\kappa_\pm s)}{\sinh\kappa_\pm},\qquad
+ a_\pm(s)=\frac{\kappa_\pm\cosh(\kappa_\pm s)}{\sinh\kappa_\pm}.
+\]
+The trajectory and selling rates are
+\begin{equation}
+ x_1=2f_++f_-,\quad x_2=2f_+-f_-,\qquad
+ v_1=2a_++a_-,\quad v_2=2a_+-a_-.
+ \label{eq:stage3-rates}
+\end{equation}
+They give $\mathbf x(0)=(3,1)^\top$ and $\mathbf x(1)=0$.
 
-\subsection*{Source}
+For the equal-impact, equal-volatility family with $0<\rho<1$ and
+$X_1=\theta X_2$, $\theta>1$, $X_2>0$, the potentially negative rate is
+\[
+ v_2=\frac{X_2}{2}\big((\theta+1)a_+-(\theta-1)a_-\big).
+\]
+The relative rate $R(s)=a_-(s)/a_+(s)$ satisfies
+\[
+ \frac{d}{ds}\log R(s)
+ =\kappa_-\tanh(\kappa_-s)-\kappa_+\tanh(\kappa_+s)\le0,
+\]
+because $k\mapsto k\tanh(ks)$ increases for $k>0$, $s\ge0$.
+Hence $R(s)\le R(0)$: checking the terminal-time ratio is sufficient and
+necessary for this particular family, rather than an assumption about all
+multi-asset problems. Specifically,
+\begin{equation}
+ \frac{\theta+1}{\theta-1}\ge
+ R(0)=\frac{\kappa_-\sinh\kappa_+}{\kappa_+\sinh\kappa_-}
+ =1.133429601920,
+ \qquad
+ \theta\le\frac{R(0)+1}{R(0)-1}=15.989177597983.
+ \label{eq:stage3-bound}
+\end{equation}
+The earlier values $1.096$ and $21.8$ in \texttt{Stage3.tex} were numerical
+errors. The choice $\theta=3$ still passes. More explicitly, since
+$a_+(s)\ge a_+(0)$ and $2-R(s)\ge2-R(0)>0$,
+\[
+ v_2(t)\ge a_+(0)(2-R(0))=0.6931333103,
+ \qquad v_1(t)\ge2a_+(0)+a_-(0)=2.5062988967.
+\]
+Both minima occur at $t=1$; these are one-sided terminal limits of the rates.
+Thus both inventories stay nonnegative and decrease to zero for the entire
+interval. A time-grid check alone would not establish this all-time claim.
 
-Parameter choice is this project's own; market calibration is outside the scope
-of Almgren--Chriss and of this paper.
+\subsection*{Independent numerical checks}
+
+The reproducible script \texttt{verify\_research.py} gives
+\[
+ \mathbf v(0)=(4.0488436487,1.6639810858)^\top,\qquad
+ J^*=\tfrac12\mathbf X^\top P(0)\mathbf X=13.810512031917.
+\]
+Direct quadrature of the running cost agrees within $2\times10^{-15}$.
+For a separate check set permanent impact and spread to zero, and minimize
+$\sum_{k=1}^N\|\mathbf x_{k-1}-\mathbf x_k\|^2/\tau
++\tau\sum_{k=1}^N\mathbf x_k^\top C\mathbf x_k$ by solving its block
+tridiagonal stationarity system. Its Hessian is positive definite, so this
+is the unique global discrete minimizer.
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$N$ & Maximum inventory error vs. continuum & Discrete optimal cost \\
+\midrule
+16 & $6.945\times10^{-5}$ & 13.432845715492 \\
+64 & $4.361\times10^{-6}$ & 13.714251771181 \\
+256 & $2.726\times10^{-7}$ & 13.786331703645 \\
+1024 & $1.704\times10^{-8}$ & 13.804459745777 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The trajectory error decreases quadratically; the cost has first-order
+right-endpoint quadrature error. These are different error measures.
+The permanent-impact/spread offsets are not part of these reported costs.
+
+\subsection*{Sources and caveats}
+
+Almgren--Chriss \cite{almgrenchriss2000}, App.~A.3, pp.~38--39, supplies the
+discrete eigenmode construction; the displayed continuum modes are its
+$\tau\to0$ limit. The warning about nonmonotone trading and changing spread
+cost is explicitly on p.~39. Bergault--Drissi--Gu\'eant
+\cite{bergault2022}, App.~A, supplies the $R=0$ matrix Riccati benchmark.
+The parameter selection and the sales-only inequality are derived here.
+Gu\'eant's book is background; no verified chapter-specific theorem is
+being claimed for this numerical bound.
+
+This proof uses exact liquidation and the stated symmetric two-asset
+family. A finite terminal penalty needs a separate feasibility check.
+Sales-only feasibility at $\mathbf X$ does not certify a globally
+sales-constrained HJB on the grid. Discretisation accuracy, a chosen finite
+$\Phi$, $\nu$, and quantum resource estimates remain open.
 
 \subsection*{Exit criterion}
 
-A parameter table with all four checks above passed (PSD $C$, $\eta_j>0$, real
-$\kappa_i$, $v_j(t)\ge0$ for all $t$).\\
-\textbf{Suggested owner.} Project lead.
+\textbf{Met for this synthetic hard-liquidation instance:} $C\succ0$,
+$H\succ0$, real $\kappa_\pm$, and $v_j(t)>0$ throughout $[0,1]$, with an
+analytic proof and reproducible numerical cross-checks.
 
 
-% =====================================================================
 \section{Stage 4 --- Time-to-go form and Cole--Hopf (linearisation)}
 \label{sec:stage4}
 % =====================================================================
@@ -800,15 +951,33 @@ recovered as
   \mathbf v^*=-2\nu\,H^{-1}\nabla\ln\psi .
 \end{equation}
 
-\subsection*{Key claim to verify}
+\subsection*{Verified algebra and remaining numerical check}
 
-Writing $W=\tfrac12\mathbf x^\top P(s)\mathbf x+c(s)$, the quadratic part obeys
-\emph{the same} Riccati equation as~\eqref{eq:ric}, with
-$\dot c=\nu\,\mathrm{tr}(H^{-1}P)$: the added viscosity shifts only an additive
-constant in $W$, not $\nabla W$, so the optimal control $\mathbf v^*$ is
-unchanged for every $\nu>0$ --- consistent with the regularisation result of
-Fleming and Soner \cite{flemingsoner2006}, Ch.~VI, for this problem's
-quadratic structure, and not yet re-checked numerically here.
+Write $P_s=P(T-s)$ and $W=\tfrac12\mathbf x^\top P_s\mathbf x+c(s)$.
+The regularized equation is
+\[
+ W_s=\nu\operatorname{tr}(H^{-1}\nabla^2W)
+       -\tfrac14\nabla W^\top H^{-1}\nabla W+\lambda\mathbf x^\top C\mathbf x.
+\]
+Substitution gives
+\[
+ \frac{dP_s}{ds}=2\lambda C-\tfrac12P_sH^{-1}P_s,\qquad
+ c'(s)=\nu\operatorname{tr}(H^{-1}P_s),\quad c(0)=0.
+\]
+The Riccati sign is reversed relative to calendar time in
+\eqref{eq:ric}. Consequently $\nabla W=P_s\mathbf x$ is independent of
+$\nu$ for fixed finite terminal penalty on the full space. The identity
+\[
+ \nabla\cdot(H^{-1}\nabla\psi)
+ =\psi\left(\frac{\nabla W^\top H^{-1}\nabla W}{16\nu^2}
+             -\frac{\operatorname{tr}(H^{-1}\nabla^2W)}{4\nu}\right)
+\]
+verifies the Cole--Hopf cancellation directly. This is a proof for the
+unconstrained quadratic problem; finite-domain boundary conditions and a
+sales-constrained value function need separate analysis. Taking $\Phi\to\infty$
+in the unnormalized heat initial data gives zero almost everywhere, so a
+hard-liquidation heat calculation needs a properly normalized limiting kernel
+or a specified finite penalty.
 
 \subsection*{Source}
 
@@ -820,9 +989,9 @@ own instantiation of the standard scalar transform.
 
 \subsection*{Exit criterion}
 
-For one asset the gradient $\nabla\ln\psi$ computed from the exact Gaussian
-solution of \eqref{eq:linearised} (Stage~5) equals the Stage~2 gradient
-$P(t)x$, for every $\nu$ tested.\\
+For one asset, verify $-4\nu\nabla\ln\psi=P(t)x$ using a numerical
+solution of \eqref{eq:linearised}, for every $\nu$ tested; raw
+$\nabla\ln\psi$ is not equal to $P(t)x$.\\
 \textbf{Suggested owner.} Math/control lead.
 
 
@@ -850,7 +1019,7 @@ in the same coordinates that diagonalise the Laplacian's metric turns it into a
 fully known closed-form spectrum. This is the reason the same $U,\mu_i$ from
 Stage~2 reappear here.
 
-With $\mathbf y=U^\top H^{1/2}\mathbf x$ (change of variables chosen precisely
+For $\lambda C\succ0$ on the full space, with $\mathbf y=U^\top H^{1/2}\mathbf x$ (change of variables chosen precisely
 to simultaneously diagonalise the kinetic metric $H^{-1}$ and the potential
 matrix $C$), the operator $\hat H$ splits into independent oscillators:
 \begin{equation}
@@ -903,16 +1072,20 @@ $\ell_i=\sqrt{2\nu/\kappa_i}$ & \eqref{eq:oscillator} & Standard oscillator
 
 \subsection*{Decision to make}
 
-$\nu$ trades two things against each other: $\psi$ at the starting inventory
-$\mathbf X$ has size about $e^{-W(\mathbf X)/(4\nu)}$, so a \emph{small} $\nu$
-makes $\psi(\mathbf X)$ tiny and the eventual amplitude-estimation readout
-(Stage~9) expensive; while $\ell_i$ (growing with $\nu$) sets how fine the
-simulation grid must be, so a \emph{large} $\nu$ relaxes the grid-resolution
-requirement of Stage~6 but may push $\psi(\mathbf X)$ even smaller if $W(\mathbf
-X)>0$ grows faster than $\nu$. The resolution is to sweep $\nu$ numerically
-and tabulate the trade-off rather than fix it analytically, since the two
-costs (readout vs.\ grid size) enter the final $N_q,N_T$ formulas with
-different functional forms (Stages 6, 8, 9).
+For a fixed finite terminal penalty, $P_s$ is independent of $\nu$ and
+$c(s)=\nu\int_0^s\operatorname{tr}(H^{-1}P_r)\,dr$. Therefore
+\[
+ \psi(\mathbf X,s)=
+ \exp\!\left[-\frac{\mathbf X^\top P_s\mathbf X}{8\nu}
+             -\frac14\int_0^s\operatorname{tr}(H^{-1}P_r)\,dr\right].
+\]
+Its unnormalized value at fixed $\mathbf X$ is nondecreasing with $\nu$;
+the earlier suggestion that $W$ grows faster than $\nu$ was incorrect in
+this quadratic setting. Larger $\nu$ also broadens the Gaussian and can
+require a larger domain. The readout probability depends on the normalized
+grid amplitudes, not on this unnormalized value alone. The planned sweep must
+therefore report widths, domain truncation, normalization, and readout
+probabilities together. The discrete PDE sweep has not been performed.
 
 \subsection*{Source}
 
@@ -1040,7 +1213,9 @@ directly.
 
 Following Jin, Liu and Yu \cite{jin2024,jin2023}: with $A=-\hat H_d$ Hermitian
 and negative semidefinite, set $w=e^{-p}\psi$ for an auxiliary variable $p$
-and Fourier-transform in $p$ with frequencies $\eta_k$. This gives the
+for $p>0$, extend the initial data as
+$w(0,p)=e^{-|p|}\psi(0)$ on the real line, and Fourier-transform in $p$
+with frequencies $\eta_k$. This gives the
 Schr\"odinger equation
 \begin{equation}
   i\,\partial_s\hat w=H_S\hat w,\qquad H_S=-\hat H_d\otimes D_\eta,\qquad
@@ -1051,8 +1226,9 @@ with $\psi$ recovered as $e^{p^*}w(\cdot,p^*)$ for any $p^*>0$. The precise
 conditions on the $p$-domain and step $\Delta p$, the truncation error from a
 finite $p$-range, and the success probability of the final recovery step
 (including the factor from the norm decay $e^{-E_0T}$, Stage~5, which a
-constant shift of $\hat H$ removes without affecting $\nabla\ln\psi$) are
-taken from \cite{jin2024,jin2023}.
+constant shift of $\hat H$ removes without affecting $\nabla\ln\psi$) still need to be derived for this discretisation; they cannot be claimed
+as already fixed by citing \cite{jin2024,jin2023}. The sign and tensor
+structure above agree with Sec.~3.1, Eqs.~3.2--3.4 of \cite{jin2023}.
 
 \subsection*{Source}
 
@@ -1103,13 +1279,12 @@ bound of Low and Chuang \cite{lowchuang2019} and Gily\'en et al.
   \qquad \alpha\ge\|H_S\|
   \label{eq:queries}
 \end{equation}
-This scaling (linear in $T$, provably optimal by a no-fast-forwarding
-argument; doubly-logarithmic in $1/\varepsilon$) is the best known for
-Hamiltonian simulation and is used here, rather than Trotterisation's
-$O(T^2/\varepsilon)$-type scaling, because the deliverable is a resource
-estimate (Stage~0) and this gives the fairest, least pessimistic lower bound.
-$\alpha$ upper-bounds $\|H_S\|$ since qubitization normalises $H_S$ into a
-block of a unitary.
+This is an asymptotic query upper bound, with near-logarithmic precision
+dependence, not a numerical T-gate count or a lower bound for this structured
+instance. The actual block-encoding construction must supply $\alpha$;
+a bound on $\|H_S\|$ alone does not construct that encoding. State
+preparation, recovery, readout, and gate-synthesis error budgets remain to
+be included.
 
 \paragraph{T-gates.}
 \begin{equation}
@@ -1186,25 +1361,30 @@ added.
 
 \subsection*{How it is to be achieved}
 
-\textbf{What is extracted.} The quantity of actual interest is the trading
-rate $\mathbf v^*(\mathbf X,0)=-2\nu H^{-1}\nabla\ln\psi(\mathbf X)$
-(Stage~4), which requires $\nabla\ln\psi$ at $\mathbf x=\mathbf X$, i.e.\ the
-\emph{ratio} of amplitudes at neighbouring grid points (since
-$\nabla\ln\psi\approx[\ln\psi(\mathbf X+\Delta x\,\mathbf e_j)\allowbreak-\ln\psi(\mathbf
-X)]/\Delta x$ from a finite difference consistent with Stage~6's
-discretisation).
+\textbf{What is extracted.} The initial trading rate from Stage~4 requires
+the logarithmic gradient at $\mathbf x=\mathbf X$, hence the
+\emph{ratio} of amplitudes at neighbouring grid points. For each component,
+\[
+ \partial_{x_j}\ln\psi(\mathbf X)\approx
+ \frac{\ln\psi(\mathbf X+\Delta x\,\mathbf e_j)-\ln\psi(\mathbf X)}{\Delta x}.
+\]
+This is a first-order forward difference; its error must be budgeted
+separately from Stage~6's second-order Laplacian discretisation.
 
-\textbf{Why amplitude estimation.} A single measurement gives only a sampled
-bit string, with probability equal to the squared amplitude, never the
-amplitude itself. Amplitude estimation \cite{brassard2002} estimates the
-amplitude to precision $\varepsilon$ using $O(1/\varepsilon)$ applications of
-the state-preparation circuit, a quadratic improvement over the
-$O(1/\varepsilon^2)$ repetitions plain sampling would need. Because
-$\psi(\mathbf X)$ may be exponentially small (Stage~5), resolving it to a
-fixed \emph{relative} precision needs $O(1/(\varepsilon\,\psi(\mathbf X)))$
-repetitions, each costing one call to the full Schr\"odingerised circuit from
-Stages 7--8; this term is identified in the Risks
-(Section~\ref{sec:risks}) as the one most likely to dominate $N_T$.
+\textbf{Normalization required for readout.} On a uniform grid, the state
+amplitudes are $a_j=\psi(\mathbf x_j)/(\sum_k|\psi(\mathbf x_k)|^2)^{1/2}$.
+A measurement estimates $p_j=|a_j|^2$; amplitude estimation
+\cite{brassard2002} estimates a designated event probability. For a real,
+positive heat solution, probability ratios determine amplitude ratios.
+Resolving a small positive amplitude to relative precision $\epsilon_a$
+has query scaling $O(1/(\epsilon_a|a_j|))$ under the usual coherent
+state-preparation access assumptions. The previous expression with raw
+$\psi(\mathbf X)$ was not normalization invariant.
+For a first-difference logarithmic gradient, errors in neighboring log
+amplitudes are divided by $\Delta x$, and the recovered control includes
+$2\nu H^{-1}$, so $\epsilon_a$ must be allocated from the desired control
+error. State preparation and Schr\"odingerisation recovery costs multiply
+this query count. No end-to-end resource count has yet been established.
 
 \subsection*{Source}
 
@@ -1215,8 +1395,9 @@ difference gradient $\nabla\ln\psi$ at $\mathbf X$) is this project's own.
 
 \subsection*{Exit criterion}
 
-The readout cost is a formula in $\varepsilon$ and in $\psi(\mathbf X)$ from
-Stage~5, added explicitly into $N_T$ from Stage~8.
+Express readout cost using normalized grid probabilities, the target
+control error, and preparation/recovery costs; include it explicitly in
+$N_T$ from Stage~8.
 
 
 % =====================================================================
@@ -1293,21 +1474,22 @@ See Section~\ref{sec:definition-of-done}.\\
 % =====================================================================
 
 \begin{itemize}[leftmargin=1.5em]
-  \item \textbf{Cole--Hopf claim unchecked.} Everything after Stage~4 rests on
-        the matrix Hopf--Cole substitution~$\psi=e^{-W/(4\nu)}$ actually
-        linearising the HJB equation as claimed; see the Stage~4 key claim.
-  \item \textbf{Schr\"odingerisation steps from memory.} The Stage~7 sketch is
-        reconstructed without reading the primary papers and must be replaced
-        before Stage~8's norm bound $\alpha\ge\|H_S\|$ can be trusted.
-  \item \textbf{Prior work.} The closest paper found (Schr\"odingerization with
-        Hamilton--Jacobi-type problems, arXiv:2606.28752) has not been read.
-        No claim of novelty should be made before it is.
+  \item \textbf{Cole--Hopf numerical implementation pending.} The algebra is
+        verified in Stage~4; domain truncation, finite terminal data and
+        numerical gradient recovery remain untested.
+  \item \textbf{Schr\"odingerisation incomplete.} The generator and initial
+        extension match the primary source; auxiliary-domain truncation,
+        recovery probability, and block encoding remain unspecified.
+  \item \textbf{Prior work.} arXiv:2606.28752 is accessible and explicitly
+        combines viscous Hamilton--Jacobi, Cole--Hopf, and Schr\"odingerisation.
+        Its full comparison with this project remains open; novelty is not
+        established by the present source audit.
   \item \textbf{Stiffness.} A large terminal penalty $\Phi$ (Stage~2, A10)
         affects the conditioning of the Riccati solution $P(t)$ and therefore
         the norm bound in Stage~6 and the gate count in Stage~8.
   \item \textbf{Readout cost} (Stage~9) may dominate the total $N_T$, since it
-        scales as $1/(\varepsilon\,\psi(\mathbf X))$ and $\psi(\mathbf X)$ can
-        be exponentially small (Stage~5).
+        depends on the inverse normalized amplitude and on preparation/recovery
+        costs, neither of which has been quantified (Stage~9).
   \item \textbf{Classical triviality.} A reviewer will point out the
         closed-form Riccati solution (Stage~2); the framing in Stage~0 (Goal)
         answers this directly: no speedup is claimed, only a resource count.
@@ -1315,44 +1497,71 @@ See Section~\ref{sec:definition-of-done}.\\
 
 
 % =====================================================================
-\section{Reading list and sources}\label{sec:reading}
-% =====================================================================
+\section{Source audit and remaining reading}\label{sec:reading}
 
-\begin{longtable}{@{}L{8.6cm}L{2.4cm}L{4.4cm}@{}}
+\textbf{Audit scope.} Sources were checked on 24 October 2026. Reading a
+relevant equation or abstract is not recorded as a complete paper review.
+
+\begin{longtable}{@{}L{4.1cm}L{3.3cm}L{8cm}@{}}
 \toprule
-\textbf{Source} & \textbf{Read?} & \textbf{Used for} \\
+Source & Checked & Outcome \\
 \midrule
 \endhead
-R.~Almgren and N.~Chriss, \emph{Optimal Execution of Portfolio Transactions},
-  Dec.\ 2000.
-  \url{https://www.smallake.kr/wp-content/uploads/2016/03/optliq.pdf} &
-  Partly (machine extraction) & Stages 1--3; page numbers unverified \\
-S.~Jin, N.~Liu, Y.~Yu, \emph{Quantum simulation of partial differential equations
-  via Schr\"odingerization}, Phys.\ Rev.\ Lett.\ 133, 230602.
-  \url{https://link.aps.org/doi/10.1103/PhysRevLett.133.230602} &
-  No & Stage 7 \\
-Jin, Liu, Yu, extended technical details, Phys.\ Rev.\ A 108, 032603 (2023)
-  = arXiv:2212.14703 (same paper, not two).
-  \url{https://journals.aps.org/pra/abstract/10.1103/PhysRevA.108.032603} &
-  Abstract only & Stages 7--8 \\
-Hamiltonian simulation for nonlinear PDEs by Schr\"odingerization (arXiv:2508.01640;
-  the PMC page appears to be its published version).
-  \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC13061980/} &
-  Summary only & Related work: Carleman route, no resource counts \\
-Schr\"odingerization-based quantum algorithms for regularized Wasserstein proximal
-  operators, arXiv:2606.28752. \url{https://arxiv.org/html/2606.28752} &
-  \textbf{No (page could not be fetched)} & Closest prior work; read first \\
-L.~C.~Evans, \emph{Partial Differential Equations} (Hopf--Cole transform;
-  Hamilton--Jacobi theory). & No & Stage 4 \\
-Qubitization / QSVT Hamiltonian-simulation papers (Low--Chuang; Gily\'en et al.). &
-  No & Stage 8 \\
-Brassard, H\o yer, Mosca, Tapp, amplitude estimation. & No (standard result,
-  cited from memory) & Stage 9 \\
+Almgren--Chriss (2000) \cite{almgrenchriss2000} & Relevant primary PDF passages &
+Eqs.~8, 15, 29--32; App.~A.3 gives discrete modes, pp.~38--39.
+The continuum rate is their $\tau\to0$ limit. The p.~39 spread warning
+supports the sales-only check.
+\url{https://www.smallake.kr/wp-content/uploads/2016/03/optliq.pdf} \\
+Bergault--Drissi--Gu\'eant (2022) \cite{bergault2022} & Eqs.~16--21; App.~A
+visually checked & $R=0$, $\eta=H$, $\Sigma=C$, $\gamma=2\lambda$,
+$\Gamma=\Phi/2$, $P=-2A$ give the project's equations. Cor.~1 had been
+mis-transcribed; fixed. Their numerical section uses market data, not the
+specific synthetic parameters selected here.
+\url{https://arxiv.org/abs/2103.13773} \\
+Jin--Liu--Yu (2023, 2024) \cite{jin2023,jin2024} & Metadata; 2023 Sec.~3.1 &
+Two distinct papers: PRA technical details is arXiv:2212.14703; PRL short
+paper is arXiv:2212.13969. Eqs.~3.2--3.4 support Stage~7's generator and
+$e^{-|p|}$ initial extension. They do not source the chosen financial
+parameters or show that changing units removes simulation cost.
+\url{https://arxiv.org/abs/2212.14703} \\
+Kappen (2005) \cite{kappen2005} & Primary article &
+Supports the noise/control compatibility behind exponential linearization;
+the present quadratic specialization is derived in Stage~4.
+\url{https://arxiv.org/abs/physics/0411119} \\
+Drissi (2023) \cite{drissi2023} & Metadata and topic &
+Real, relevant DRE paper; this audit does not certify every hypothesis of
+its theorem for future extensions.
+\url{https://arxiv.org/abs/2202.07478} \\
+Gu\'eant (2016) \cite{gueant2016} & Publisher contents &
+Portfolio liquidation appears under Extensions of the Almgren--Chriss
+Framework; the former ``Chapter 3 proves this bound'' attribution is
+unsupported. The Stage~3 bound is proved here. \\
+Fleming--Soner; Cartea et al.; Abou-Kandil et al.; Schied et al. & Detailed
+passages not verified & Background references only; specific chapter and
+theorem claims need checking before publication. \\
+Low--Chuang; Gily\'en et al.; Brassard et al.
+\cite{lowchuang2019,gilyen2019,brassard2002} & Primary arXiv metadata/abstracts &
+Relevant algorithmic references, not a circuit/resource validation.
+\url{https://arxiv.org/abs/1610.06546};
+\url{https://arxiv.org/abs/1806.01838};
+\url{https://arxiv.org/abs/quant-ph/0005055}. \\
+Jin--Liu--Yu, regularized Wasserstein proximal operators & Abstract; HTML available &
+Explicitly combines viscous Hamilton--Jacobi, Cole--Hopf and
+Schr\"odingerisation; detailed novelty comparison remains pending.
+\url{https://arxiv.org/abs/2606.28752} \\
+Sasaki--Endo--Muramatsu, nonlinear PDE simulation & Metadata/abstract &
+Carleman plus Schr\"odingerisation; detailed comparison remains pending.
+\url{https://arxiv.org/abs/2508.01640} \\
 \bottomrule
 \end{longtable}
 
+\textbf{Publication gates.} Reproduce the audit with
+\texttt{python3 verify\_research.py}; retain the analytic all-time feasibility
+proof; specify a finite $\Phi$ or normalized hard-limit kernel before the heat
+solver; validate the discretized gradient before any resource estimate.
+No full-paper novelty review or Stage~6--9 implementation is claimed.
 
-% =====================================================================
+
 \section{Assumptions register}\label{sec:assumptions}
 % =====================================================================
 

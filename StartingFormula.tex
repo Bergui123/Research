@@ -80,16 +80,18 @@
     do not depend on the schedule have the fixed value
     $K(\mathbf X)=\sum_j(\tfrac12\gamma_jX_j^2+\varepsilon_jX_j)$. Let
     $\tau\to dt$, set $n_{jk}=\tau v_j$, and write
-    $H=\mathrm{diag}(\tilde\eta_1,\dots,\tilde\eta_M)$:
+    $H=\operatorname{diag}(\eta_1,\dots,\eta_M)
+    =\lim_{\tau\to0}\operatorname{diag}(\tilde\eta_1,\dots,\tilde\eta_M)$:
 
     \begin{equation}
-    J_{\mathrm{full}}[\mathbf{v}]=K(\mathbf X)+J[\mathbf v],
-    \qquad
+    \begin{gathered}
+    J_{\mathrm{full}}[\mathbf{v}]=K(\mathbf X)+J[\mathbf v],\\
     J[\mathbf{v}]
     = \int_0^T \Big( \mathbf{v}(t)^\top H\,\mathbf{v}(t)
         + \lambda\,\mathbf{x}(t)^\top C\,\mathbf{x}(t) \Big)\,dt,
-    \qquad \dot{\mathbf{x}}(t) = -\mathbf{v}(t),
+    \\\dot{\mathbf{x}}(t) = -\mathbf{v}(t),
     \quad \mathbf{x}(0)=\mathbf{X},\quad \mathbf{x}(T)=\mathbf{0}
+    \end{gathered}
     \end{equation}
 
     \textbf{When used.} $J_{\mathrm{full}}$ is the total cost; $J$ is its
@@ -111,7 +113,7 @@
     $J[\mathbf{v}]$ & Schedule-dependent integral minimized by the HJB control \\
     $\mathbf{v}(t)$ & Selling rate (shares per unit time) in each asset; this is the control \\
     $\mathbf{x}(t)$ & Inventory vector (the state) at time $t$ \\
-    $H$ & Diagonal matrix of temporary-impact coefficients $\tilde\eta_j$ \\
+    $H$ & Continuum impact matrix $\operatorname{diag}(\eta_j)$ \\
     $\mathbf{v}^\top H\,\mathbf{v}$ & Running slippage cost; large when selling fast \\
     $\lambda\,\mathbf{x}^\top C\,\mathbf{x}$ & Running risk cost; large when holding a big or concentrated position \\
     $\dot{\mathbf{x}}=-\mathbf{v}$ & Selling reduces inventory \\

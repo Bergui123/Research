@@ -1,225 +1,170 @@
 \documentclass[11pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath}
-\usepackage{amssymb} % Added to fix the \succeq error in Overleaf
-\usepackage{geometry}
-\usepackage{booktabs}
-\usepackage{array}
-\usepackage{hyperref}
+\usepackage{amsmath,amssymb,geometry,booktabs,xcolor,hyperref}
 \geometry{margin=2.3cm}
-\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
-\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
-
-\title{\textbf{Summary} \\ \large Where the Project Stands}
-\author{Short version --- see WorkPlan.tex for derivations}
-\date{}
-
+\title{Stage 3: Verified Synthetic Benchmark}
+\author{Detailed version also maintained in WorkPlan.tex}
+\date{Audit: 24 October 2026}
 \begin{document}
 \maketitle
+\section{Stage 3 --- Verified concrete instance}
+\label{sec:stage3}
 
-\section*{Step 1 --- Discrete objective}
+\subsection*{What this stage needs}
 
-\begin{equation}
-U[\mathbf x]=\sum_{j=1}^{M}\Big[\tfrac12\gamma_jX_j^2+\varepsilon_j\sum_{k=1}^N|n_{jk}|
-+\frac{\tilde\eta_j}{\tau}\sum_{k=1}^N n_{jk}^2\Big]+\lambda\sum_{k=1}^N\tau\,\mathbf
-x_k^\top C\mathbf x_k
-\end{equation}
+The hard-liquidation trajectory from Stage~2 with constant coefficients,
+$H\succ0$, $C\succeq0$ and $\lambda\ge0$.
 
-How we got here: taken directly from Almgren--Chriss (2000)~\cite{almgrenchriss2000} --- Eq.~15
-($U=E+\lambda V$) applied to their Eqs.~29--30 (expected cost, variance),
-restricted to diagonal impact matrices (their Eq.~32).
-
-\section*{Step 2 --- Continuum total cost and running-cost integral}
-
-\begin{equation}
-J_{\mathrm{full}}[\mathbf v]=\sum_{j=1}^{M}\left(\tfrac12\gamma_jX_j^2+\varepsilon_jX_j\right)
-+\int_0^T\big(\mathbf v(t)^\top H\mathbf v(t)+\lambda\,\mathbf
-x(t)^\top C\mathbf x(t)\big)\,dt,\qquad \dot{\mathbf x}=-\mathbf v,\qquad
-\mathbf x(0)=\mathbf X,\ \mathbf x(T)=\mathbf 0
-\end{equation}
-
-How we got here: retain the permanent-impact and sales-only spread constants
-from Step~1; the integral is the schedule-dependent part used for optimisation.
-The spread offset is constant only for sales-only trading with exact liquidation
-($\mathbf{x}(T)=\mathbf{0}$); a finite terminal penalty that permits residual
-inventory does not make it constant. The HJB below is for the schedule-dependent
-integral, so these offsets are not added to its PDE or Riccati equation. For the
-hard-liquidation problem, add the displayed offset to the optimized integral to
-recover the full objective.
-Write
-$n_{jk}=\tau v_j(t_k)$, and take $\tau\to0$: the Riemann sum
-$\sum_k\tau f(t_k)$ becomes the integral $\int_0^Tf(t)\,dt$. This is the
-multi-asset continuum limit of Bergault--Drissi--Gu\'eant (2022)
-\cite{bergault2022}; the single-asset case matches Almgren--Chriss (2000)
-\cite{almgrenchriss2000}.
-
-\section*{Step 3 --- HJB equation and matrix Riccati ODE}
-
-\begin{equation}
-\partial_t\mathcal V-\tfrac14(\nabla_{\mathbf x}\mathcal V)^\top H^{-1}
-(\nabla_{\mathbf x}\mathcal V)+\lambda\,\mathbf x^\top C\mathbf x=0,
-\qquad
-\dot P=\tfrac12PH^{-1}P-2\lambda C,\qquad P(T)=\Phi,
-\qquad \dot c=0,\quad c(T)=0 \;\Rightarrow\; c\equiv0
-\end{equation}
-(ansatz $\mathcal V=\tfrac12\mathbf x^\top P(t)\mathbf x+c(t)$; status: matches Stage~2 derivation, constant term added this session, not yet independently re-checked.)
-
-How we got here: define the cost-to-go
-$\mathcal V(\mathbf x,t)=\min_{\mathbf v}\int_t^T(\cdots)\,ds$ on Step~2's
-integral, apply Bellman's dynamic programming principle (split the horizon
-into $[t,t+dt]+[t+dt,T]$, expand to first order) to get the HJB PDE, then
-substitute the quadratic ansatz $\mathcal V=\tfrac12\mathbf x^\top
-P(t)\mathbf x$ to collapse it to the Riccati ODE. Under exact liquidation,
-the full optimal initial cost is the fixed offset in Step~2 plus
-$\mathcal V(\mathbf X,0)$. Verified by hand against
-Bergault--Drissi--Gu\'eant (2022)~\cite{bergault2022}, Eqs.~13--14 and~20--21.
-
-\textbf{Reading the status column.} Three different kinds of claim get
-mixed together if not kept separate, so each row is tagged with which one
-applies:
-\begin{itemize}
-  \item \emph{Numerically validated} --- an actual number was computed
-        (by hand or by script) and compared against another number. This is
-        the only kind of ``done'' that means the formula was tested, not
-        just read.
-  \item \emph{Literature-matched} --- the AI assistant re-derived the
-        algebra this session and confirmed it agrees symbol-for-symbol with
-        a cited published paper. This means the formula is traceable to a
-        real source, \emph{not} that it has been independently tested by a
-        human or against your own numbers.
-  \item \emph{Derived, unchecked} --- written down (by this project or the
-        AI) but never compared against anything.
-\end{itemize}
+\subsection*{Parameter choice and scope}
 
 \begin{center}
-\begin{tabular}{@{}L{3.0cm}L{3.0cm}L{9.0cm}@{}}
+\begin{tabular}{@{}ll@{}}
 \toprule
-\textbf{Stage} & \textbf{Status} & \textbf{Note} \\
+Parameter & Chosen value \\
 \midrule
-1. Discrete objective & Sourced; doc repairs open & Formula taken directly from Almgren--Chriss (2000)~\cite{almgrenchriss2000}. \textbf{Not fully done}: Eq.~20, Eqs.~26--27, Eq.~32 ($H$ vs.\ $\tilde H$), and the unfinished Drift sentence are still open repairs in the reference document (see WorkPlan Stage~1). \\
-2. HJB, Riccati, trajectory ($\Phi\to\infty$) & Literature-matched + partly numerically validated & HJB/Riccati/trajectory algebra matches Bergault--Drissi--Gu\'eant (2022)~\cite{bergault2022} and Almgren--Chriss (2000) App.~A.2~\cite{almgrenchriss2000} (AI-checked this session). Separately, \emph{numerically} validated only for: one asset (exact), one asset vs.\ discrete cost at $N=4$ ($\sim\!3\times10^{-4}$ agreement), and two assets for \textbf{one} parameter set. Not a general proof. \\
-2 (finite $\Phi$) & Literature-matched only & Closed form in Bergault et al.\ \cite{bergault2022} App.~A, Cor.~1. AI-checked against the paper; \textbf{not yet numerically tested} against anything in this project. \\
-2b. Time-dependent $\lambda(t),H(t),C(t)$ & Literature-matched (Riccati form only) & Drissi (2023)~\cite{drissi2023} confirmed real and on-topic (AI-checked). Closed form exists only in the special volume-time-clock case~\cite{gueant2016} (derived here, standard calculus, \textbf{not numerically checked}). General case: no closed form, not implemented. \\
-3. Concrete instance & Validated \& Justified & See detailed section below. Analytically verified to prevent sales-only assumption violations. \\
-4. Cole--Hopf linearisation & Derived, unchecked & This project's own instantiation of a standard technique (Fleming--Soner~\cite{flemingsoner2006}, Kappen~\cite{kappen2005}); \textbf{no numerical check has been run}. \\
-5. Oscillator spectrum / choose $\nu$ & Derived, unchecked & Own work; the $\nu$-sweep table (exit criterion) has not been produced. \\
-6. Discretisation & Not started & \\
-7. Schr\"odingerisation & Not started & Jin--Liu--Yu papers~\cite{jin2024,jin2023} not yet read; current notes are reconstructed from memory, explicitly marked unreliable in WorkPlan. \\
-8. Resource count ($N_q,N_T$) & Not started & \\
-9. Readout cost & Not started & \\
-10. Sweeps \& write-up & Not started & \\
+$M,\ T,\ \lambda$ & $2,\ 1,\ 1$ \\
+$\eta_1,\eta_2$ & $1,1$, so $H=I_2$ \\
+$\sigma_1,\sigma_2,\rho$ & $1,1,0.4$ \\
+$C$ & $\left(\begin{smallmatrix}1&0.4\\0.4&1\end{smallmatrix}\right)$ \\
+$\mathbf X$ & $(3,1)^\top$ \\
+Terminal condition & Exact liquidation, $\mathbf x(1)=0$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\section*{Stage 3: Justification for Concrete Parameter Instance}
+These are this project's synthetic, dimensionless benchmark choices, not
+calibrated market parameters or values prescribed by Jin--Liu--Yu or Bergault
+et al. Both eigenmodes are excited and $C$ is not diagonal in asset
+coordinates. However, $H=I$ commutes with $C$; this benchmark alone cannot
+test arbitrary noncommuting matrix implementations. Stage~2's separate
+finite-penalty test covers one such case.
 
-To evaluate the Cole--Hopf linearisation and the subsequent quantum Schr\"odingerisation (Stages 4--9), we must select a concrete numeric instance. The parameters below are deliberately chosen to form a mathematically rigorous synthetic benchmark, avoiding the numerical scaling issues of empirical market data while testing the full cross-asset complexity of the Riccati equations.
+Changing units does not by itself reduce the intrinsic simulation difficulty.
+If $\mathbf x=L\mathbf z$, $t=t_0u$, and costs are divided by $J_0>0$, then
+\[
+ \bar H=\frac{L^\top HL}{J_0t_0},\qquad
+ \bar Q=\frac{t_0\lambda L^\top CL}{J_0},\qquad
+ J/J_0=\int(\mathbf z'{}^\top\bar H\mathbf z'
+               +\mathbf z^\top\bar Q\mathbf z)\,du.
+\]
+The dimensionless products $\kappa_iT$ are unchanged by a consistent
+rescaling. No conversion of empirical data to this instance has been made.
 
-\subsection*{1. Dimensionless Variables for Quantum Simulation}
+\subsection*{Derivation and sales-only proof}
 
-\textbf{The Values:} Set the baseline market parameters to $\mathcal{O}(1)$ normalized values: temporary impact $\eta = (1, 1)^\top$, volatility $\sigma = (1, 1)^\top$, risk aversion $\lambda = 1$, and liquidation horizon $T = 1$.
-
-\vspace{0.5em}
-\noindent\textbf{The Source:} Jin, Liu, and Yu (2024)~\cite{jin2024} and (2023)~\cite{jin2023}.
-
-\vspace{0.5em}
-\noindent\textbf{The Reason:} The chosen parameters prepare the PDE for a quantum algorithm solver. In empirical financial markets, variables span vastly different orders of magnitude (e.g., market impact $\sim 10^{-6}$ vs.\ share volume $\sim 10^5$). In quantum simulation algorithms, the coefficients of the PDE directly dictate the norm of the resulting Hamiltonian. Using raw financial data causes the Hamiltonian norm to explode, leading to impossibly large quantum resource requirements ($N_q, N_T$) in Stage 8. By non-dimensionalising the coefficients to $\mathcal{O}(1)$, as is standard in quantum PDE benchmarking~\cite{jin2023, jin2024}, we isolate the fundamental scaling complexity of the algorithm from arbitrary financial units.
-
-\subsection*{2. Forcing Cross-Asset Interference}
-
-\textbf{The Values:} Set the cross-asset correlation to a moderate value of $\rho = 0.4$ and use an asymmetric initial inventory vector of $X = (3, 1)^\top$.
-
-\vspace{0.5em}
-\noindent\textbf{The Source:} Bergault, Drissi, and Gu\'eant (2022)~\cite{bergault2022} (Methodology applied in their \textit{Numerical Experiments} section).
-
-\vspace{0.5em}
-\noindent\textbf{The Reason:} To rigorously validate the Cole--Hopf linearisation, we must prove it successfully handles a \emph{coupled} multi-asset system. If we set $\rho = 0$, the covariance matrix $C$ is diagonal, and the Riccati ODE trivially decouples into two independent single-asset Almgren--Chriss problems. Furthermore, a perfectly symmetric initial inventory ($X_1 = X_2$) can artificially mask off-diagonal errors in numerical schemes. Following the synthetic benchmark approach of Bergault et al.~\cite{bergault2022}, we enforce an asymmetric portfolio and off-diagonal correlation to guarantee the off-diagonal terms of the matrix Riccati equation interact and propagate correctly.
-
-\subsection*{3. The Sales-Only Constraint Boundary}
-
-\textbf{The Claims \& Formulas:} The chosen parameter combination ($\rho = 0.4$, $\theta = X_1/X_2 = 3$) mathematically guarantees a strictly non-negative selling trajectory ($v_j(t) \ge 0$), satisfying the base model's sales-only assumption.
-
-\vspace{0.5em}
-\noindent\textbf{The Source:} Almgren and Chriss (2000)~\cite{almgrenchriss2000} (App.~A.2 for decoupled trajectories) and Gu\'eant (2016)~\cite{gueant2016} (Chapter 3 for cross-asset hedging effects).
-
-\vspace{0.5em}
-\noindent\textbf{The Reason:} The objective function (Stage 1) assumes sales-only execution and lacks a penalty term for buying back shares. As noted by Gu\'eant~\cite{gueant2016}, high correlation combined with extreme asymmetry can cause the optimal mathematical solution to aggressively short or buy the smaller asset to dynamically hedge the larger position's risk, thereby violating the $v(t) \ge 0$ constraint. 
-
-To prove our synthetic case is valid, we derive the constraint boundary from the continuous-time decoupled trajectories. The maximum hedging pressure occurs at $t=T$. Enforcing $v_2(T) \ge 0$ yields a strict upper bound on the initial inventory asymmetry $\theta = X_1 / X_2 > 1$:
+The orthonormal covariance eigenvectors are
+$u_+=(1,1)^\top/\sqrt2$ and $u_-=(1,-1)^\top/\sqrt2$ with
+\[
+ \mu_+=1.4,\quad\mu_-=0.6,\qquad
+ \kappa_+=\sqrt{1.4}=1.1832159566,\quad
+ \kappa_-=\sqrt{0.6}=0.7745966692.
+\]
+Thus $C\succ0$, $\eta_j>0$, and both rates are real. Set $s=1-t$ and
+\[
+ f_\pm(s)=\frac{\sinh(\kappa_\pm s)}{\sinh\kappa_\pm},\qquad
+ a_\pm(s)=\frac{\kappa_\pm\cosh(\kappa_\pm s)}{\sinh\kappa_\pm}.
+\]
+The trajectory and selling rates are
 \begin{equation}
-    \frac{\theta + 1}{\theta - 1} \ge \frac{\kappa_2 \sinh(\kappa_1 T)}{\kappa_1 \sinh(\kappa_2 T)}
+ x_1=2f_++f_-,\quad x_2=2f_+-f_-,\qquad
+ v_1=2a_++a_-,\quad v_2=2a_+-a_-.
+ \label{eq:stage3-rates}
 \end{equation}
-where $\kappa_i = \sqrt{\lambda \mu_i}$ are the decay rates corresponding to the eigenvalues $\mu_i$ of $H^{-1/2}CH^{-1/2}$. 
+They give $\mathbf x(0)=(3,1)^\top$ and $\mathbf x(1)=0$.
 
-For our parameters ($\rho = 0.4$, $T=1$, $\lambda=1$), the right-hand side evaluates to approximately $1.096$, restricting the asymmetry ratio to $\theta \le 21.8$. By deliberately choosing $X = (3, 1)^\top$ ($\theta = 3$), we safely satisfy this boundary, avoiding the fatal ``buy-to-hedge'' failure mode and providing a mathematically sound instance for discretisation.
+For the equal-impact, equal-volatility family with $0<\rho<1$ and
+$X_1=\theta X_2$, $\theta>1$, $X_2>0$, the potentially negative rate is
+\[
+ v_2=\frac{X_2}{2}\big((\theta+1)a_+-(\theta-1)a_-\big).
+\]
+The relative rate $R(s)=a_-(s)/a_+(s)$ satisfies
+\[
+ \frac{d}{ds}\log R(s)
+ =\kappa_-\tanh(\kappa_-s)-\kappa_+\tanh(\kappa_+s)\le0,
+\]
+because $k\mapsto k\tanh(ks)$ increases for $k>0$, $s\ge0$.
+Hence $R(s)\le R(0)$: checking the terminal-time ratio is sufficient and
+necessary for this particular family, rather than an assumption about all
+multi-asset problems. Specifically,
+\begin{equation}
+ \frac{\theta+1}{\theta-1}\ge
+ R(0)=\frac{\kappa_-\sinh\kappa_+}{\kappa_+\sinh\kappa_-}
+ =1.133429601920,
+ \qquad
+ \theta\le\frac{R(0)+1}{R(0)-1}=15.989177597983.
+ \label{eq:stage3-bound}
+\end{equation}
+The earlier values $1.096$ and $21.8$ in \texttt{Stage3.tex} were numerical
+errors. The choice $\theta=3$ still passes. More explicitly, since
+$a_+(s)\ge a_+(0)$ and $2-R(s)\ge2-R(0)>0$,
+\[
+ v_2(t)\ge a_+(0)(2-R(0))=0.6931333103,
+ \qquad v_1(t)\ge2a_+(0)+a_-(0)=2.5062988967.
+\]
+Both minima occur at $t=1$; these are one-sided terminal limits of the rates.
+Thus both inventories stay nonnegative and decrease to zero for the entire
+interval. A time-grid check alone would not establish this all-time claim.
 
-\section*{Next step}
+\subsection*{Independent numerical checks}
 
-With \textbf{Stage 3} now resolved and analytically justified for $C\succeq0$, $\eta_j>0$, real $\kappa_i$, and $v_j(t)\ge0$, the block is cleared. We can now safely feed this synthetic parameter instance into the Cole--Hopf linearisation scripts and discretisation phases.
-
-Two things should happen alongside it, not instead of it:
-\begin{itemize}
-  \item Close the Stage~1 reference-document repairs (Eq.~20, Eqs.~26--27,
-        Eq.~32, the Drift sentence) in Almgren--Chriss~\cite{almgrenchriss2000}
-        --- small, independent of Stage~3.
-  \item Before trusting any Stage~7--9 number later, read the Jin--Liu--Yu
-        Schr\"odingerisation papers~\cite{jin2024,jin2023}; everything there is
-        currently reconstructed from memory, not sourced.
-\end{itemize}
-
-\section*{Parameter glossary (Stage 3)}
-
+The reproducible script \texttt{verify\_research.py} gives
+\[
+ \mathbf v(0)=(4.0488436487,1.6639810858)^\top,\qquad
+ J^*=\tfrac12\mathbf X^\top P(0)\mathbf X=13.810512031917.
+\]
+Direct quadrature of the running cost agrees within $2\times10^{-15}$.
+For a separate check set permanent impact and spread to zero, and minimize
+$\sum_{k=1}^N\|\mathbf x_{k-1}-\mathbf x_k\|^2/\tau
++\tau\sum_{k=1}^N\mathbf x_k^\top C\mathbf x_k$ by solving its block
+tridiagonal stationarity system. Its Hessian is positive definite, so this
+is the unique global discrete minimizer.
 \begin{center}
-\begin{tabular}{@{}L{2cm}L{11cm}@{}}
+\begin{tabular}{@{}rrr@{}}
 \toprule
-\textbf{Symbol} & \textbf{Meaning} \\
+$N$ & Maximum inventory error vs. continuum & Discrete optimal cost \\
 \midrule
-$\eta_j$ & Temporary market impact of asset $j$; cost of trading fast. Larger $\eta_j$ penalises quick selling more. \\
-$\sigma_j$ & Volatility of asset $j$'s price, per unit time. \\
-$\rho$ & Correlation between the two assets' returns; builds the covariance matrix $C=\big(\begin{smallmatrix}\sigma_1^2&\rho\sigma_1\sigma_2\\\rho\sigma_1\sigma_2&\sigma_2^2\end{smallmatrix}\big)$. \\
-$\lambda$ & Risk aversion. Larger $\lambda$ makes holding inventory costlier, pushes faster liquidation. \\
-$T$ & Horizon: time allowed to fully liquidate. \\
-$X$ & Starting inventory vector (shares held per asset) at $t=0$. \\
-$\kappa_i=\sqrt{\lambda\mu_i}$ & Decay rate of each decoupled trading mode (after diagonalising $H^{-1/2}CH^{-1/2}$~\cite{almgrenchriss2000,bergault2022}); sets how fast that mode liquidates. $\mu_i$ are the eigenvalues of $H^{-1/2}CH^{-1/2}$. \\
-$v_j(t)=-\dot x_j(t)$ & Selling rate of asset $j$ at time $t$. Must stay $\ge0$ everywhere, or the sales-only assumption breaks (the model has no cost term for buying back). \\
+16 & $6.945\times10^{-5}$ & 13.432845715492 \\
+64 & $4.361\times10^{-6}$ & 13.714251771181 \\
+256 & $2.726\times10^{-7}$ & 13.786331703645 \\
+1024 & $1.704\times10^{-8}$ & 13.804459745777 \\
 \bottomrule
 \end{tabular}
 \end{center}
+The trajectory error decreases quadratically; the cost has first-order
+right-endpoint quadrature error. These are different error measures.
+The permanent-impact/spread offsets are not part of these reported costs.
 
-\begin{thebibliography}{99}
+\subsection*{Sources and caveats}
 
-\bibitem{almgrenchriss2000} R.~Almgren and N.~Chriss, ``Optimal Execution of
-Portfolio Transactions,'' \emph{J. Risk} \textbf{3}(2), 5--39 (2000).
+Almgren--Chriss \cite{almgrenchriss2000}, App.~A.3, pp.~38--39, supplies the
+discrete eigenmode construction; the displayed continuum modes are its
+$\tau\to0$ limit. The warning about nonmonotone trading and changing spread
+cost is explicitly on p.~39. Bergault--Drissi--Gu\'eant
+\cite{bergault2022}, App.~A, supplies the $R=0$ matrix Riccati benchmark.
+The parameter selection and the sales-only inequality are derived here.
+Gu\'eant's book is background; no verified chapter-specific theorem is
+being claimed for this numerical bound.
 
-\bibitem{bergault2022} P.~Bergault, F.~Drissi, and O.~Gu\'eant, ``Multi-asset
-Optimal Execution and Statistical Arbitrage Strategies under
-Ornstein--Uhlenbeck Dynamics,'' \emph{SIAM J. Financial Math.} \textbf{13}(1),
-353--390 (2022); arXiv:2103.13773.
+This proof uses exact liquidation and the stated symmetric two-asset
+family. A finite terminal penalty needs a separate feasibility check.
+Sales-only feasibility at $\mathbf X$ does not certify a globally
+sales-constrained HJB on the grid. Discretisation accuracy, a chosen finite
+$\Phi$, $\nu$, and quantum resource estimates remain open.
 
-\bibitem{drissi2023} F.~Drissi, ``Solvability of Differential Riccati
-Equations and Applications to Algorithmic Trading with Signals,''
-\emph{Appl. Math. Finance} \textbf{29}(6), 457--493 (2023), arXiv:2202.07478.
+\subsection*{Exit criterion}
 
-\bibitem{gueant2016} O.~Gu\'eant, \emph{The Financial Mathematics of Market
-Liquidity: From Optimal Execution to Market Making}, Chapman and Hall/CRC
-(2016).
+\textbf{Met for this synthetic hard-liquidation instance:} $C\succ0$,
+$H\succ0$, real $\kappa_\pm$, and $v_j(t)>0$ throughout $[0,1]$, with an
+analytic proof and reproducible numerical cross-checks.
 
-\bibitem{flemingsoner2006} W.~H.~Fleming and H.~M.~Soner, \emph{Controlled
-Markov Processes and Viscosity Solutions}, 2nd ed., Springer (2006).
 
-\bibitem{kappen2005} H.~J.~Kappen, ``Linear theory for control of nonlinear
-stochastic systems,'' \emph{Phys. Rev. Lett.} \textbf{95}, 200201 (2005).
-
-\bibitem{jin2024} S.~Jin, N.~Liu, and Y.~Yu, ``Quantum simulation of partial
-differential equations via Schr\"odingerization,'' \emph{Phys. Rev. Lett.}
-\textbf{133}, 230602 (2024).
-
-\bibitem{jin2023} S.~Jin, N.~Liu, and Y.~Yu, ``Quantum simulation of partial
-differential equations via Schr\"odingerisation: technical details,''
-\emph{Phys. Rev. A} \textbf{108}, 032603 (2023), arXiv:2212.14703.
-
+\begin{thebibliography}{9}
+\bibitem{almgrenchriss2000} R.~Almgren and N.~Chriss,
+\emph{Optimal Execution of Portfolio Transactions}, J.~Risk 3(2), 5--39
+(2000), App.~A.3, pp.~38--39.
+\bibitem{bergault2022} P.~Bergault, F.~Drissi and O.~Gu\'eant,
+\emph{Multi-asset Optimal Execution and Statistical Arbitrage Strategies
+under Ornstein--Uhlenbeck Dynamics} (2022), App.~A.
+\url{https://arxiv.org/abs/2103.13773}.
 \end{thebibliography}
-
 \end{document}
