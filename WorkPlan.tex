@@ -157,11 +157,12 @@ No sweep, PDE convergence study, circuit, or numerical resource count. \\
 \bottomrule
 \end{longtable}
 
-The detailed stages are written directly in \texttt{WorkPlan.tex}; no
-\texttt{stages/} directory exists in this checkout. \texttt{Summary.tex}
-is the short version; \texttt{Stage3.tex} is a standalone copy of the
-verified benchmark. \texttt{verify\_research.py} reproduces this audit's
-symbolic and numerical checks.
+The detailed stages are written directly in \texttt{WorkPlan.tex}.
+\texttt{Summary.tex} is the short version; \texttt{stage3/Stage3.tex} is a
+standalone copy of the verified benchmark, and \texttt{stage1/}, \texttt{stage2/}
+hold the other standalone source documents for those stages.
+\texttt{verify\_research.py} reproduces this audit's symbolic and numerical
+checks.
 
 
 \section{Notation and background concepts}\label{sec:notation}
@@ -681,7 +682,7 @@ closed form~\eqref{eq:traj-finite-phi} above --- confirmed by inspecting Appendi
 \subsection*{Checks performed in the 24 October 2026 audit}
 
 Run \texttt{python3 verify\_research.py} with NumPy, SciPy and SymPy installed.
-The script checks the two-asset HJB through \texttt{BellmanPrinciple.py},
+The script checks the two-asset HJB through \texttt{stage2/BellmanPrinciple.py},
 verifies the Riccati polynomial residual symbolically, compares the Stage~3
 trajectory with a separately assembled discrete quadratic minimization, checks the corrected finite-penalty formula against numerical ODE integration,
 and verifies the two-asset Cole--Hopf PDE and recovered gradient symbolically.
@@ -883,7 +884,7 @@ multi-asset problems. Specifically,
  \theta\le\frac{R(0)+1}{R(0)-1}=15.989177597983.
  \label{eq:stage3-bound}
 \end{equation}
-The earlier values $1.096$ and $21.8$ in \texttt{Stage3.tex} were numerical
+The earlier values $1.096$ and $21.8$ in \texttt{stage3/Stage3.tex} were numerical
 errors. The choice $\theta=3$ still passes. More explicitly, since
 $a_+(s)\ge a_+(0)$ and $2-R(s)\ge2-R(0)>0$,
 \[
