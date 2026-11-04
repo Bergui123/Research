@@ -8,9 +8,274 @@
 \date{}
 \begin{document}
 \maketitle
-% Build from this directory; the derivation is shared with ../WorkPlan.tex.
+% Self-contained for Overleaf: this is a copy of derivation.tex, which
+% WorkPlan.tex also \input's. Re-merge the two if derivation.tex changes.
 \setcounter{section}{1}
-\input{derivation.tex}
+\section{Step 2: specialize the 2022 paper's Eq.~16}
+\label{sec:stage2}
+
+\subsection*{Main equation and what this stage establishes}
+
+The unknown $\mathcal V(\mathbf x,t)$ is the minimum remaining execution
+cost for inventory $\mathbf x$ at time $t$. This stage derives
+\[
+ \boxed{\mathcal V_t-\tfrac14(\nabla\mathcal V)^\top H^{-1}\nabla\mathcal V
+ +\lambda\mathbf x^\top C\mathbf x=0,\qquad
+ \mathbf v^*=\tfrac12H^{-1}\nabla\mathcal V.}
+\]
+The first term measures how the cost changes with time, the second is
+the optimized trading cost, and the last penalizes inventory risk.
+We first reduce the source equation, then derive the same HJB from the
+cost functional to check the signs and numerical factors independently.
+
+\subsection*{Assumptions used in the derivation}
+
+\begin{enumerate}
+\item Inventory evolves continuously as $\dot{\mathbf x}=-\mathbf v$ on
+a finite horizon $T>0$. Controls are square-integrable signed rates in
+$\mathbb R^M$; purchases are allowed in this reference problem.
+No nonnegativity constraint, spread or participation cap is imposed.
+\item The impact matrix $H=\operatorname{diag}(\eta_j)$ is constant and
+$\eta_j>0$. Thus $\mathbf v^\top H\mathbf v$ is strictly convex and
+$H^{-1}$ exists. The constant symmetric covariance satisfies $C\succeq0$,
+and $\lambda\ge0$.
+\item In the source model, $R=0$ removes mean reversion and leaves
+driftless Brownian prices. The terminal cost depends only on inventory.
+These conditions give a price-independent reduced value, not a claim
+that the prices have no uncertainty.
+\item The finite-penalty problem uses
+$G(\mathbf x)=\tfrac12\mathbf x^\top\Phi\mathbf x$, with finite
+$\Phi=\Phi^\top\succeq0$. The exact-liquidation problem instead restricts
+admissible paths to $\mathbf x(T)=0$. We identify explicitly which
+boundary condition is used in each formula.
+\item The displayed HJB calculation uses a differentiable value function.
+The quadratic solution below supplies that regularity for finite $\Phi$;
+for exact liquidation the formulas apply at $t<T$ and the terminal
+value is singular away from zero inventory.
+\end{enumerate}
+
+\subsection*{Source and reduction}
+
+Use Bergault, Drissi and Gu\'eant \cite{bergault2022}, Eq.~16 with terminal
+condition Eq.~17, Remark~2 and Appendix~A. Equation numbers refer to
+arXiv:2103.13773v4, 22 March 2022, p.~7.
+
+In the paper's notation, Eq.~16 is
+\begin{equation}
+\begin{aligned}
+0={}&\partial_t\theta
+ +\tfrac14(\nabla_q\theta)^\top\eta^{-1}\nabla_q\theta
+ +\tfrac12\operatorname{tr}(\Sigma D^2_{SS}\theta)\\
+ &-\tfrac\gamma2(q+\nabla_S\theta)^\top\Sigma(q+\nabla_S\theta)
+ +(\bar S-S)^\top R^\top(\nabla_S\theta+q).
+\end{aligned}
+\label{eq:bdg16}
+\end{equation}
+Set $R=0$. As stated in Remark~2 and Appendix~A of the paper, its quadratic
+solution then has no price dependence: $\theta(t,q,S)=q^\top A(t)q$.
+Thus $\nabla_S\theta=0$ and $D^2_{SS}\theta=0$, and Eq.~16 becomes
+\[
+0=\partial_t\theta+\tfrac14(\nabla_q\theta)^\top\eta^{-1}\nabla_q\theta
+       -\tfrac\gamma2q^\top\Sigma q.
+\]
+Translate to this project's cost-minimization convention using
+\[
+ q=\mathbf x,\qquad \theta=-\mathcal V,\qquad
+ \eta=H,\quad\Sigma=C,\quad\gamma=2\lambda,\quad\Gamma=\Phi/2.
+\]
+Multiplying the reduced equation by $-1$ gives Eq.~\eqref{eq:pde} below.
+The paper uses $\dot q=v_{\rm paper}$, whereas we use
+$\dot{\mathbf x}=-\mathbf v$. Hence
+$v_{\rm paper}^*=\eta^{-1}\nabla_q\theta/2=-\mathbf v^*$, which gives
+the feedback in Eq.~\eqref{eq:pde}. Its terminal condition
+$\theta(T,q,S)=-q^\top\Gamma q$ becomes
+$\mathcal V(\mathbf x,T)=\tfrac12\mathbf x^\top\Phi\mathbf x$.
+No discrete-to-continuum derivation is needed for this route.
+
+\subsection*{Classical reference solution}
+
+The corresponding reduced cost-to-go is
+\begin{equation}
+ \mathcal V_\Phi(\mathbf x,t)=\inf_{\mathbf v(\cdot)}
+ \left\{\int_t^T(\mathbf v^\top H\mathbf v+
+ \lambda\mathbf x^\top C\mathbf x)\,dr
+ +\tfrac12\mathbf x(T)^\top\Phi\mathbf x(T)\right\},
+ \qquad\dot{\mathbf x}=-\mathbf v.
+ \label{eq:cost}
+\end{equation}
+For deterministic schedules, Gaussian cost gives a certainty-equivalent risk
+term $\gamma\operatorname{Var}/2$, hence $\gamma=2\lambda$.
+More explicitly, for $d\mathbf S_r=C^{1/2}d\mathbf B_r$, the random
+inventory exposure of a deterministic schedule is
+$\int_t^T\mathbf x(r)^\top C^{1/2}d\mathbf B_r$. Its variance is
+\[
+ \operatorname{Var}\!\left[\int_t^T\mathbf x(r)^\top C^{1/2}d\mathbf B_r\right]
+ =\int_t^T\mathbf x(r)^\top C\mathbf x(r)\,dr.
+\]
+If a Gaussian execution cost $K$ has mean $m$ and variance $\sigma_K^2$,
+then $\gamma^{-1}\log\mathbb E[e^{\gamma K}]
+=m+\gamma\sigma_K^2/2$ for $\gamma>0$, with its continuous risk-neutral
+limit at $\gamma=0$. This explains the risk term for deterministic
+schedules. The reduction of the source HJB above provides the
+signed-control feedback without assuming that every adapted schedule
+produces a Gaussian cost.
+
+\subsection*{Derive the HJB from the Bellman principle}
+
+For a short interval of length $h$, choose a constant rate $\mathbf v$,
+then use the optimal continuation. With
+$L(\mathbf x,\mathbf v)=\mathbf v^\top H\mathbf v+
+\lambda\mathbf x^\top C\mathbf x$, the Bellman principle gives
+\[
+ \mathcal V(\mathbf x,t)=\inf_{\mathbf v\in\mathbb R^M}
+ \left\{hL(\mathbf x,\mathbf v)
+ +\mathcal V(\mathbf x-h\mathbf v,t+h)\right\}+o(h).
+\]
+For each fixed rate, Taylor expansion gives
+\[
+ \mathcal V(\mathbf x-h\mathbf v,t+h)
+ =\mathcal V(\mathbf x,t)+h\mathcal V_t
+ -h\mathbf v^\top\nabla\mathcal V+o(h).
+\]
+Subtract $\mathcal V$, divide by $h$ and let $h\downarrow0$:
+\begin{equation}
+ 0=\mathcal V_t+\min_{\mathbf v\in\mathbb R^M}
+ \left\{\mathbf v^\top H\mathbf v
+ -\mathbf v^\top\nabla\mathcal V+\lambda\mathbf x^\top C\mathbf x\right\}.
+ \label{eq:stage2-bellman}
+\end{equation}
+The minus sign comes from the selling convention $\dot{\mathbf x}=-\mathbf v$.
+The control derivative and Hessian of the Hamiltonian are
+\[
+ 2H\mathbf v-\nabla\mathcal V=0,\qquad 2H\succ0.
+\]
+Thus its unique global minimizer is
+$\mathbf v^*=H^{-1}\nabla\mathcal V/2$. Substitution contributes
+$-\tfrac14(\nabla\mathcal V)^\top H^{-1}\nabla\mathcal V$.
+The specialized HJB and feedback are
+\begin{equation}
+ \boxed{\mathcal V_t-\tfrac14(\nabla\mathcal V)^\top H^{-1}\nabla\mathcal V
+ +\lambda\mathbf x^\top C\mathbf x=0,\qquad
+ \mathbf v^*=\tfrac12H^{-1}\nabla\mathcal V.}
+ \label{eq:pde}
+\end{equation}
+For $g=\nabla\mathcal V$, the identity
+\[
+ \mathbf v^\top H\mathbf v-\mathbf v^\top g
+ =(\mathbf v-\tfrac12H^{-1}g)^\top H(\mathbf v-\tfrac12H^{-1}g)
+ -\tfrac14g^\top H^{-1}g
+\]
+shows that the feedback uniquely minimizes the Hamiltonian.
+\subsection*{Derive the Riccati equation}
+
+The costs are quadratic and the dynamics are linear. Try a symmetric
+quadratic value
+$\mathcal V=\tfrac12\mathbf x^\top P(t)\mathbf x+c(t)$.
+This is an ansatz to verify, rather than an additional approximation.
+Its derivatives are
+\[
+ \mathcal V_t=\tfrac12\mathbf x^\top\dot P\mathbf x+\dot c,
+ \qquad\nabla\mathcal V=P\mathbf x.
+\]
+Substitute into the HJB and collect powers of $\mathbf x$:
+\[
+ 0=\tfrac12\mathbf x^\top
+ \left(\dot P-\tfrac12PH^{-1}P+2\lambda C\right)\mathbf x+\dot c.
+\]
+Since this must hold for every inventory, its quadratic matrix and its
+constant term vanish separately. Matching the terminal cost gives
+\begin{equation}
+ \dot P=\tfrac12PH^{-1}P-2\lambda C,\qquad P(T)=\Phi,
+ \qquad\dot c=0,\quad c(T)=0,
+ \qquad\mathbf v^*=\tfrac12H^{-1}P\mathbf x.
+ \label{eq:ric}
+\end{equation}
+Thus $c=0$ and the optimized initial cost is
+$\mathcal V_\Phi(\mathbf X,0)=\tfrac12\mathbf X^\top P(0)\mathbf X$.
+Along an admissible path,
+\[
+ J_\Phi[\mathbf v]-\mathcal V_\Phi(\mathbf X,0)
+ =\int_0^T(\mathbf v-\tfrac12H^{-1}P\mathbf x)^\top
+ H(\mathbf v-\tfrac12H^{-1}P\mathbf x)\,dt\ge0,
+\]
+where $J_\Phi$ is the cost in Eq.~\eqref{eq:cost} at $t=0$.
+This supplies a direct optimality check.
+
+\subsection*{Derive the exact-liquidation trajectory}
+
+For $\mathbf x(0)=\mathbf X$, $\mathbf x(T)=0$, eliminate the rate by
+$\mathbf v=-\dot{\mathbf x}$. The functional to minimize becomes
+\[
+ J[\mathbf x]=\int_0^T
+ (\dot{\mathbf x}^\top H\dot{\mathbf x}
+ +\lambda\mathbf x^\top C\mathbf x)\,dt.
+\]
+Both endpoint variations vanish. The Euler--Lagrange equation is
+\[
+ \frac{d}{dt}(2H\dot{\mathbf x})-2\lambda C\mathbf x=0,
+ \qquad H\ddot{\mathbf x}=\lambda C\mathbf x.
+\]
+Strict convexity of the derivative term with fixed endpoints makes its
+stationary path the unique minimizer. To decouple the equation, diagonalize
+$H^{-1/2}CH^{-1/2}=U\operatorname{diag}(\mu_i)U^\top$ and set
+$\kappa_i=\sqrt{\lambda\mu_i}$. In coordinates
+$\mathbf y=U^\top H^{1/2}\mathbf x$, multiplication of the
+Euler--Lagrange equation by $U^\top H^{-1/2}$ gives
+\[
+ \ddot y_i=\kappa_i^2y_i,\qquad
+ y_i(0)=(U^\top H^{1/2}\mathbf X)_i,\qquad y_i(T)=0.
+\]
+For $\kappa_i>0$ the two elementary solutions are
+$e^{\kappa_i t}$ and $e^{-\kappa_i t}$. The terminal condition selects
+$y_i(t)=b_i\sinh[\kappa_i(T-t)]$, and the initial condition sets
+$b_i=y_i(0)/\sinh(\kappa_iT)$. Transforming back gives
+\begin{equation}
+ \mathbf x(t)=H^{-1/2}U\operatorname{diag}\!\left(
+ \frac{\sinh[\kappa_i(T-t)]}{\sinh(\kappa_iT)}\right)U^\top H^{1/2}\mathbf X.
+ \label{eq:traj}
+\end{equation}
+Differentiating each mode gives
+$-\dot y_i=\kappa_i\coth[\kappa_i(T-t)]y_i$. Comparison with
+$\mathbf v^*=H^{-1}P\mathbf x/2$ yields the hard-limit feedback matrix
+$P(t)=2H^{1/2}U\operatorname{diag}(\kappa_i\coth[\kappa_i(T-t)])U^\top H^{1/2}$.
+For zero-risk modes, use
+$\sinh(\kappa s)/\sinh(\kappa T)\to s/T$ and
+$\kappa\coth(\kappa s)\to1/s$.
+Appendix~A of \cite{bergault2022} gives the $R=0$ Riccati solution;
+Almgren--Chriss \cite{almgrenchriss2000}, App.~A.3, gives the classical
+inventory modes.
+
+\subsection*{Finite terminal penalty and the boundary condition}
+
+For a finite penalty the endpoint is free. Its variation gives
+\[
+ 2H\dot{\mathbf x}(T)+\Phi\mathbf x(T)=0,
+ \qquad\mathbf v(T)=\tfrac12H^{-1}\Phi\mathbf x(T).
+\]
+This condition generally leaves residual inventory; it does not impose
+$\mathbf x(T)=0$. A formula valid without covariance/penalty commutation is
+\begin{equation}
+ \begin{pmatrix}Y(s)\\Z(s)\end{pmatrix}
+ =\exp\!\left[s\begin{pmatrix}0&\tfrac12H^{-1}\\2\lambda C&0\end{pmatrix}\right]
+ \begin{pmatrix}I\\\Phi\end{pmatrix},\qquad P(T-s)=Z(s)Y(s)^{-1}.
+ \label{eq:finite-penalty}
+\end{equation}
+Indeed, $Y'=H^{-1}Z/2$ and $Z'=2\lambda CY$ give
+$(ZY^{-1})'=2\lambda C-(ZY^{-1})H^{-1}(ZY^{-1})/2$ and $P(T)=\Phi$.
+This identity is derived here from Eq.~\eqref{eq:ric}. A scalar-mode
+finite-penalty solution requires $H^{-1/2}\Phi H^{-1/2}$ and
+$H^{-1/2}CH^{-1/2}$ to commute.
+
+\subsection*{Scope and exit criterion}
+
+$R=0$ removes mean reversion, not Brownian price noise. Price independence
+uses the paper's terminal data and its $R=0$ solution. A feasible signed-control
+optimum also solves the sales-only problem at that initial state; it does
+not establish a sales-constrained value function over an entire inventory grid.
+
+Step 2's source reduction is recorded. In Step 3, review its signs, factors
+of two and terminal data before accepting the benchmark.
+
 \begin{thebibliography}{9}
 \bibitem{almgrenchriss2000} R.~Almgren and N.~Chriss,
 \emph{Optimal Execution of Portfolio Transactions}, J.~Risk 3(2), 5--39

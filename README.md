@@ -11,8 +11,8 @@ We estimate the logical qubits and T gates needed to solve a reformulation of a 
 
 [WorkPlan.tex](WorkPlan.tex) contains the derivations, sources and paper notes. [Summary.tex](Summary.tex) contains equations and one-line statuses. Update both together and include both in the same commit. The optional [symbolic HJB helper](stage2/BellmanPrinciple.py) requires SymPy.
 
-Each stage also has a standalone document: [stage2/Stage2.tex](stage2/Stage2.tex), [stage3/Stage3.tex](stage3/Stage3.tex) and [stage4/Stage4.tex](stage4/Stage4.tex). Each one's `derivation.tex` is also `\input` by `WorkPlan.tex`, so the standalone document and the work plan share the same content. Stage 4 cites [Chen (2001)](https://arxiv.org/pdf/math/0110005) and distinguishes that method from the compatible-diffusion transformation.
+Each stage also has a standalone, single-file document for Overleaf: [stage2/Stage2.tex](stage2/Stage2.tex), [stage3/Stage3.tex](stage3/Stage3.tex) and [stage4/Stage4.tex](stage4/Stage4.tex). Each contains its own merged copy of that folder's `derivation.tex`, the same content `WorkPlan.tex` separately `\input`s. **If you edit `derivation.tex`, re-merge it into the matching `StageN.tex` by hand** — they are copies, not shared live. Stage 4 cites [Chen (2001)](https://arxiv.org/pdf/math/0110005) and distinguishes that method from the compatible-diffusion transformation.
 
 Build each document with `pdflatex -interaction=nonstopmode -halt-on-error WorkPlan.tex` and the equivalent command for `Summary.tex`; repeat until references resolve. PDFs and build files are ignored by Git.
 
-For a standalone stage document, run `pdflatex -interaction=nonstopmode -halt-on-error Stage2.tex` (or `Stage3.tex`/`Stage4.tex`) twice from its own folder.
+For a standalone stage document, upload just that one `StageN.tex` file to Overleaf (or run `pdflatex -interaction=nonstopmode -halt-on-error Stage2.tex`, etc., twice, locally from its own folder) — no other files needed.

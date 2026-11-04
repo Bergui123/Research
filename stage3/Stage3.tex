@@ -8,9 +8,221 @@
 \date{}
 \begin{document}
 \maketitle
-% Build from this directory; the derivation is shared with ../WorkPlan.tex.
+% Self-contained for Overleaf: this is a copy of derivation.tex, which
+% WorkPlan.tex also \input's. Re-merge the two if derivation.tex changes.
 \setcounter{section}{2}
-\input{derivation.tex}
+\section{Step 3: verify the classical benchmark (current)}
+\label{sec:stage3}
+
+\subsection*{Main equation and assumptions}
+
+This stage specializes the exact-liquidation equation from Step 2:
+\[
+ \boxed{\ddot{\mathbf x}=C\mathbf x,\qquad
+ \mathbf x(0)=(3,1)^\top,\quad\mathbf x(1)=0,\qquad
+ \mathbf v=-\dot{\mathbf x}.}
+\]
+It computes the trajectory, checks whether its signed optimum is
+sales-only, and derives quantities for numerical comparison.
+
+\begin{enumerate}
+\item Use the constant quadratic model of Step 2 with $H=I_2$,
+$\lambda=T=1$. All quantities in this synthetic instance are
+dimensionless. There is no calibration to observed market data.
+\item Impose the hard endpoint $\mathbf x(1)=0$, rather than a finite
+terminal penalty. The matrix $P(t)$ therefore has a singular terminal
+limit; no finite value of $P(1)$ is substituted below.
+\item First optimize over signed rates with no inventory boundaries or
+rate caps. Sales-only feasibility is a conclusion to prove for
+$\mathbf X=(3,1)^\top$, not an assumption used to solve the ODE.
+\item The general ratio test below requires equal impacts, equal price
+variances, positive correlation $0<\rho<1$, and positive initial holdings
+$X_1=\theta X_2$ with $\theta>1$. These restrictions make the
+symmetric/antisymmetric modes and the terminal-ratio proof valid.
+\end{enumerate}
+
+\subsection*{Diagonalize the trajectory equation}
+
+Use the synthetic, dimensionless instance
+\[
+ H=I_2,\qquad C=\begin{pmatrix}1&0.4\\0.4&1\end{pmatrix},\qquad
+ \lambda=T=1,\qquad\mathbf X=(3,1)^\top,\qquad\mathbf x(1)=0.
+\]
+The orthonormal covariance eigenvectors are
+$u_+=(1,1)^\top/\sqrt2$ and $u_-=(1,-1)^\top/\sqrt2$ with
+\[
+ \mu_+=1.4,\quad\mu_-=0.6,\qquad
+ \kappa_+=\sqrt{1.4}=1.1832159566,\quad
+ \kappa_-=\sqrt{0.6}=0.7745966692.
+\]
+Thus $C\succ0$, $\eta_j>0$, and both rates are real. Set $s=1-t$ and
+use $U=(u_+,u_-)$, so $U^\top C U=\operatorname{diag}(1.4,0.6)$.
+Writing $\mathbf y=U^\top\mathbf x$ gives
+\[
+ \ddot y_\pm=\kappa_\pm^2y_\pm,\qquad
+ y_+(0)=\frac{3+1}{\sqrt2}=2\sqrt2,\qquad
+ y_-(0)=\frac{3-1}{\sqrt2}=\sqrt2,\qquad y_\pm(1)=0.
+\]
+The endpoint solution from Step 2 is
+$y_\pm(t)=y_\pm(0)\sinh[\kappa_\pm(1-t)]/\sinh\kappa_\pm$.
+Define
+\[
+ f_\pm(s)=\frac{\sinh(\kappa_\pm s)}{\sinh\kappa_\pm},\qquad
+ a_\pm(s)=\frac{\kappa_\pm\cosh(\kappa_\pm s)}{\sinh\kappa_\pm}.
+\]
+Since $\mathbf x=U\mathbf y$, one has
+$x_1=(y_++y_-)/\sqrt2$ and $x_2=(y_+-y_-)/\sqrt2$.
+Also $ds/dt=-1$, so $df_\pm(1-t)/dt=-a_\pm(1-t)$.
+These two substitutions give the trajectory and selling rates
+\begin{equation}
+ x_1=2f_++f_-,\quad x_2=2f_+-f_-,\qquad
+ v_1=2a_++a_-,\quad v_2=2a_+-a_-.
+ \label{eq:stage3-rates}
+\end{equation}
+They give $\mathbf x(0)=(3,1)^\top$ and $\mathbf x(1)=0$.
+
+\subsection*{Prove the rates are sales-only for all times}
+
+For the equal-impact, equal-volatility family with $0<\rho<1$ and
+$X_1=\theta X_2$, $\theta>1$, $X_2>0$, the potentially negative rate is
+\[
+ v_2=\frac{X_2}{2}\big((\theta+1)a_+-(\theta-1)a_-\big).
+\]
+The relative rate $\mathcal R(s)=a_-(s)/a_+(s)$ satisfies
+\[
+ \frac{d}{ds}\log \mathcal R(s)
+ =\kappa_-\tanh(\kappa_-s)-\kappa_+\tanh(\kappa_+s)\le0,
+\]
+because $k\mapsto k\tanh(ks)$ increases for $k>0$, $s\ge0$.
+Indeed its derivative is
+$\tanh(ks)+ks\operatorname{sech}^2(ks)\ge0$.
+The rate $v_1$ is positive because both modal coefficients are positive.
+For $v_2$, divide by the positive factor
+$X_2(\theta-1)a_+/2$ to obtain
+\[
+ v_2\ge0\quad\Longleftrightarrow\quad
+ \frac{\theta+1}{\theta-1}\ge\frac{a_-}{a_+}=\mathcal R(s).
+\]
+Hence $\mathcal R(s)\le \mathcal R(0)$: checking the terminal-time ratio is sufficient and
+necessary for this particular family, rather than an assumption about all
+multi-asset problems. Specifically,
+\begin{equation}
+ \frac{\theta+1}{\theta-1}\ge
+ \mathcal R(0)=\frac{\kappa_-\sinh\kappa_+}{\kappa_+\sinh\kappa_-}
+ =1.133429601920,
+ \qquad
+ \theta\le\frac{\mathcal R(0)+1}{\mathcal R(0)-1}=15.989177597983.
+ \label{eq:stage3-bound}
+\end{equation}
+The choice $\theta=3$ satisfies this bound. More explicitly, since
+$a_+(s)\ge a_+(0)$ and $2-\mathcal R(s)\ge2-\mathcal R(0)>0$,
+\[
+ v_2(t)\ge a_+(0)(2-\mathcal R(0))=0.6931333103,
+ \qquad v_1(t)\ge2a_+(0)+a_-(0)=2.5062988967.
+\]
+Both minima occur at $t=1$; these are one-sided terminal limits of the rates.
+Thus both inventories stay nonnegative and decrease to zero for the entire
+interval. A time-grid check alone would not establish this all-time claim.
+
+\subsection*{Derive the optimal cost and initial rate}
+
+The initial modal inventories are $y_+(0)=2\sqrt2$ and
+$y_-(0)=\sqrt2$. Orthogonality of $U$ gives
+\[
+ J^*=\sum_{i\in\{+,-\}}\int_0^1
+ (\dot y_i^2+\kappa_i^2y_i^2)\,dt.
+\]
+Use $\ddot y_i=\kappa_i^2y_i$ to recognize a boundary derivative:
+\[
+ \frac{d}{dt}(y_i\dot y_i)=\dot y_i^2+y_i\ddot y_i
+ =\dot y_i^2+\kappa_i^2y_i^2.
+\]
+The terminal term vanishes because $y_i(1)=0$, and
+$\dot y_i(0)=-\kappa_i\coth\kappa_i\,y_i(0)$. Consequently
+\begin{equation}
+ \boxed{J^*=8\kappa_+\coth\kappa_+
+              +2\kappa_-\coth\kappa_-
+ =\tfrac12\mathbf X^\top P(0)\mathbf X.}
+ \label{eq:stage3-cost}
+\end{equation}
+The same mode derivatives give
+\[
+ \mathbf v(0)=
+ \begin{pmatrix}
+ 2\kappa_+\coth\kappa_++\kappa_-\coth\kappa_-\\
+ 2\kappa_+\coth\kappa_+-\kappa_-\coth\kappa_-
+ \end{pmatrix}.
+\]
+These expressions explain the numerical targets below without a
+numerical integration of the trajectory.
+
+\subsection*{Checks to reproduce}
+
+Targets retained from the existing notes are
+\[
+ \mathbf v(0)=(4.0488436487,1.6639810858)^\top,\qquad
+ J^*=\tfrac12\mathbf X^\top P(0)\mathbf X=13.810512031917.
+\]
+Recompute the cost by direct quadrature and compare it with the Riccati value.
+The full numerical check script is absent; the table below remains a set
+of targets to reproduce, not completed verification.
+
+For an independent check, minimize
+$\sum_{k=1}^N\|\mathbf x_{k-1}-\mathbf x_k\|^2/\tau
++\tau\sum_{k=1}^N\mathbf x_k^\top C\mathbf x_k$ by solving its block
+tridiagonal stationarity system. Its Hessian is positive definite, so this
+is the unique global discrete minimizer.
+Here $\tau=1/N$, $\mathbf x_0=\mathbf X$ and $\mathbf x_N=0$.
+Differentiating the discrete objective with respect to an interior
+$\mathbf x_k$, $1\le k<N$, gives
+\[
+ \frac{2}{\tau}(2\mathbf x_k-\mathbf x_{k-1}-\mathbf x_{k+1})
+ +2\tau C\mathbf x_k=0,
+ \qquad
+ (2I+\tau^2 C)\mathbf x_k-\mathbf x_{k-1}-\mathbf x_{k+1}=0.
+\]
+Thus the diagonal blocks are $2I+\tau^2 C$, the neighboring blocks
+are $-I$, and the first right-hand-side block is $\mathbf X$.
+For a nonzero variation with zero endpoints, the quadratic form of the
+objective's Hessian is
+\[
+ \frac{2}{\tau}\sum_{k=1}^N
+ \|\delta\mathbf x_k-\delta\mathbf x_{k-1}\|^2
+ +2\tau\sum_{k=1}^N\delta\mathbf x_k^\top C\delta\mathbf x_k>0.
+\]
+This proves the discrete uniqueness assertion and specifies the
+linear system needed to reproduce the table.
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$N$ & Maximum inventory error vs. continuum & Discrete optimal cost \\
+\midrule
+16 & $6.945\times10^{-5}$ & 13.432845715492 \\
+64 & $4.361\times10^{-6}$ & 13.714251771181 \\
+256 & $2.726\times10^{-7}$ & 13.786331703645 \\
+1024 & $1.704\times10^{-8}$ & 13.804459745777 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The trajectory error decreases quadratically; the cost has first-order
+right-endpoint quadrature error. These are different error measures.
+The permanent-impact/spread offsets are not part of these reported costs.
+
+\subsection*{Source, scope and exit criterion}
+
+The trajectory comes from Step 2's specialization of
+Bergault--Drissi--Gu\'eant \cite{bergault2022} and its classical
+mode solution, also described in Almgren--Chriss
+\cite{almgrenchriss2000}, Appendix~A.3. The parameter choice and sales-only
+inequality are derived here. The all-time proof applies to the stated
+hard-liquidation instance. A finite penalty needs its own feasibility check,
+and $H=I$ does not test a noncommuting implementation.
+
+\textbf{Pending.} Review the Eq.~16 mapping, Riccati equation, terminal data
+and sales-only proof. Reproduce the cost and convergence table, and compare
+the block-exponential finite-penalty formula of Step 2 with direct Riccati integration for a
+noncommuting penalty/covariance pair. Record the checks, then begin Step 4.
+
 \begin{thebibliography}{9}
 \bibitem{almgrenchriss2000} R.~Almgren and N.~Chriss,
 \emph{Optimal Execution of Portfolio Transactions}, J.~Risk 3(2), 5--39
