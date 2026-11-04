@@ -1,0 +1,533 @@
+\section{Step 4: test Chen's method and derive the linear PDE}
+\label{sec:stage4}
+
+\subsection*{Answer and scope}
+
+\textbf{Chen's paper does not establish an equivalent, closed linear PDE
+for the equation in Step 2.} Its auxiliary-variable substitution gives a
+linear equation only if we set aside the nonlinear relation defining that
+variable. Below we apply the substitution to our equation and exhibit an
+incorrect solution admitted by the resulting linear equation.
+
+There is a usable alternative for this project's quadratic model. Add a
+specified inventory diffusion, apply Cole--Hopf, and solve a linear
+parabolic PDE. We prove that its logarithm gives the original value
+function plus a function of time alone. Subtracting that function recovers
+the original value; taking a spatial gradient recovers the original
+optimal feedback directly. This additional argument is essential because
+adding diffusion changes the PDE.
+
+All calculations below assume the full inventory space $\mathbb R^M$,
+constant $H\succ0$, $C\succeq0$, $\lambda\ge0$, unrestricted signed
+controls, and a finite symmetric terminal penalty $\Phi\succeq0$.
+These are the assumptions of Step 2. Exact liquidation is a separate
+limiting problem.
+
+\subsection*{Paper, exact location and notation map}
+
+Use H.~J.~Kappen, \emph{A linear theory for control of non-linear
+stochastic systems}, Physical Review Letters 95, 200201 (2005),
+arXiv:physics/0411119v2 \cite{kappen2005}.
+Open the version-specific PDF at
+\href{https://arxiv.org/pdf/physics/0411119v2#page=2}{arXiv, PDF page 2}.
+
+A downloaded copy is in the project at
+\path{stage4/sources/Kappen2005.pdf}.
+
+On PDF page 2, Eq.~(5) is the nonlinear stochastic HJB, Eq.~(6) is its
+feedback, Eq.~(7) defines the logarithmic substitution, Eq.~(8) imposes
+noise/control compatibility, and Eq.~(9) gives the linear operator used
+in Eq.~(1) on page 1. Equations~(5)--(7) are in the left column;
+Eqs.~(8)--(9) are near the top of the right column.
+
+To prevent symbol collisions, label the paper's covariance by $N_K$
+and its logarithmic scale by $a_K$ when translating its notation:
+\begin{center}
+\begin{tabular}{lll}
+Quantity & Paper's notation & Our specialization\\\hline
+Control & $\mathbf u$ & $-\mathbf v$\\
+Uncontrolled drift & $\mathbf b$ & $0$\\
+Control cost matrix & $R$ & $2H$\\
+Noise covariance & $\nu_{ij}$, here $N_K$ & $2\nu H^{-1}$\\
+Logarithmic scale & $\lambda$, here $a_K$ & $4\nu$\\
+Running state cost & $V(\mathbf x,t)$ & $q(\mathbf x)=\lambda\mathbf x^\top C\mathbf x$\\
+Terminal cost & $\phi(\mathbf x)$ & $G(\mathbf x)=\tfrac12\mathbf x^\top\Phi\mathbf x$
+\end{tabular}
+\end{center}
+The matching condition becomes
+\begin{equation}
+ R N_K=a_K I,\qquad
+ (2H)(2\nu H^{-1})=4\nu I.
+ \label{eq:stage4-paper-map}
+\end{equation}
+Thus the paper's $\lambda$ is not our risk parameter $\lambda$.
+Its operator $H$ is also distinct from our impact matrix $H$.
+The diffusion addition and the proof that our deterministic feedback is
+preserved are calculations for this project, not assumptions that the
+paper proves for every deterministic control problem.
+
+\subsection*{1. Identify the equation and change the time variable}
+
+Write $A=H^{-1}$ and $q(\mathbf x)=\lambda\mathbf x^\top C\mathbf x$.
+Here $q$ denotes the running inventory cost, not the inventory variable
+used in the source paper for Step 2. The starting equation is
+\begin{equation}
+ \mathcal V_t-\tfrac14(\nabla\mathcal V)^\top A\nabla\mathcal V
+ +q(\mathbf x)=0,\qquad
+ \mathcal V(\mathbf x,T)=G(\mathbf x)
+ :=\tfrac12\mathbf x^\top\Phi\mathbf x.
+ \label{eq:stage4-original}
+\end{equation}
+The vector $\nabla\mathcal V$ contains the derivatives with respect to
+inventory. Squaring these unknown derivatives makes this a nonlinear
+first-order Hamilton--Jacobi equation. For two assets with diagonal $H$,
+the nonlinear term is
+\[
+ \tfrac14(\nabla\mathcal V)^\top A\nabla\mathcal V
+ =\frac{\mathcal V_{x_1}^2}{4\eta_1}
+ +\frac{\mathcal V_{x_2}^2}{4\eta_2}.
+\]
+Covariance $C$ enters the known function $q$. It does not supply an
+inventory second derivative in this reduced HJB.
+
+Define time remaining $s=T-t$ and
+$W_0(\mathbf x,s)=\mathcal V(\mathbf x,T-s)$. The subscript $0$ means
+zero added inventory diffusion. The chain rule gives
+$\partial_sW_0=-\mathcal V_t$, so
+\begin{equation}
+ \boxed{\partial_sW_0+
+ \tfrac14(\nabla W_0)^\top A\nabla W_0=q(\mathbf x),
+ \qquad W_0(\mathbf x,0)=G(\mathbf x).}
+ \label{eq:stage4-inviscid}
+\end{equation}
+This time change is exact. It turns terminal data at $t=T$ into initial
+data at $s=0$; it introduces no diffusion or approximation.
+\textbf{Why take this step?} We know the cost at the execution horizon.
+Using $s$ lets us evolve away from those known data with the usual
+forward heat-equation time direction. The minus sign in the chain rule
+is necessary to obtain that direction.
+
+\subsection*{2. Apply the supplied paper's substitution}
+
+\textbf{Source.} Chen \cite{chen2001}, Sec.~2, Eqs.~(1)--(7),
+introduces an auxiliary unknown for a nonlinear product and collocates the
+resulting linear equation at additional points. The paper leaves mutual
+constraints between the approximation bases open on PDF p.~5. Its final
+remarks on PDF p.~11 defer numerical experiments. Here the extra unknown
+is a dependent field, not an extra spatial coordinate.
+
+Following that substitution, introduce a scalar field $z$ by
+\begin{equation}
+ z(\mathbf x,s):=\tfrac14(\nabla W_0)^\top A\nabla W_0.
+ \label{eq:stage4-closure}
+\end{equation}
+Then the equation becomes
+\begin{equation}
+ \boxed{\partial_sW_0+z=q(\mathbf x).}
+ \label{eq:stage4-dlm}
+\end{equation}
+Equation~\eqref{eq:stage4-dlm} is linear in the pair of unknown fields
+$(W_0,z)$: neither unknown multiplies the other. However, the original
+problem requires both Eqs.~\eqref{eq:stage4-closure}
+and~\eqref{eq:stage4-dlm}. Equation~\eqref{eq:stage4-closure} is nonlinear.
+Keeping it preserves the original problem; dropping it admits additional
+solutions. In this setting, a \emph{closed} system means that the equations
+determine all unknown fields from the prescribed data.
+
+To see the freedom directly, choose any smooth field $F$ with
+$F(\mathbf x,0)=G(\mathbf x)$ and define
+\[
+ W_0=F,\qquad z=q-\partial_sF.
+\]
+This pair always solves the linear equation. There is no reason for its
+$z$ to equal the squared gradient in Eq.~\eqref{eq:stage4-closure}.
+Even the available initial value
+$z(\mathbf x,0)=\tfrac14\mathbf x^\top\Phi A\Phi\mathbf x$
+does not enforce that relation at later times.
+
+\textbf{An explicit counterexample, derived here.}
+Take one asset, $H=C=1$, $\lambda=1$, and $\Phi=0$. These are allowed
+parameters. The original initial-value problem is
+\[
+ (W_0)_s+\tfrac14(W_0)_x^2=x^2,\qquad W_0(x,0)=0.
+\]
+The pair $\widetilde W=sx^2$, $\widetilde z=0$ satisfies
+\[
+ \widetilde W_s+\widetilde z=x^2,\qquad
+ \widetilde W(x,0)=0,\qquad\widetilde z(x,0)=0.
+\]
+Thus it satisfies the proposed linear equation and both initial values.
+But substitution into the original equation gives the residual
+\begin{equation}
+ \widetilde W_s+\tfrac14\widetilde W_x^2-x^2=s^2x^2,
+ \label{eq:stage4-counterexample}
+\end{equation}
+which is nonzero when $s x\ne0$. The actual solution is
+$W_0(x,s)=\tanh(s)x^2$, since
+$\operatorname{sech}^2s+\tanh^2s=1$.
+This counterexample concerns our application of the auxiliary-field
+substitution; it is not a claim that every possible discretization in
+Chen's paper returns this particular incorrect field.
+
+\textbf{Why additional collocation points do not supply the missing
+identity.} Suppose
+$W_N=\sum_{k=1}^N\alpha_k\varphi_k$ and
+$z_N=\sum_{k=1}^N\beta_k\chi_k$, with prescribed basis functions.
+At a space--time point $\xi_j$, the linear equation gives
+\[
+ \sum_k\alpha_k\,\partial_s\varphi_k(\xi_j)
+ +\sum_k\beta_k\chi_k(\xi_j)=q(\mathbf x_j).
+\]
+More sample points provide more linear rows. They do not insert
+\[
+ \sum_k\beta_k\chi_k(\xi_j)=
+ \tfrac14\sum_{k,\ell}\alpha_k\alpha_\ell
+ (\nabla\varphi_k(\xi_j))^\top A\nabla\varphi_\ell(\xi_j).
+\]
+The right side is quadratic in the coefficients $\alpha_k$. A square,
+full-rank matrix or a unique least-squares answer therefore does not by
+itself establish equivalence to our nonlinear PDE. A chosen basis could
+impose extra restrictions, but those restrictions would need a separate
+proof that they enforce this identity and approximate the desired solution.
+\textbf{Why test this first?} A linear-looking equation is useful only if
+its solutions recover the intended nonlinear problem. The counterexample
+checks that requirement before we use a numerical linear solver.
+
+\subsection*{3. Test the exponential substitution without changing the PDE}
+
+Let $a>0$, and try $\psi_0=\exp(-W_0/a)$. For finite $W_0$ this
+substitution is invertible because $\psi_0>0$. Its derivatives satisfy
+\[
+ (\psi_0)_s=-\frac{(W_0)_s}{a}\psi_0,
+ \qquad\nabla W_0=-a\,\frac{\nabla\psi_0}{\psi_0}.
+\]
+Substituting Eq.~\eqref{eq:stage4-inviscid} yields
+\begin{equation}
+ (\psi_0)_s=
+ \frac{a}{4}\frac{(\nabla\psi_0)^\top A\nabla\psi_0}{\psi_0}
+ -\frac{q}{a}\psi_0.
+ \label{eq:stage4-exponential-fails}
+\end{equation}
+The gradient-squared divided by $\psi_0$ is still nonlinear. The original
+PDE has no second derivative whose transformation could cancel it.
+This rules out this direct Cole--Hopf attempt on the unchanged equation;
+it is not a theorem excluding every other transformation.
+\textbf{Why show this calculation?} It identifies the term we still need
+to cancel and explains why the next step introduces a second derivative.
+
+\subsection*{4. Add compatible diffusion and derive a closed linear PDE}
+
+Introduce a parameter $\nu>0$ and a new value function $W_\nu$. Define
+$L_A f=\nabla\!\cdot(A\nabla f)
+=\operatorname{tr}(A\nabla^2 f)$, using that $A$ is constant. Consider
+\begin{equation}
+ \boxed{(W_\nu)_s=\nu L_AW_\nu
+ -\tfrac14(\nabla W_\nu)^\top A\nabla W_\nu+q,
+ \qquad W_\nu(\mathbf x,0)=G(\mathbf x).}
+ \label{eq:viscous}
+\end{equation}
+This is a different PDE. In a stochastic-control interpretation it
+corresponds to inventory dynamics
+$d\mathbf x=-\mathbf v\,dt+\sqrt{2\nu}\,H^{-1/2}d\mathbf B_t$,
+where $\mathbf B_t$ is standard $M$-dimensional Brownian motion, with
+expected running and terminal costs as in Step 2. Its diffusion generator
+is $\nu L_A$. The noise has been added in inventory space; it is not the
+price noise represented by $C$.
+
+\textbf{Why this diffusion matrix and this exponential scale?}
+The second derivative of an exponential contains a squared first
+derivative. We use it to cancel the existing squared-gradient term.
+First leave the exponential scale unspecified: $\psi=e^{-W_\nu/a}$,
+where $a>0$. Substituting $W_\nu=-a\log\psi$ into
+Eq.~\eqref{eq:viscous} gives
+\begin{equation}
+ \psi_s=\nu L_A\psi+
+ \left(\frac a4-\nu\right)
+ \frac{(\nabla\psi)^\top A\nabla\psi}{\psi}
+ -\frac q a\psi.
+ \label{eq:stage4-scale-choice}
+\end{equation}
+The nonlinear coefficient vanishes precisely when $a=4\nu$.
+Both derivative terms must use the same matrix $A=H^{-1}$ for this
+cancellation to hold in every inventory direction. An arbitrary isotropic
+diffusion would generally fail when the impacts differ by asset.
+For a diffusion $\operatorname{tr}(D\nabla^2W)$ the matching condition
+is $D=aA/4$; we choose $D=\nu A$ and therefore $a=4\nu$.
+Consequently choose
+\begin{equation}
+ \psi=\exp[-W_\nu/(4\nu)],\qquad W_\nu=-4\nu\log\psi.
+ \label{eq:stage4-transform}
+\end{equation}
+To check the factor $4\nu$, put
+$Q_\nu=(\nabla W_\nu)^\top A\nabla W_\nu$. The chain and product rules give
+\begin{align}
+ \psi_s&=-\frac{(W_\nu)_s}{4\nu}\psi,\nonumber\\
+ \nabla\psi&=-\frac{\psi}{4\nu}\nabla W_\nu,\nonumber\\
+ \nu L_A\psi&=\psi\left[-\frac14L_AW_\nu
+                              +\frac{Q_\nu}{16\nu}\right].
+ \label{eq:stage4-chain}
+\end{align}
+On the other hand, inserting Eq.~\eqref{eq:viscous} into $\psi_s$ gives
+\[
+ \psi_s=\psi\left[-\frac14L_AW_\nu+
+                         \frac{Q_\nu}{16\nu}-\frac{q}{4\nu}\right].
+\]
+The first two terms are exactly $\nu L_A\psi$. Therefore
+\begin{equation}
+ \boxed{\psi_s=\nu\nabla\!\cdot(H^{-1}\nabla\psi)
+ -\frac{\lambda}{4\nu}\mathbf x^\top C\mathbf x\,\psi
+ =-\hat H\psi,\qquad
+ \hat H=-\nu L_A+\frac{q}{4\nu}.}
+ \label{eq:linearised}
+\end{equation}
+Both coefficients are known functions, so this is a closed, homogeneous
+linear PDE in one unknown $\psi$. Linearity means that sums of solutions
+solve the PDE with the corresponding summed initial data. In our problem
+the initial data are fixed by
+\begin{equation}
+ \psi(\mathbf x,0)=\exp[-G(\mathbf x)/(4\nu)]
+ =\exp[-\mathbf x^\top\Phi\mathbf x/(8\nu)].
+ \label{eq:stage4-initial}
+\end{equation}
+\textbf{Why transform the data too?} The exponential is a change of
+unknown throughout the initial-value problem. Retaining $G$ itself as
+the initial condition for $\psi$ would solve a different problem and
+would not recover the prescribed terminal cost.
+In the full-space problem these positive Gaussian data, including
+semidefinite $\Phi$, give the positive solution constructed below. We use
+the bounded full-space evolution, not arbitrary solutions with uncontrolled
+growth at infinity. Positivity permits the logarithm. Conversely, inserting
+$W_\nu=-4\nu\log\psi$ into a smooth positive solution of
+Eq.~\eqref{eq:linearised} recovers Eq.~\eqref{eq:viscous}.
+
+\textbf{Source distinction.} The noise/control matching and exponential
+transformation are supported by Kappen \cite{kappen2005}, Eqs.~(5)--(9).
+In his notation the control matrix is $2H$, the noise covariance is
+$2\nu H^{-1}$, and their product is $4\nu I$. His logarithmic scale is
+therefore our $4\nu$, not our risk coefficient $\lambda$.
+The calculations above specialize that principle to our equation;
+they are not a Cole--Hopf result from Chen's paper.
+
+\subsection*{5. Prove what the linear PDE recovers for our original model}
+
+\textbf{Why is this proof necessary?} Linearizing the noisy auxiliary
+problem does not yet solve the deterministic problem we started with.
+We must show that the added term does not change the quantity we intend
+to recover. Quadratic running and terminal costs suggest a quadratic
+value; direct substitution below verifies that choice.
+
+Because the running and terminal costs are quadratic, try
+\[
+ W_\nu(\mathbf x,s)=\tfrac12\mathbf x^\top P_s\mathbf x+c(s),
+ \qquad P_s=P_s^\top.
+\]
+The subscript in $P_s$ labels time remaining; $P_s'$ denotes its
+derivative. Direct differentiation gives
+\[
+ \nabla W_\nu=P_s\mathbf x,\quad
+ L_AW_\nu=\operatorname{tr}(AP_s),\quad
+ Q_\nu=\mathbf x^\top P_sAP_s\mathbf x.
+\]
+Match the quadratic and constant terms in Eq.~\eqref{eq:viscous}:
+\begin{equation}
+ P_s'=2\lambda C-\tfrac12P_sAP_s,\quad P_0=\Phi,
+ \qquad c'(s)=\nu\operatorname{tr}(AP_s),\quad c(0)=0.
+ \label{eq:stage4-quadratic}
+\end{equation}
+The equation for $P_s$ contains no $\nu$. It is exactly Step 2's Riccati
+equation in the variable $s=T-t$. Thus $P_s=P(T-s)$ and
+\begin{equation}
+ W_0(\mathbf x,s)=\tfrac12\mathbf x^\top P_s\mathbf x,\qquad
+ W_\nu=W_0+c(s),\qquad
+ c(s)=\nu\int_0^s\operatorname{tr}(AP_r)\,dr.
+ \label{eq:stage4-correction}
+\end{equation}
+One can verify $W_0$ directly in Eq.~\eqref{eq:stage4-inviscid}.
+The diffusion adds a spatial constant because the Hessian of a quadratic
+function is independent of inventory. This is why this particular model
+preserves the feedback at every $\nu>0$; no $\nu\to0$ approximation is
+needed for that statement.
+
+The linear PDE has the explicit Gaussian solution
+\begin{equation}
+ \psi(\mathbf x,s)=\exp\left[-\frac{\mathbf x^\top P_s\mathbf x}{8\nu}
+ -\frac14\int_0^s\operatorname{tr}(AP_r)\,dr\right].
+ \label{eq:stage4-gaussian}
+\end{equation}
+Dividing its time derivative by $\psi$ gives
+$-\mathbf x^\top P_s'\mathbf x/(8\nu)-c'(s)/(4\nu)$.
+Dividing the right side of the linear PDE by $\psi$ gives
+$-\operatorname{tr}(AP_s)/4+
+\mathbf x^\top P_sAP_s\mathbf x/(16\nu)-q/(4\nu)$.
+Equation~\eqref{eq:stage4-quadratic} makes these expressions equal.
+This checks the PDE solution, including its scalar amplitude factor.
+
+The original signed selling feedback and original value are consequently
+\begin{equation}
+ \boxed{\mathbf v^*(\mathbf x,t)
+ =-2\nu H^{-1}\nabla\log\psi(\mathbf x,T-t)
+ =\tfrac12H^{-1}P_{T-t}\mathbf x,}
+ \label{eq:recovery}
+\end{equation}
+where $P_{T-t}$ means $P_s$ evaluated at $s=T-t$, equivalently
+the matrix $P(t)$ of Step 2. In particular there is no change of selling
+sign. The value itself requires the scalar correction
+\begin{equation}
+ \boxed{\mathcal V(\mathbf x,t)
+ =-4\nu\log\psi(\mathbf x,T-t)-c(T-t).}
+ \label{eq:stage4-value-recovery}
+\end{equation}
+The gradient removes $c$, but the value does not. A time-independent
+positive rescaling of $\psi$ preserves the feedback; a time-dependent
+rescaling generally changes its evolution equation.
+
+\subsection*{6. Exact finite-dimensional check and a two-asset example}
+
+\textbf{Why compute a reference answer?} The Gaussian solution gives an
+exact full-space answer against which a future grid solver can be checked.
+Comparing an independently integrated Riccati equation with a linear block
+system also checks signs and factors without assuming that a PDE grid is
+already accurate.
+
+An independent linear calculation is available for this quadratic
+problem. Solve the block system
+\begin{equation}
+ Y'=\tfrac12AZ,\qquad Z'=2\lambda CY,\qquad
+ Y(0)=I,\quad Z(0)=\Phi.
+ \label{eq:stage4-block}
+\end{equation}
+Where $Y$ is invertible,
+$(ZY^{-1})'=2\lambda C-\tfrac12(ZY^{-1})A(ZY^{-1})$.
+Hence $P_s=ZY^{-1}$, as in Step 2. For the stated positive quadratic
+costs this construction has no finite-horizon singularity. Also
+\[
+ \frac{d}{ds}\log\det Y=\tfrac12\operatorname{tr}(AP_s),\qquad
+ c(s)=2\nu\log\det Y(s),\qquad
+ \psi=(\det Y)^{-1/2}
+       \exp[-\mathbf x^\top P_s\mathbf x/(8\nu)].
+\]
+Here $\det Y(0)=1$ and it stays positive. This is an exact linear
+\emph{ODE} system for the quadratic coefficients, not a general linear
+PDE transformation supplied by Chen.
+
+For a finite-penalty illustration, use
+\[
+ H=I_2,\quad C=\begin{pmatrix}1&0.4\\0.4&1\end{pmatrix},\quad
+ \lambda=T=1,\quad\nu=0.2,\quad
+ \Phi=\begin{pmatrix}2&0.3\\0.3&1\end{pmatrix}.
+\]
+This $\Phi$ is positive definite and $C\Phi\ne\Phi C$, so this example
+does not assume simultaneous diagonalization of the two cost matrices.
+Writing the known coefficients explicitly, the linear PDE is
+\begin{equation}
+ \boxed{\psi_s=0.2(\psi_{x_1x_1}+\psi_{x_2x_2})
+ -1.25(x_1^2+0.8x_1x_2+x_2^2)\psi,}
+ \label{eq:stage4-twoasset}
+\end{equation}
+with
+$\psi(\mathbf x,0)=\exp[-(2x_1^2+0.6x_1x_2+x_2^2)/1.6]$ and
+$\mathbf v^*=-0.4\nabla\log\psi$.
+At time remaining $s=1$, the block solution gives
+\[
+ P_1\approx\begin{pmatrix}
+ 1.9643628285&0.4223113353\\0.4223113353&1.7879582164
+ \end{pmatrix},\qquad c(1)\approx0.6939899962.
+\]
+For $\mathbf X=(3,1)^\top$, this gives
+\[
+ \mathbf v^*(\mathbf X,0)\approx
+ (3.1576999103,1.5274461111)^\top,\qquad
+ \mathcal V(\mathbf X,0)\approx11.0005458421.
+\]
+These numbers use the finite $\Phi$ above, not Step 3's hard terminal
+constraint, so their costs need not agree with Step 3's table.
+
+\textbf{Checks performed.} Evaluate the block solution through the
+eigendecomposition of $C$ and compare it with direct fourth-order
+Runge--Kutta integration of Eq.~\eqref{eq:stage4-quadratic} on $[0,1]$.
+The comparison uses the 17 times $s=j/16$, $0\le j\le16$.
+With 128 and 256 uniform integration steps, the maximum absolute entry
+errors in $P_s$ are respectively $1.04\times10^{-10}$ and
+$6.45\times10^{-12}$. With 4096 steps, the maximum errors in $P_s$
+and $c$ are below $4\times10^{-15}$ and $2\times10^{-15}$,
+respectively, in double precision. The observed reduction before rounding
+error agrees with fourth-order integration. These are coefficient checks,
+not a spatial-grid PDE experiment. The Gaussian substitution above
+separately verifies the full-space linear PDE analytically.
+
+\subsection*{7. A complete one-asset example of the successful construction}
+
+Use the same allowed parameters as in the counterexample:
+$H=C=\lambda=1$ and $\Phi=0$. This lets us compare the correct construction
+with the failed auxiliary-field substitution on exactly the same problem.
+There is no hard terminal liquidation constraint in this example.
+
+Write $W_0(x,s)=b(s)x^2$. Substitution into
+Eq.~\eqref{eq:stage4-inviscid} gives
+\[
+ b'(s)=1-b(s)^2,\qquad b(0)=0,\qquad b(s)=\tanh s.
+\]
+Indeed $b'=\operatorname{sech}^2s=1-\tanh^2s$. Since $P_s=2b(s)$,
+Eq.~\eqref{eq:stage4-quadratic} then gives
+\[
+ c'(s)=2\nu\tanh s,\qquad
+ c(s)=2\nu\log\cosh s.
+\]
+Consequently the positive linear-PDE solution is
+\begin{equation}
+ \boxed{\psi(x,s)=\frac{1}{\sqrt{\cosh s}}
+ \exp\left[-\frac{x^2\tanh s}{4\nu}\right],\qquad
+ \psi_s=\nu\psi_{xx}-\frac{x^2}{4\nu}\psi,\quad\psi(x,0)=1.}
+ \label{eq:stage4-scalar-solution}
+\end{equation}
+To check every term, divide the derivatives by $\psi$:
+\[
+ \frac{\psi_s}{\psi}=-\tfrac12\tanh s
+ -\frac{x^2}{4\nu}\operatorname{sech}^2s,\qquad
+ \frac{\psi_{xx}}{\psi}=-\frac{\tanh s}{2\nu}
+ +\frac{x^2\tanh^2s}{4\nu^2}.
+\]
+Thus $\nu\psi_{xx}/\psi-x^2/(4\nu)=\psi_s/\psi$ by
+$\tanh^2s-1=-\operatorname{sech}^2s$. Finally,
+\[
+ -4\nu\log\psi-c(s)=x^2\tanh s=W_0(x,s),\qquad
+ -2\nu\,\partial_x\log\psi=x\tanh s=v^*(x,T-s).
+\]
+\textbf{Why include the prefactor?} Without $(\cosh s)^{-1/2}$ the
+spatial derivative still recovers the feedback, but the proposed $\psi$
+does not satisfy the stated linear PDE. The prefactor records the scalar
+correction needed for both the PDE and the recovered value.
+
+\subsection*{Caveats and exit criterion}
+
+The failure identified here is a missing nonlinear constraint in the
+direct application of Chen's substitution. It does not establish a
+universal impossibility theorem for linear representations of nonlinear
+equations. The successful parabolic construction uses an added diffusion
+and the project's quadratic structure. General nonquadratic costs,
+inventory-dependent coefficients, sales-only controls, and imposed
+boundaries require new arguments; their feedback need not be unchanged.
+In particular, the full-space stochastic inventory process can cross an
+inventory boundary. Feasibility of one deterministic trajectory does not
+justify a sales-constrained PDE on an entire grid.
+
+Keep $\Phi$ finite for the construction above. For exact liquidation one
+may study $\Phi=\alpha I$ as $\alpha\to\infty$, but the initial Gaussian
+tends to zero away from the origin and has vanishing mass. A heat-kernel
+limit requires a specified normalization; it cannot be obtained by
+declaring the limiting initial function to be zero almost everywhere.
+The value correction and its terminal limit also require care.
+
+\textbf{Status.} The paper's direct substitution has been tested and the
+missing constraint demonstrated. The compatible-diffusion transformation,
+its inverse, and exact recovery of the original quadratic feedback are
+derived. The finite-penalty coefficient comparison has been checked.
+Step 3's wider verification remains open.
+
+\textbf{Exit criterion for numerical Step 4.} Solve
+Eq.~\eqref{eq:stage4-twoasset} on specified finite domains with stated
+boundary conditions, recover the feedback, and compare it with the same
+finite-penalty Riccati solution. Refine the spatial/time grids and enlarge
+the domain until the feedback error meets a declared tolerance. Report
+that error separately from coefficient-integration error. This numerical
+PDE validation remains to be done before downstream resource claims.

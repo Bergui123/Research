@@ -5,11 +5,12 @@
 \hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
 \title{\textbf{Work plan summary}}
 \author{Equations and status; full derivations in WorkPlan.tex}
-\date{28 October 2026}
+\date{3 November 2026}
 \begin{document}
 \maketitle
 
-\textbf{Current: Step 3 verification. Next: complete Step 4.}
+\textbf{Step 4 derivation recorded; Step 3 verification and Step 4
+numerical PDE validation pending.}
 
 \section*{Step 1: not needed}
 Start directly from the published equation in Step 2.
@@ -55,22 +56,23 @@ Status: use the published Eq.~16 with $R=0$~\cite{bdg}; review the specializatio
 \]
 Status: verification pending; review the proof and reproduce costs, discrete convergence and a noncommuting finite-penalty check.
 
-\section*{Step 4: time-to-go and Cole--Hopf (next)}
+\section*{Step 4: Chen test and compatible-diffusion linear PDE}
 \[
  s=T-t,\qquad
- W_s=\nu\nabla\!\cdot(H^{-1}\nabla W)
- -\tfrac14(\nabla W)^\top H^{-1}\nabla W+\lambda\mathbf x^\top C\mathbf x,
+ (W_0)_s+\tfrac14(\nabla W_0)^\top H^{-1}\nabla W_0
+ =\lambda\mathbf x^\top C\mathbf x,\qquad W_0(\mathbf x,0)=\tfrac12\mathbf x^\top\Phi\mathbf x.
 \]
 \[
- \boxed{\psi=e^{-W/(4\nu)},\qquad\psi_s=-\hat H\psi,\qquad
- \hat H=-\nu\nabla\!\cdot(H^{-1}\nabla)
-       +\frac{\lambda}{4\nu}\mathbf x^\top C\mathbf x,}
+ \boxed{\psi=e^{-W_\nu/(4\nu)},\qquad\psi_s=-\hat H\psi,\qquad
+ \hat H=-\nu\nabla\!\cdot(H^{-1}\nabla)+\frac{\lambda}{4\nu}\mathbf x^\top C\mathbf x,\qquad
+ \psi(\mathbf x,0)=e^{-\mathbf x^\top\Phi\mathbf x/(8\nu)}.}
 \]
 \[
- \psi(\mathbf x,0)=e^{-\mathbf x^\top\Phi\mathbf x/(8\nu)},\qquad
- \boxed{\mathbf v^*=-2\nu H^{-1}\nabla\log\psi.}
+ \boxed{\mathbf v^*(\mathbf x,t)=-2\nu H^{-1}\nabla\log\psi(\mathbf x,T-t)
+ =\tfrac12H^{-1}P_{T-t}\mathbf x,\qquad
+ \mathcal V(\mathbf x,t)=-4\nu\log\psi(\mathbf x,T-t)-c(T-t).}
 \]
-Status: to do after Step 3; verify the algebra and compare a numerical PDE solution with Riccati using the same finite $\Phi$.
+Status: Chen's direct substitution fails (counterexample in WorkPlan.tex); the compatible-diffusion PDE above recovers Step 2's feedback exactly; a two-asset coefficient check passed; next validate the finite-domain PDE numerically.
 
 \section*{Step 5: spectrum and choice of $\nu$}
 \[

@@ -1,0 +1,25 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,geometry,parskip,xcolor,hyperref}
+\geometry{margin=2.3cm}
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
+\title{Stage 4: can the execution HJB be made linear?}
+\author{Derivation and applicability check}
+\date{29 October 2026}
+\begin{document}
+\maketitle
+% Build from this directory: pdflatex -interaction=nonstopmode -halt-on-error Stage4.tex
+% The same derivation is included by ../WorkPlan.tex.
+\setcounter{section}{3}
+\input{derivation.tex}
+\begin{thebibliography}{9}
+\bibitem{chen2001} W.~Chen (2001),
+\emph{Direct linearization method for nonlinear PDE's and the related
+kernel RBFs}, Sec.~2, Eqs.~(1)--(7), and Sec.~4.
+\url{https://arxiv.org/pdf/math/0110005}.
+\bibitem{kappen2005} H.~J.~Kappen (2005),
+\emph{A linear theory for control of non-linear stochastic systems},
+Phys.~Rev.~Lett.~95, 200201, PDF p.~2, Eqs.~(5)--(9).
+\url{https://arxiv.org/pdf/physics/0411119v2#page=2}.
+\end{thebibliography}
+\end{document}

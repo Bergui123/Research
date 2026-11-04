@@ -22,9 +22,14 @@ The two-asset execution problem has a classical Riccati solution, which
 provides the reference answer. The contribution is a resource estimate;
 no quantum speedup is claimed.
 
-\textbf{Current: Step 3 verification. Next: complete Step 4.}
+\textbf{Step 4 derivation recorded. Step 3 verification and Step 4 numerical
+PDE validation remain open.}
 Step 1 is not needed. Step 2 starts from the published Eq.~16 with $R=0$.
-No numerical PDE validation or complete quantum resource count is available.
+Step 4 tests Chen's substitution and gives a step-by-step
+compatible-diffusion derivation with Kappen's exact source location and
+a worked scalar example. This route preserves this quadratic model's
+feedback. No spatial-grid PDE
+validation or complete quantum resource count is available.
 
 \texttt{WorkPlan.tex} holds derivations, sources and checks for the paper;
 \texttt{Summary.tex} holds equations and one-line statuses.
@@ -45,294 +50,13 @@ These are different boundary-value problems. The diffusion parameter $\nu$
 introduced in Step 4 acts in inventory space and is not price volatility.
 The impact matrix $H$ and the differential operator $\hat H$ are distinct.
 
-\section{Step 2: specialize the 2022 paper's Eq.~16}
-\label{sec:stage2}
+% Each stage shares its derivation with its standalone document.
+\setcounter{section}{1}
+\input{stage2/derivation.tex}
+\input{stage3/derivation.tex}
 
-\subsection*{Source and reduction}
-
-Use Bergault, Drissi and Gu\'eant \cite{bergault2022}, Eq.~16 with terminal
-condition Eq.~17, Remark~2 and Appendix~A. Equation numbers refer to
-arXiv:2103.13773v4, 22 March 2022, p.~7.
-
-In the paper's notation, Eq.~16 is
-\begin{equation}
-\begin{aligned}
-0={}&\partial_t\theta
- +\tfrac14(\nabla_q\theta)^\top\eta^{-1}\nabla_q\theta
- +\tfrac12\operatorname{tr}(\Sigma D^2_{SS}\theta)\\
- &-\tfrac\gamma2(q+\nabla_S\theta)^\top\Sigma(q+\nabla_S\theta)
- +(\bar S-S)^\top R^\top(\nabla_S\theta+q).
-\end{aligned}
-\label{eq:bdg16}
-\end{equation}
-Set $R=0$. As stated in Remark~2 and Appendix~A of the paper, its quadratic
-solution then has no price dependence: $\theta(t,q,S)=q^\top A(t)q$.
-Thus $\nabla_S\theta=0$ and $D^2_{SS}\theta=0$, and Eq.~16 becomes
-\[
-0=\partial_t\theta+\tfrac14(\nabla_q\theta)^\top\eta^{-1}\nabla_q\theta
-       -\tfrac\gamma2q^\top\Sigma q.
-\]
-Translate to this project's cost-minimization convention using
-\[
- q=\mathbf x,\qquad \theta=-\mathcal V,\qquad
- \eta=H,\quad\Sigma=C,\quad\gamma=2\lambda,\quad\Gamma=\Phi/2.
-\]
-Multiplying the reduced equation by $-1$ gives Eq.~\eqref{eq:pde} below.
-The paper uses $\dot q=v_{\rm paper}$, whereas we use
-$\dot{\mathbf x}=-\mathbf v$. Hence
-$v_{\rm paper}^*=\eta^{-1}\nabla_q\theta/2=-\mathbf v^*$, which gives
-the feedback in Eq.~\eqref{eq:pde}. Its terminal condition
-$\theta(T,q,S)=-q^\top\Gamma q$ becomes
-$\mathcal V(\mathbf x,T)=\tfrac12\mathbf x^\top\Phi\mathbf x$.
-No discrete-to-continuum derivation is needed for this route.
-
-\subsection*{Classical reference solution}
-
-The corresponding reduced cost-to-go is
-\begin{equation}
- \mathcal V_\Phi(\mathbf x,t)=\inf_{\mathbf v(\cdot)}
- \left\{\int_t^T(\mathbf v^\top H\mathbf v+
- \lambda\mathbf x^\top C\mathbf x)\,dr
- +\tfrac12\mathbf x(T)^\top\Phi\mathbf x(T)\right\},
- \qquad\dot{\mathbf x}=-\mathbf v.
- \label{eq:cost}
-\end{equation}
-For deterministic schedules, Gaussian cost gives a certainty-equivalent risk
-term $\gamma\operatorname{Var}/2$, hence $\gamma=2\lambda$.
-The specialized HJB and feedback are
-\begin{equation}
- \boxed{\mathcal V_t-\tfrac14(\nabla\mathcal V)^\top H^{-1}\nabla\mathcal V
- +\lambda\mathbf x^\top C\mathbf x=0,\qquad
- \mathbf v^*=\tfrac12H^{-1}\nabla\mathcal V.}
- \label{eq:pde}
-\end{equation}
-For $g=\nabla\mathcal V$, the identity
-\[
- \mathbf v^\top H\mathbf v-\mathbf v^\top g
- =(\mathbf v-\tfrac12H^{-1}g)^\top H(\mathbf v-\tfrac12H^{-1}g)
- -\tfrac14g^\top H^{-1}g
-\]
-shows that the feedback uniquely minimizes the Hamiltonian.
-Substitute $\mathcal V=\tfrac12\mathbf x^\top P(t)\mathbf x+c(t)$ to obtain
-\begin{equation}
- \dot P=\tfrac12PH^{-1}P-2\lambda C,\qquad P(T)=\Phi,
- \qquad\dot c=0,\quad c(T)=0,
- \qquad\mathbf v^*=\tfrac12H^{-1}P\mathbf x.
- \label{eq:ric}
-\end{equation}
-Thus $c=0$ and the optimized initial cost is
-$\mathcal V_\Phi(\mathbf X,0)=\tfrac12\mathbf X^\top P(0)\mathbf X$.
-Along an admissible path,
-\[
- J_\Phi[\mathbf v]-\mathcal V_\Phi(\mathbf X,0)
- =\int_0^T(\mathbf v-\tfrac12H^{-1}P\mathbf x)^\top
- H(\mathbf v-\tfrac12H^{-1}P\mathbf x)\,dt\ge0,
-\]
-where $J_\Phi$ is the cost in Eq.~\eqref{eq:cost} at $t=0$.
-This supplies a direct optimality check.
-
-For exact liquidation, diagonalize
-$H^{-1/2}CH^{-1/2}=U\operatorname{diag}(\mu_i)U^\top$ and set
-$\kappa_i=\sqrt{\lambda\mu_i}$. The modes satisfy
-$\ddot y_i=\kappa_i^2y_i$, giving
-\begin{equation}
- \mathbf x(t)=H^{-1/2}U\operatorname{diag}\!\left(
- \frac{\sinh[\kappa_i(T-t)]}{\sinh(\kappa_iT)}\right)U^\top H^{1/2}\mathbf X.
- \label{eq:traj}
-\end{equation}
-The hard-limit feedback matrix is
-$P(t)=2H^{1/2}U\operatorname{diag}(\kappa_i\coth[\kappa_i(T-t)])U^\top H^{1/2}$.
-For zero-risk modes, use
-$\sinh(\kappa s)/\sinh(\kappa T)\to s/T$ and
-$\kappa\coth(\kappa s)\to1/s$.
-Appendix~A of \cite{bergault2022} gives the $R=0$ Riccati solution;
-Almgren--Chriss \cite{almgrenchriss2000}, App.~A.3, gives the classical
-inventory modes.
-
-For a finite penalty, a formula valid without covariance/penalty commutation is
-\begin{equation}
- \begin{pmatrix}Y(s)\\Z(s)\end{pmatrix}
- =\exp\!\left[s\begin{pmatrix}0&\tfrac12H^{-1}\\2\lambda C&0\end{pmatrix}\right]
- \begin{pmatrix}I\\\Phi\end{pmatrix},\qquad P(T-s)=Z(s)Y(s)^{-1}.
- \label{eq:finite-penalty}
-\end{equation}
-Indeed, $Y'=H^{-1}Z/2$ and $Z'=2\lambda CY$ give
-$(ZY^{-1})'=2\lambda C-(ZY^{-1})H^{-1}(ZY^{-1})/2$ and $P(T)=\Phi$.
-This identity is derived here from Eq.~\eqref{eq:ric}. A scalar-mode
-finite-penalty solution requires $H^{-1/2}\Phi H^{-1/2}$ and
-$H^{-1/2}CH^{-1/2}$ to commute.
-
-\subsection*{Scope and exit criterion}
-
-$R=0$ removes mean reversion, not Brownian price noise. Price independence
-uses the paper's terminal data and its $R=0$ solution. A feasible signed-control
-optimum also solves the sales-only problem at that initial state; it does
-not establish a sales-constrained value function over an entire inventory grid.
-
-Step 2's source reduction is recorded. In Step 3, review its signs, factors
-of two and terminal data before accepting the benchmark.
-
-\section{Step 3: verify the classical benchmark (current)}
-\label{sec:stage3}
-
-\subsection*{Instance and derivation}
-
-Use the synthetic, dimensionless instance
-\[
- H=I_2,\qquad C=\begin{pmatrix}1&0.4\\0.4&1\end{pmatrix},\qquad
- \lambda=T=1,\qquad\mathbf X=(3,1)^\top,\qquad\mathbf x(1)=0.
-\]
-The orthonormal covariance eigenvectors are
-$u_+=(1,1)^\top/\sqrt2$ and $u_-=(1,-1)^\top/\sqrt2$ with
-\[
- \mu_+=1.4,\quad\mu_-=0.6,\qquad
- \kappa_+=\sqrt{1.4}=1.1832159566,\quad
- \kappa_-=\sqrt{0.6}=0.7745966692.
-\]
-Thus $C\succ0$, $\eta_j>0$, and both rates are real. Set $s=1-t$ and
-\[
- f_\pm(s)=\frac{\sinh(\kappa_\pm s)}{\sinh\kappa_\pm},\qquad
- a_\pm(s)=\frac{\kappa_\pm\cosh(\kappa_\pm s)}{\sinh\kappa_\pm}.
-\]
-The trajectory and selling rates are
-\begin{equation}
- x_1=2f_++f_-,\quad x_2=2f_+-f_-,\qquad
- v_1=2a_++a_-,\quad v_2=2a_+-a_-.
- \label{eq:stage3-rates}
-\end{equation}
-They give $\mathbf x(0)=(3,1)^\top$ and $\mathbf x(1)=0$.
-
-For the equal-impact, equal-volatility family with $0<\rho<1$ and
-$X_1=\theta X_2$, $\theta>1$, $X_2>0$, the potentially negative rate is
-\[
- v_2=\frac{X_2}{2}\big((\theta+1)a_+-(\theta-1)a_-\big).
-\]
-The relative rate $\mathcal R(s)=a_-(s)/a_+(s)$ satisfies
-\[
- \frac{d}{ds}\log \mathcal R(s)
- =\kappa_-\tanh(\kappa_-s)-\kappa_+\tanh(\kappa_+s)\le0,
-\]
-because $k\mapsto k\tanh(ks)$ increases for $k>0$, $s\ge0$.
-Hence $\mathcal R(s)\le \mathcal R(0)$: checking the terminal-time ratio is sufficient and
-necessary for this particular family, rather than an assumption about all
-multi-asset problems. Specifically,
-\begin{equation}
- \frac{\theta+1}{\theta-1}\ge
- \mathcal R(0)=\frac{\kappa_-\sinh\kappa_+}{\kappa_+\sinh\kappa_-}
- =1.133429601920,
- \qquad
- \theta\le\frac{\mathcal R(0)+1}{\mathcal R(0)-1}=15.989177597983.
- \label{eq:stage3-bound}
-\end{equation}
-The choice $\theta=3$ satisfies this bound. More explicitly, since
-$a_+(s)\ge a_+(0)$ and $2-\mathcal R(s)\ge2-\mathcal R(0)>0$,
-\[
- v_2(t)\ge a_+(0)(2-\mathcal R(0))=0.6931333103,
- \qquad v_1(t)\ge2a_+(0)+a_-(0)=2.5062988967.
-\]
-Both minima occur at $t=1$; these are one-sided terminal limits of the rates.
-Thus both inventories stay nonnegative and decrease to zero for the entire
-interval. A time-grid check alone would not establish this all-time claim.
-
-\subsection*{Checks to reproduce}
-
-Targets retained from the existing notes are
-\[
- \mathbf v(0)=(4.0488436487,1.6639810858)^\top,\qquad
- J^*=\tfrac12\mathbf X^\top P(0)\mathbf X=13.810512031917.
-\]
-Recompute the cost by direct quadrature and compare it with the Riccati value.
-The full numerical check script is absent; the table below remains a set
-of targets to reproduce, not completed verification.
-
-For an independent check, minimize
-$\sum_{k=1}^N\|\mathbf x_{k-1}-\mathbf x_k\|^2/\tau
-+\tau\sum_{k=1}^N\mathbf x_k^\top C\mathbf x_k$ by solving its block
-tridiagonal stationarity system. Its Hessian is positive definite, so this
-is the unique global discrete minimizer.
-\begin{center}
-\begin{tabular}{@{}rrr@{}}
-\toprule
-$N$ & Maximum inventory error vs. continuum & Discrete optimal cost \\
-\midrule
-16 & $6.945\times10^{-5}$ & 13.432845715492 \\
-64 & $4.361\times10^{-6}$ & 13.714251771181 \\
-256 & $2.726\times10^{-7}$ & 13.786331703645 \\
-1024 & $1.704\times10^{-8}$ & 13.804459745777 \\
-\bottomrule
-\end{tabular}
-\end{center}
-The trajectory error decreases quadratically; the cost has first-order
-right-endpoint quadrature error. These are different error measures.
-The permanent-impact/spread offsets are not part of these reported costs.
-
-\subsection*{Source, scope and exit criterion}
-
-The trajectory comes from Step 2; the parameter choice and sales-only
-inequality are derived here. The all-time proof applies to the stated
-hard-liquidation instance. A finite penalty needs its own feasibility check,
-and $H=I$ does not test a noncommuting implementation.
-
-\textbf{Pending.} Review the Eq.~16 mapping, Riccati equation, terminal data
-and sales-only proof. Reproduce the cost and convergence table, and compare
-Eq.~\eqref{eq:finite-penalty} with direct Riccati integration for a
-noncommuting penalty/covariance pair. Record the checks, then begin Step 4.
-
-\section{Step 4: time-to-go and Cole--Hopf (next)}
-\label{sec:stage4}
-
-\subsection*{Derivation}
-
-Set $s=T-t$. Add compatible inventory diffusion to the time-reversed HJB:
-\begin{equation}
- W_s=\nu\nabla\!\cdot(H^{-1}\nabla W)
- -\tfrac14(\nabla W)^\top H^{-1}\nabla W+\lambda\mathbf x^\top C\mathbf x,
- \qquad W(\mathbf x,0)=\tfrac12\mathbf x^\top\Phi\mathbf x.
- \label{eq:viscous}
-\end{equation}
-For $\psi=e^{-W/(4\nu)}$,
-\[
- \psi_s=-\frac{W_s}{4\nu}\psi,\qquad
- \nabla\!\cdot(H^{-1}\nabla\psi)
- =\psi\left[\frac{(\nabla W)^\top H^{-1}\nabla W}{16\nu^2}
- -\frac{\operatorname{tr}(H^{-1}\nabla^2W)}{4\nu}\right].
-\]
-The squared-gradient terms cancel, giving
-\begin{equation}
- \boxed{\psi_s=-\hat H\psi,\qquad
- \hat H=-\nu\nabla\!\cdot(H^{-1}\nabla)
- +\frac{\lambda}{4\nu}\mathbf x^\top C\mathbf x,}
- \quad\psi(\mathbf x,0)=e^{-\mathbf x^\top\Phi\mathbf x/(8\nu)}.
- \label{eq:linearised}
-\end{equation}
-The control follows from $\nabla W=-4\nu\nabla\log\psi$:
-\begin{equation}
- \boxed{\mathbf v^*=-2\nu H^{-1}\nabla\log\psi.}
- \label{eq:recovery}
-\end{equation}
-To check whether diffusion changes the desired control, substitute
-$W=\tfrac12\mathbf x^\top P_s\mathbf x+c(s)$ into Eq.~\eqref{eq:viscous}:
-\[
- P_s'=2\lambda C-\tfrac12P_sH^{-1}P_s,\qquad P_0=\Phi,
- \qquad c'(s)=\nu\operatorname{tr}(H^{-1}P_s),\quad c(0)=0.
-\]
-Thus $P_s=P(T-s)$ and $\nabla W=P_s\mathbf x$ agree with the original
-finite-penalty control on the full space; diffusion changes only $c$.
-
-\subsection*{Source, caveats and exit criterion}
-
-Kappen \cite{kappen2005} supplies the exponential-transformation/noise-control
-compatibility principle; the $H^{-1}$-weighted quadratic specialization is
-derived here. This argument does not certify bounded-domain boundary
-conditions or a globally sales-constrained HJB. Taking $\Phi\to\infty$
-in the unnormalized heat initial data gives zero almost everywhere; use
-a specified finite penalty or a properly normalized limiting kernel.
-
-\textbf{To do after Step 3.} Review the cancellation and time orientation.
-Choose finite $\Phi$ and $\nu$, solve the linear PDE classically, recover
-Eq.~\eqref{eq:recovery}, and compare with the Riccati solution for that same
-$\Phi$. For one asset the check is $-4\nu\partial_x\log\psi=P(t)x$.
-Measure control error under grid refinement and domain enlargement.
+% Shared with the standalone document stage4/Stage4.tex.
+\input{stage4/derivation.tex}
 
 \section{Step 5: spectrum and choosing the diffusion parameter}
 \label{sec:stage5}
@@ -524,6 +248,11 @@ and error budget, and resource tables that include readout. No downstream
 numerical result is currently complete.
 
 \begin{thebibliography}{9}
+\bibitem{chen2001} W.~Chen (2001),
+\emph{Direct linearization method for nonlinear PDE's and the related
+kernel RBFs}, Sec.~2, Eqs.~(1)--(7), and Sec.~4.
+\url{https://arxiv.org/pdf/math/0110005}.
+
 \bibitem{almgrenchriss2000} R.~Almgren and N.~Chriss,
 \emph{Optimal Execution of Portfolio Transactions}, J.~Risk 3(2), 5--39
 (2000), Appendix~A.3.
@@ -533,9 +262,10 @@ numerical result is currently complete.
 under Ornstein--Uhlenbeck dynamics}, SIAM J.~Financial Math.~13(1),
 353--390 (2022). \url{https://arxiv.org/pdf/2103.13773v4}.
 
-\bibitem{kappen2005} H.~J.~Kappen, \emph{Linear theory for control of
-nonlinear stochastic systems}, Phys.~Rev.~Lett.~95, 200201 (2005).
-\url{https://arxiv.org/abs/physics/0411119}.
+\bibitem{kappen2005} H.~J.~Kappen, \emph{A linear theory for control of
+non-linear stochastic systems}, Phys.~Rev.~Lett.~95, 200201 (2005),
+PDF p.~2, Eqs.~(5)--(9).
+\url{https://arxiv.org/pdf/physics/0411119v2#page=2}.
 
 \bibitem{jin2023} S.~Jin, N.~Liu and Y.~Yu,
 \emph{Quantum simulation of partial differential equations via

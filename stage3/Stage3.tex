@@ -1,0 +1,25 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,geometry,booktabs,parskip,xcolor,hyperref}
+\geometry{margin=2.3cm}
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
+\title{Stage 3: derive and check the two-asset benchmark}
+\author{Equations, derivations and assumptions}
+\date{}
+\begin{document}
+\maketitle
+% Build from this directory; the derivation is shared with ../WorkPlan.tex.
+\setcounter{section}{2}
+\input{derivation.tex}
+\begin{thebibliography}{9}
+\bibitem{almgrenchriss2000} R.~Almgren and N.~Chriss,
+\emph{Optimal Execution of Portfolio Transactions}, J.~Risk 3(2), 5--39
+(2000), Appendix~A.3.
+
+\bibitem{bergault2022} P.~Bergault, F.~Drissi and O.~Gu\'eant,
+\emph{Multi-asset optimal execution and statistical arbitrage strategies
+under Ornstein--Uhlenbeck dynamics}, SIAM J.~Financial Math.~13(1),
+353--390 (2022). \url{https://arxiv.org/pdf/2103.13773v4}.
+
+\end{thebibliography}
+\end{document}
