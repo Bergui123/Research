@@ -117,7 +117,14 @@ variant, are analysed in \cite{jlm,jlmpy}. Finite auxiliary domains, recovery
 intervals set by spectral bounds and the freedom to shift the spectrum are
 also known \cite{jlm,gujin,nguyentura}; we use them and measure their effect on
 the cost. Circuits for the heat equation and other equations by this method are
-given in \cite{hjlz,jlybc}. Linear combination of Hamiltonian simulation
+given in \cite{hjlz,jlybc}. For scalar conservation laws, Wang, Hu and Zhang
+give a separate end-to-end algorithm using level-set lifting, finite
+differences and Schr\"odingerisation, with explicit gate-level circuits,
+observable recovery, error bounds and gate-complexity estimates
+\cite{wang2026conservation}. This is close prior work on explicit
+Schr\"odingerisation circuits for nonlinear PDEs; its lifted Liouville
+transport problem is distinct from the continuous-time execution HJB and
+feedback readout studied here. Linear combination of Hamiltonian simulation
 \cite{lchs} and transmutation \cite{jmz} are alternatives. For Hermitian generators the square-root dependence
 on $\|\Hd\|T$ of \cite{jmz,gslw,sachdeva} lowers the counts; Section~\ref{sec:direct} measures by how much.
 
@@ -1310,6 +1317,7 @@ cross-review the manuscript. The author is responsible for the content.
 \bibitem{gujin} A.~Gu and S.~Jin, Quantum simulation of a class of highly-oscillatory transport equations via Schr\"odingerisation, arXiv:2501.10176.
 \bibitem{nguyentura} H.~A.~Nguyen and A.~Tura, Quantum simulation of dissipative acoustic and elastic waves by Schr\"odingerization: absorbing boundaries and explicit polynomial-size circuits, arXiv:2611.02357.
 \bibitem{hjlz} J.~Hu, S.~Jin, N.~Liu and L.~Zhang, Quantum circuits for partial differential equations via Schr\"odingerisation, \emph{Quantum} 8, 1563 (2024), arXiv:2403.10032.
+\bibitem{wang2026conservation} K.~Wang, J.~Hu and L.~Zhang, An efficient explicit implementation of a quantum algorithm with quantum advantage for nonlinear scalar conservation laws, arXiv:2608.09675 (2026).
 \bibitem{jlybc} S.~Jin, N.~Liu and Y.~Yu, Quantum circuits for the heat equation with physical boundary conditions via Schr\"odingerisation, arXiv:2407.15895.
 \bibitem{lchs} D.~An, J.-P.~Liu and L.~Lin, Linear combination of Hamiltonian simulation for nonunitary dynamics with optimal state preparation cost, \emph{Phys.~Rev.~Lett.}~131, 150603 (2023), arXiv:2303.01029.
 \bibitem{jmz} S.~Jin, C.~Ma and E.~Zuazua, Transmutation based quantum simulation for non-unitary dynamics, arXiv:2601.03616.

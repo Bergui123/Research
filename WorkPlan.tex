@@ -144,6 +144,29 @@ theses, patents, non-English publications, or unpublished work. The related-
 work wording should state the narrow scope and cite the closest primary work;
 the result remains provisional pending citation-chain review.
 
+\paragraph{Follow-up primary-source search, 24 November 2026.}
+A fresh web search returned Wang, Hu and Zhang, arXiv:2608.09675, submitted
+10 August 2026. I opened the arXiv HTML full text: it lifts scalar
+conservation laws to a linear Liouville equation, discretizes by finite
+differences, applies Schr\"odingerisation, and gives explicit gate-level
+circuits, observable recovery, error bounds and gate-complexity estimates
+for the complete algorithm. This is close prior art for end-to-end,
+gate-level Schr\"odingerisation of nonlinear PDEs. Its scalar-conservation
+law formulation does not appear to cover the continuous-time execution HJB,
+Cole--Hopf heat equation and feedback readout costed here. The manuscript
+now cites it and narrows the no-match statement to optimal execution and
+HJB by Schr\"odingerisation. Evidence: arXiv abstract and full text at
+\url{https://arxiv.org/abs/2608.09675}. The exact-scope search found no
+match, but it does not establish priority; no citation-chain crawl was done.
+The paper and source archive were rebuilt after this citation change:
+\path{cd paper && ./make_submission.sh} completed successfully, compiled the
+archive from a clean directory, and \path{unzip -t paper/arxiv-submission.zip}
+reported no errors. Archive SHA-256:
+\texttt{1852695188fd125da95ab65284d0f6d1f3fc0855f32286b447cccfbf4b0dcfb5}.
+The paper PDF is 26 pages. All four local TeX documents build in two passes
+with no unresolved references or overfull boxes; two underfull bibliography
+boxes remain in the paper and one underfull module-list box in this plan.
+
 \paragraph{Hypotheses checked against the Lean statements.}
 The grid-rate expansion uses an integer stencil span $h\ge1$, so $d=h\Delta$
 is a positive lattice separation and $d\ge\Delta$ in the remainder proof.
