@@ -64,3 +64,15 @@ heat equation, and the feedback readout costed here. Accordingly, the manuscript
 as adjacent work and limits its no-match statement to optimal execution and HJB by
 Schrödingerisation. The targeted search found no exact match for that narrower combination;
 this is not a priority proof. No citation-chain crawl was done.
+
+## Focused grid-theorem search, 24 November 2026
+
+A second search targeted the paper's grid expansion and leading rate-error sign using phrases
+combining Gaussian initial data, an unbounded quadratic potential, finite-difference expansion,
+and optimal-control rate error. It returned Gurevich 1504.02673, already listed above, and
+Chen and Li 2602.16339 on large-time asymptotics for lattice and fractional heat equations.
+The latter concerns a different limit and model. The surfaced sources did not match the
+paper's small-mesh expansion for this Gaussian/quadratic problem or its opposite-sign leading
+rate-error terms. A broad query using only “radial error” returned unrelated image-registration
+material and was discarded. This pass adds no priority evidence; it is a narrow search record,
+not an exhaustive review or a proof that no source exists.
