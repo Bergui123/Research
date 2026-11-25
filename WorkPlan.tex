@@ -181,6 +181,14 @@ has to be inspected after an author uploads the package. Final archive
 SHA-256 after this change:
 \texttt{ecdbc7f156b003f6bf430ec07245e71a823ba3725c72c6bbb178f2bc92ca61f3}.
 
+\paragraph{Claude review handoff, 24 November 2026.}
+The Markdown handoff is saved in the review folder. I attempted to pass it to
+Claude Code in print mode with only read/search/web tools enabled. The process
+exited with status 1 because the OAuth session had expired and could not be
+refreshed. No review was generated or saved. The independent-review item
+remains open until the Claude session is re-authenticated or another
+available Claude session returns an actual Markdown review.
+
 \paragraph{Focused grid-theorem search, 24 November 2026.}
 A separate search used combinations of Gaussian initial data, unbounded
 quadratic potential, finite-difference expansion and optimal-control rate
