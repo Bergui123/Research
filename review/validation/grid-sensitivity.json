@@ -1,0 +1,9 @@
+{
+  "benchmark_grid": 64,
+  "saved_B2_n33_dx004": 0.0027688724952417403,
+  "B2_n33_dx008": 0.002768847004993392,
+  "B2_n65_dx008": 0.0027687420681606844,
+  "wrapped_edge_max_33_times": 0.027710676689434277,
+  "wrapped_edge_max_257_times": 0.027710676689434277,
+  "edge_max_relative_increase": 0.0
+}

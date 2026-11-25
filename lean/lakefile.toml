@@ -1,0 +1,17 @@
+name = "ExecutionProofs"
+defaultTargets = ["ExecutionProofs"]
+
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+weak.linter.style.multiGoal = true
+weak.linter.style.maxHeartbeats = true
+weak.linter.style.setOption = true
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.36.0"
+
+[[lean_lib]]
+name = "ExecutionProofs"

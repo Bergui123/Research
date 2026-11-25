@@ -1,4 +1,4 @@
-\section{Step 3: verify the classical benchmark (current)}
+\section{Step 3: verify the classical benchmark (verified)}
 \label{sec:stage3}
 
 \subsection*{Main equation and assumptions}
@@ -150,9 +150,12 @@ Targets retained from the existing notes are
  \mathbf v(0)=(4.0488436487,1.6639810858)^\top,\qquad
  J^*=\tfrac12\mathbf X^\top P(0)\mathbf X=13.810512031917.
 \]
-Recompute the cost by direct quadrature and compare it with the Riccati value.
-The full numerical check script is absent; the table below remains a set
-of targets to reproduce, not completed verification.
+Adaptive quadrature of the running cost along the analytic trajectory gives
+\[
+ J^*_{\rm quad}=13.810512031916721,
+\]
+which agrees with the closed form to $3\times10^{-15}$. The script \path{simulation/step3_benchmark.py}
+asserts every number in this section.
 
 For an independent check, minimize
 $\sum_{k=1}^N\|\mathbf x_{k-1}-\mathbf x_k\|^2/\tau
@@ -178,7 +181,8 @@ objective's Hessian is
  +2\tau\sum_{k=1}^N\delta\mathbf x_k^\top C\delta\mathbf x_k>0.
 \]
 This proves the discrete uniqueness assertion and specifies the
-linear system needed to reproduce the table.
+linear system. Solving it reproduces every entry of the table below:
+inventory errors agree to $10^{-3}$ relative, costs to $10^{-9}$.
 \begin{center}
 \begin{tabular}{@{}rrr@{}}
 \toprule
@@ -205,8 +209,32 @@ inequality are derived here. The all-time proof applies to the stated
 hard-liquidation instance. A finite penalty needs its own feasibility check,
 and $H=I$ does not test a noncommuting implementation.
 
-\textbf{Pending.} Review the Eq.~16 mapping, Riccati equation, terminal data
-and sales-only proof. Reproduce the cost and convergence table, and compare
-the block-exponential finite-penalty formula of Step 2 with direct Riccati integration for a
-noncommuting penalty/covariance pair. Record the checks, then begin Step 4.
+\subsection*{Verification record (22 November 2026)}
+
+All items are asserted in \path{simulation/step3_benchmark.py}.
+\begin{enumerate}
+\item \emph{Eq.~16 mapping and HJB.} SymPy rederives the two-asset HJB
+from the cost integrand with general diagonal $H$ and symmetric $C$, using
+\path{stage2/BellmanPrinciple.py}. It matches Step~2's boxed HJB and the
+feedback $H^{-1}\nabla\mathcal V/2$. Substituting $\theta=-\mathcal V$,
+$q=\mathbf x$, $\eta=H$, $\Sigma=C$, $\gamma=2\lambda$ into Eq.~16 with
+$R=0$ gives exactly minus that HJB.
+\item \emph{Riccati reduction.} The quadratic ansatz leaves the residual
+$\tfrac12\mathbf x^\top(\dot P-\tfrac12PH^{-1}P+2\lambda C)\mathbf x+\dot c$,
+identically in $\mathbf x$. This confirms Step~2's Riccati system and $c\equiv0$.
+\item \emph{Sales-only proof.} $\mathcal R(0)=1.133429601920$ and
+$\theta_{\max}=15.989177597983$ are reproduced. On 200{,}001 times the rate
+ratio $a_-/a_+$ is monotone, and the minima
+$v_1=2.5062988967$, $v_2=0.6931333103$ occur at $t=1$, as proved above.
+\item \emph{Cost, rates, table.} $J^*$, $\mathbf v(0)$ and the four-row
+table are reproduced to the stated digits.
+\item \emph{Noncommuting finite penalty.} For $\Phi$ of Step~4
+($C\Phi\ne\Phi C$), Step~2's block-exponential formula agrees with RK4 integration of the Riccati
+equation at 17 times. The maximum entry errors are
+$1.04\times10^{-10}$, $6.45\times10^{-12}$ and $3.1\times10^{-15}$ for 128,
+256 and 4096 steps (fourth order). It also reproduces $P_1$, $c(1)$,
+$\mathbf v^*(\mathbf X,0)$ and $\mathcal V(\mathbf X,0)$ of Step~4.
+\end{enumerate}
+\textbf{Status: verified.} The benchmark is accepted. The sales-only result
+remains specific to the hard-liquidation instance.
 

@@ -5,12 +5,15 @@
 \hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
 \title{\textbf{Work plan summary}}
 \author{Equations and status; full derivations in WorkPlan.tex}
-\date{3 November 2026}
+\date{24 November 2026}
+\input{paper/generated} % numbers from simulation/results
 \begin{document}
 \maketitle
 
-\textbf{Step 4 derivation recorded; Step 3 verification and Step 4
-numerical PDE validation pending.}
+\textbf{The numerical pipeline has run. Codex reviewed the current draft; Claude Code reviewed an earlier snapshot. The latest Claude response and arXiv processed preview remain open. For 1\% error in
+$\mathbf v^*(\mathbf X,0)$, targeting 95\% confidence: amplitude readout \QAOne{} qubits,
+$\TAOne$ T; sampling readout (quadratic models only) \QBOne{} qubits,
+$\TBOne$ T.}
 
 \section*{Step 1: not needed}
 Start directly from the published equation in Step 2.
@@ -37,9 +40,16 @@ Start directly from the published equation in Step 2.
  \dot P=\tfrac12PH^{-1}P-2\lambda C,\quad P(T)=\Phi,
  \qquad \mathbf v^*=\tfrac12H^{-1}P\mathbf x.
 \]
+\[
+ J[\mathbf v]-V_c(\mathbf x,t)=\int_t^T(\mathbf v-\mathbf v^*)^\top
+ H(\mathbf v-\mathbf v^*)\,dr\ge0.
+\]
+\[
+ \max_{\text{20 control checks}}|\text{identity residual}|<3.5\times10^{-10}.
+\]
 Status: use the published Eq.~16 with $R=0$~\cite{bdg}; review the specialization in Step 3.
 
-\section*{Step 3: verify the classical benchmark (current)}
+\section*{Step 3: verify the classical benchmark}
 \[
  H=I_2,\quad C=\begin{pmatrix}1&0.4\\0.4&1\end{pmatrix},\quad
  \lambda=T=1,\quad\mathbf X=(3,1)^\top,\quad\mathbf x(T)=0.
@@ -54,7 +64,8 @@ Status: use the published Eq.~16 with $R=0$~\cite{bdg}; review the specializatio
  \min_t v_1\approx2.5062989,\quad\min_t v_2\approx0.6931333,
  \qquad J^*\approx13.8105120.
 \]
-Status: verification pending; review the proof and reproduce costs, discrete convergence and a noncommuting finite-penalty check.
+Status: verified (Eq.~16 map, HJB, Riccati, sales-only bound, cost, table,
+noncommuting RK4 check); \texttt{simulation/step3\_benchmark.py}.
 
 \section*{Step 4: Chen test and compatible-diffusion linear PDE}
 \[
@@ -68,63 +79,224 @@ Status: verification pending; review the proof and reproduce costs, discrete con
  \psi(\mathbf x,0)=e^{-\mathbf x^\top\Phi\mathbf x/(8\nu)}.}
 \]
 \[
- \boxed{\mathbf v^*(\mathbf x,t)=-2\nu H^{-1}\nabla\log\psi(\mathbf x,T-t)
- =\tfrac12H^{-1}P_{T-t}\mathbf x,\qquad
- \mathcal V(\mathbf x,t)=-4\nu\log\psi(\mathbf x,T-t)-c(T-t).}
+ \boxed{\begin{gathered}
+ \mathbf v^*(\mathbf x,t)=-2\nu H^{-1}\nabla\log\psi(\mathbf x,T-t)
+ =\tfrac12H^{-1}P_{T-t}\mathbf x,\\
+ \mathcal V(\mathbf x,t)=-4\nu\log\psi(\mathbf x,T-t)-c(T-t).
+ \end{gathered}}
 \]
-Status: Chen's direct substitution fails (counterexample in WorkPlan.tex); the compatible-diffusion PDE above recovers Step 2's feedback exactly; a two-asset coefficient check passed; next validate the finite-domain PDE numerically.
+Status: Chen's substitution fails, compatible diffusion recovers the
+feedback exactly; finite-domain PDE validated (feedback error
+$7.0\times10^{-3}$ at $\Delta x=0.0625$, second order).
 
-\section*{Step 5: spectrum and choice of $\nu$}
+\section*{Step 5: scale invariance, grid error and choice of $\nu$}
 \[
  \hat H=\sum_i\left[-\nu\partial_{y_i}^2+
- \frac{\kappa_i^2}{4\nu}y_i^2\right],\quad
- E_{\mathbf n}=\sum_i\kappa_i(n_i+\tfrac12),\quad
- \ell_i=\sqrt{2\nu/\kappa_i}.
+ \frac{\kappa_i^2}{4\nu}y_i^2\right],\qquad
+ E_0=\tfrac12\sum_i\kappa_i,\qquad
+ \psi_\nu(\mathbf x,s)=\psi_1(\mathbf x/\sqrt\nu,s).
 \]
-Status: formulas recorded; choose $\nu$ through a sweep of widths, grid error and readout probabilities.
+\[
+ \sup\Bigl|\psi_\Delta-\sum_{k\le K}\Delta^{2k}p_k\psi\Bigr|\le B_K\Delta^{2K+2},\qquad
+ \chi=p_1=\nu^{-3}A+\nu^{-2}B+\nu^{-1}D,
+\]
+\[
+ v_a=v_a^*-2\nu\Delta^2\,\frac{\chi(\mathbf X+d\mathbf e_a)-\chi(\mathbf X-d\mathbf e_a)}{2d}+O(\Delta^4),\qquad
+ A>0,\quad B\le-2\operatorname{tr}(\nabla^2\!A\,P_s^{-1})<0,
+\]
+\[
+ |\psi_\square-\psi_\Delta|\le U,\qquad
+ |v_a-v_a^*|\le|v_a[S]-v_a^*|-\frac\nu d\sum_\pm\log\Bigl(1-\frac{B_2\Delta^6+U}{S}\Bigr).
+\]
+Status: proved and machine-checked in Lean (\texttt{lean/}); budgets charge the
+larger of the cancellation-free estimate and the numerical error-bound estimate; next, validate both.
 
 \section*{Step 6: discretisation}
 \[
- N_x=2^{n_x},\qquad
- (D_2\psi)_j=\frac{\psi_{j+1}-2\psi_j+\psi_{j-1}}{\Delta x^2},
- \qquad \hat H_d=-\nu\sum_a\eta_a^{-1}D_{2,a}+V_d.
+ N_x=2^{n_x},\qquad \Delta x=4/k,\qquad
+ \hat H_d=-\nu\sum_a\eta_a^{-1}D_{2,a}+V_d\ (\text{periodic}),\qquad
+ \lambda_{\max}(\hat H_d)\le\alpha_H.
 \]
-Status: numerical implementation and grid/domain convergence study pending.
+Status: done; second order; boundary effect at most $\BoundaryDiff$.
 
 \section*{Step 7: Schr\"odingerisation}
 \[
- i\partial_s\hat w=H_S\hat w,\qquad
  H_S=-\hat H_d\otimes D_\eta,\qquad
- \|H_S\|=\|\hat H_d\|\eta_{\max}.
+ w(T,p)=e^{-p}\psi(T)\ \ (p\ge-E_{\min}T),\qquad
+ L_p\ge\tfrac12(\alpha_HT+p_a+23).
 \]
-Status: derive auxiliary-domain errors and recovery probability, then check a small simulation.
+\[
+ P_{\rm succ}=\frac{e^{2cT}(1-e^{-2\omega})}{2\|g\|^2}
+ \frac{\|\psi(T)\|^2}{\|\psi(0)\|^2},\qquad
+ c\le E_{\min},\quad g\in L^2,\quad T,\omega>0.
+\]
+\[
+ c=0.98E_0,\qquad
+ \Bigl|\sum_{r\ne0}(-1)^rg(y+2L_pr)\Bigr|\le\frac{2e^{-R}}{1-e^{-2L_p}}\quad(|y|\le2L_p-R).
+\]
+Status: simulated up to $N=256$; grid offset realises a window gain of \WindowGain; wrap bound in Lean; smooth $g$
+follows arXiv:2505.00370.
 
 \section*{Step 8: resource count}
 \[
- N_q=Mn_x+n_p+n_{\rm anc},\qquad
- Q=O\!\left(\alpha T+\frac{\log(1/\varepsilon)}{\log\log(1/\varepsilon)}\right),
- \quad\alpha\ge\|H_S\|,
+ \hat H_d-\alpha I,\quad\alpha=\frac{4\nu}{\Delta x^2}+\frac{V'}2,\qquad
+ Q_{\rm run}=\sum_{j<n_p}(K_j+3),\quad K_j\ge\alpha2^{j-1}\Delta\eta\,T,\qquad
+ \theta_j\le\frac{\varepsilon_{\rm state}}{4n_p(n_p+1)},
 \]
 \[
- N_T^{\rm simulation}=Q\,T_{\rm block}+T_{\rm synthesis}.
+ \psi\le\psi_m\le e^{TV'2^{-m}}\psi .
 \]
-Status: no circuit or numerical counts yet; include preparation, recovery and readout in the total.
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+ & 5\% & 1\% & 0.1\%\\\hline
+A: qubits, T gates & \QAFive, $\TAFive$ & \QAOne, $\TAOne$ & \QATenth, $\TATenth$\\
+B: qubits, T gates & \QBFive, $\TBFive$ & \QBOne, $\TBOne$ & \QBTenth, $\TBTenth$
+\end{tabular}
+\end{center}
+\[
+ e^{-T\hat H_d}=e^{-\beta}\Bigl[I_0(\beta)+2\sum_k(-1)^kI_k(\beta)T_k(x)\Bigr],\quad\beta=\alpha T:\qquad
+ \text{T gates }\div\,\DirA\ (A),\ \div\,\DirB\ (B)\text{ at }1\%.
+\]
+Status: block encoding checked as a unitary; SELECT compiled, simulated at the costed sizes and charged
+(Qualtran blocks differ by $-\CompileMax\%$ to $+\CompileMin\%$).
 
 \section*{Step 9: readout}
 \[
- a_j=\frac{\psi(\mathbf x_j)}{\sqrt{\sum_k|\psi(\mathbf x_k)|^2}},\quad
- p_j=|a_j|^2,\quad
- \partial_{x_j}\log\psi(\mathbf X)\approx
- \frac{\log\psi(\mathbf X+\Delta x\mathbf e_j)-\log\psi(\mathbf X)}{\Delta x}.
+ \text{A: }v_a=-2\nu\eta_a^{-1}\frac{\log b(\mathbf X+h\Delta x\mathbf e_a)
+ -\log b(\mathbf X-h\Delta x\mathbf e_a)}{2h\Delta x},\qquad
+ \frac{|\Delta b_j|}{b_j}\le\frac{\pi}{M_jb_j}+\frac{\pi^2}{2M_j^2b_j^2}.
 \]
-Status: allocate amplitude-ratio error and include coherent preparation and recovery costs.
+\[
+ M_j=2^{t_j}:\qquad N_{\rm Grover}=M_j-1,\quad
+ N_{\rm prep,charged}=2M_j+1.
+\]
+\[
+ \text{B: }\hat P=2\nu\hat\Sigma^{-1},\qquad
+ \hat{\mathbf v}(\mathbf x)=\tfrac12\hat P\mathbf x,\qquad
+ n_s=\left(\frac{\kappa}{0.98\varepsilon-r}\right)^2,\quad\kappa=\KappaB.
+\]
+\[
+ R=\min\{R:\Pr[\operatorname{Bin}(R,P_{\rm succ})\ge n_s]\ge0.99\}.
+\]
+Status: B is \RatioAB{} times cheaper at 1\% (\RatioABSingle{} against one set of A) but needs a Gaussian solution.
 
 \section*{Step 10: validation and write-up}
 \[
- N_q=N_q(N_x,N_p,\varepsilon,T,\lambda,C,H),\qquad
- N_T=N_T(N_x,N_p,\varepsilon,T,\lambda,C,H).
+ \text{A (1\%): }\SweepAmin\text{--}\SweepAmax,\qquad
+ \text{B (1\%): }\SweepBmin\text{--}\SweepBmax\ \text{T gates over the }
+ \rho,\lambda\text{ sweeps.}
 \]
-Status: validate the full pipeline, compare related work and produce resource tables after Steps 4--9.
+\[
+ p_j\le e^{-(W_j-W_k)/2\nu},\qquad
+ \psi=e^{\boldsymbol\alpha\cdot\mathbf x+\gamma}\phi(\mathbf x-\boldsymbol\xi,s),\quad
+ \boldsymbol\xi'=-2\nu H^{-1}\boldsymbol\alpha,\quad\boldsymbol\alpha'=-\nabla V(\boldsymbol\xi),
+\]
+\[
+ \phi_s=\nu\nabla\!\cdot(H^{-1}\nabla\phi)-[V(\boldsymbol\xi+\mathbf y)-V(\boldsymbol\xi)-\nabla V(\boldsymbol\xi)\cdot\mathbf y]\phi .
+\]
+\[
+ \text{quartic penalty, }1\%:\quad\NqDirectOne\ \text{runs (direct)},\quad\NqRecOne\ \text{runs (recentred)};
+\]
+\[
+ P_{\rm succ}\text{ per asset: }\FacPlain\ (p\ge0),\quad\FacMargin\ (c=0.98E_0),\quad\FacExact\ (c=E_0).
+\]
+Status: emulations have lower bounds of \LowerBound\% on the success probability; runs of A grow about \GrowthA{} times per
+asset (model); barrier and recentring proved in Lean; paper in \texttt{paper/Paper.tex}; open: $M>2$ simulation,
+general $H$, recentring for other running costs.
+
+\section*{Independent review status, 24 November 2026}
+\[
+ |\Delta v_a|\le\frac{\nu}{d}\sum_{\pm}-\log(1-\delta_{a\pm}),
+ \qquad 0\le\delta_{a\pm}<1.
+\]
+\[
+ L=\frac{(\varepsilon-\varepsilon_{\rm grid})\|\mathbf v^*\|d}{2\sqrt2\nu},
+ \qquad \delta=1-e^{-L}.
+\]
+\[
+ \varepsilon=1\%:\quad T_A=\TAOne,\qquad N_{q,A}=\QAOne.
+\]
+\[
+ 2^k>\max Q,\qquad q=\lfloor 2^mQ/2^k\rfloor<2^m,\qquad h\in\mathbb N_{\ge1}.
+\]
+\[
+ \rho=0.6,\ \lambda=1:\quad Q_{\max}=2^{14},\quad k_{\rm new}=15.
+\]
+\[
+ \max_{\text{60 Riccati cases}}\frac{\|P_{\rm ODE}-P_{\rm block}\|_F}{\|P_{\rm block}\|_F}
+ <3.0\times10^{-12}.
+\]
+\[
+ 16Q=5a_1^2+(10\rho)a_1a_2+5a_2^2,\qquad a_i=4z_i\in\mathbb Z.
+\]
+\[
+ F_{kl}=e^{i\pi(k-c)}N^{-1/2}e^{-2\pi ikl/N}e^{2\pi icl/N},
+ \qquad c=(N-1)/2.
+\]
+\[
+ \Pr(y)\propto\left[\frac{\operatorname{sinc}(M(y/M-\theta))}
+ {\operatorname{sinc}(y/M-\theta)}\right]^2,\quad
+ \theta=\arcsin\sqrt a/\pi,\quad 0\le y<M.
+\]
+\[
+ M=2^{24}:\quad \sum_y p_y=1+3.7\times10^{-14}\quad\text{(floating point)}.
+\]
+\[
+ \max_{\rm six\ sweeps}\frac{\text{amplitude error}}{\text{amplitude budget}}
+ \approx0.486,\quad 0.00138\le\text{rate error}\lesssim0.00295.
+\]
+\[
+\delta=1-e^{-L},\quad
+(1-0.3\delta)(1-0.7\delta)\ge1-\delta,\quad
+(1+0.3\delta)(1+0.7\delta)\le(1-\delta)^{-1}.
+\]
+Status: four finite-budget regression checks pass; validate the individual error estimates and circuit costs next.
+\[
+\text{candidate scope}=\text{continuous-time execution HJB}
+ +\text{logical-qubit and T-gate estimate}.
+\]
+Status: targeted searches found prior quantum trading and control work; complete citation-chain review before making a priority claim.
+\[
+ B_2\approx0.00276887\quad(33,\ 0.04),\qquad
+ B_2\approx0.00276874\quad(65,\ 0.08).
+\]
+Status: the Lean development checks formal counterparts; optimal-control
+verification and the block-exponential identification are not formalized.
+
+\section*{Final hostile review and count update, 24 November 2026}
+\[
+ \begin{aligned}
+ \tau_K&=2e^{-\beta}\sum_{k>K}I_k(\beta),\qquad
+ p_K=e^{-\beta}\Bigl(I_0(\beta)+2\sum_{k=1}^K(-1)^kI_k(\beta)T_k(x)\Bigr),\\
+ \left\|\frac{p_K}{1+\tau_K}-e^{-\beta(1+x)}\right\|&\le2\tau_K
+ \le\frac{\varepsilon_{\rm state}}2.
+ \end{aligned}
+\]
+\[
+ J=\frac{(1/q+1/\|\mathbf u\|^2)^2}{\|\mathbf u\|^2},\qquad
+ q=|\langle x_a|u\rangle|^2,\qquad J\ge q^{-2}.
+\]
+\[
+ T_A^{\rm old}=(3.4\times10^{12},2.7\times10^{14},4.0\times10^{17})
+ \to T_A^{\rm current}=(1.4\times10^{12},1.1\times10^{14},1.9\times10^{17}).
+\]
+\[
+ \begin{aligned}
+ T_B^{\rm old}&=(4.0\times10^{10},6.4\times10^{12},1.8\times10^{16})\\
+ &\to T_B^{\rm current}=(1.5\times10^{10},2.2\times10^{12},8.6\times10^{15}),\\
+ Q_A&:(166,190,236)\to(161,186,231),\qquad Q_B:(142,165,192)\to(137,160,187).
+ \end{aligned}
+\]
+\[
+ R_A:1.0\times10^6\to7.9\times10^5,\quad
+ R_B:7.3\times10^5\to4.6\times10^5,\quad
+ \Delta P_{\rm succ}^{128^2\to256^2}=0.040\text{--}0.063\%.
+\]
+\[
+ R_{B,\rm direct}^{0.1\%}:441{,}308{,}420\to441{,}308{,}419,\qquad
+ P_{\rm succ}:0.13358762137068483\to0.13358762162555138.
+\]
+Status: scaled GQSP estimates are regenerated; phase synthesis, numerical enclosures, Claude's final response and arXiv preview remain open.
 
 \begin{thebibliography}{1}
 \bibitem{bdg} P.~Bergault, F.~Drissi and O.~Gu\'eant (2022),

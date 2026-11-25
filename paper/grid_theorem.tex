@@ -1,0 +1,52 @@
+% Shared by Paper.tex and ../WorkPlan.tex.
+\begin{theorem}[grid error]
+\label{thm:grid}
+Let $H=I$, $C\succeq0$, $\Phi\succ0$, $\lambda\ge0$, $\nu,T>0$, and let the
+number $M$ of assets be arbitrary. For every $\Delta>0$ and $\X\in\mathbb R^M$
+the equation $\partial_s\psi_\Delta=\nu\sum_aD_{2,a}\psi_\Delta-V\psi_\Delta$ on
+$\X+\Delta\mathbb Z^M$, with $\psi_\Delta(\x,0)=e^{-\x^\top\Phi\x/(8\nu)}$, has
+exactly one bounded solution on $[0,T]$. Moreover:
+\begin{enumerate}
+\item[(i)] There are polynomials $p_0=1,p_1,p_2,\dots$ in $\x$, with
+coefficients depending on $s$ but not on $\Delta$ and $\X$, such that
+$\psi_k=p_k\psi$ satisfies $\psi_k(\cdot,0)=0$ for $k\ge1$,
+\begin{equation}
+ \partial_s\psi_k=-V\psi_k+\nu\sum_{i=0}^kc_{k-i}\sum_a\partial_a^{2(k-i)+2}\psi_i,
+ \qquad c_j=\frac2{(2j+2)!},
+ \label{eq:hier}
+\end{equation}
+and, for every $K$, with constants independent of $\Delta$, $\X$, $\x$ and $s$,
+\begin{equation}
+ \Bigl|\psi_\Delta-\sum_{k=0}^K\Delta^{2k}p_k\psi\Bigr|\le B_K\,\Delta^{2K+2},\qquad
+ B_K=\nu\int_0^T\sum_{k=0}^Kc_{K-k+1}\sum_a
+ \bigl\|\partial_a^{2(K-k)+4}\psi_k(s)\bigr\|_\infty ds .
+ \label{eq:bk}
+\end{equation}
+\item[(ii)] $\chi=p_1$ vanishes at $s=0$ and satisfies
+\begin{equation}
+ \chi_s=\nu\nabla^2\chi-\tfrac12(P_s\x)\!\cdot\!\nabla\chi
+ +\frac\nu{12}\sum_a\bigl[\varphi_a^4+6\varphi_a^2\varphi_{aa}+3\varphi_{aa}^2\bigr],
+ \quad \varphi_a=-\frac{(P_s\x)_a}{4\nu},\ \ \varphi_{aa}=-\frac{(P_s)_{aa}}{4\nu}.
+ \label{eq:chi}
+\end{equation}
+It has the form $\chi=\nu^{-3}A+\nu^{-2}B+\nu^{-1}D$, where $A$, $B$ and $D$ are homogeneous in
+$\x$ of degree 4, 2 and 0 and do not depend on $\nu$.
+\item[(iii)] Let $d_0>0$. There are $\Delta_0$ and $K_0$ such that for
+$0<\Delta\le\Delta_0$ and every integer $h\ge1$ with $d=h\Delta\le d_0$ the rate read from
+$\psi_\Delta$ by Eq.~\eqref{eq:readout} is
+\begin{equation}
+ v_a=v_a^*+\Delta v_a+r_a,\qquad
+ \Delta v_a=-2\nu\Delta^2\,\frac{\chi(\X+d\,\mathbf e_a,T)-\chi(\X-d\,\mathbf e_a,T)}{2d},
+ \qquad|r_a|\le K_0\Delta^4.
+ \label{eq:dv}
+\end{equation}
+\item[(iv)] For $\x\ne0$ and $0<s\le T$,
+\begin{equation}
+ A(\x,s)>0,\qquad B(\x,s)\le-2\tr\bigl(\nabla^2\!A\,P_s^{-1}\bigr)<0 .
+ \label{eq:signs}
+\end{equation}
+The radial component of the leading rate error for small $d$ is
+$\x\cdot(-2\nu\nabla\chi)=-4\nu^{-2}(2A+\nu B)$. It is negative for $\nu<\nu^*$, zero at
+$\nu^*=-2A/B>0$, and positive for $\nu>\nu^*$.
+\end{enumerate}
+\end{theorem}

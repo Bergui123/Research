@@ -1,0 +1,225 @@
+{
+ "block_encoding_check": {
+  "n": 2,
+  "m": 2,
+  "alpha": 32.8,
+  "max_pot_rounding": 0.35,
+  "bound": 0.4,
+  "dim": 512
+ },
+ "best": {
+  "0.01": {
+   "n_p": 12,
+   "walk_steps_per_run": 5054,
+   "walk_steps_std_qsp": 10036,
+   "T_walk_step": 3660.747617098528,
+   "T_walk_parts": {
+    "select_kinetic": 44,
+    "potential_oracle": 3032,
+    "reflections": 168,
+    "rotations": 416.74761709852794
+   },
+   "T_prep": 68896,
+   "T_qft": 1152,
+   "T_run": 18574062.94251855,
+   "eps_rot": 5.5747519712676176e-11,
+   "alpha_H": 458.87346938775516,
+   "alpha_walk": 229.43673469387758,
+   "alpha_kin": 392.00000000000006,
+   "alpha_pot": 66.8734693877551,
+   "b": 9,
+   "m": 18,
+   "qubits_parts": {
+    "x": 12,
+    "p": 12,
+    "prep_lcu": 21,
+    "gqsp": 1,
+    "arith_work": 107,
+    "phase_grad": 35
+   },
+   "qubits_run": 188,
+   "target": 0.01,
+   "nu": 16.0,
+   "n": 6,
+   "L": 18.285714285714285,
+   "dx": 0.5714285714285714,
+   "h": 8,
+   "eps_grid": 0.004928909880118918,
+   "eps_grid_measured": 0.0022477607163348483,
+   "kind": "smooth_w1",
+   "eta_max": 19.9951171875,
+   "p_a": -1.9186563733441784,
+   "P_succ": 0.27164446374293777,
+   "amp_err_schr": 0.00016263694127882644,
+   "delta_tot": 0.0035726643461865435,
+   "b_amp": [
+    0.006316461271761749,
+    0.03740627199940573,
+    0.009782847574381729,
+    0.02445063465972825
+   ],
+   "AE_log2_iterations": [
+    18,
+    16,
+    17,
+    16
+   ],
+   "AE_iterations": [
+    262144,
+    65536,
+    131072,
+    65536
+   ],
+   "calls_per_estimate_set": 1048580,
+   "median_reps": 11,
+   "T_total": 214242699264815.12,
+   "T_total_no_boost": 19476609024074.1,
+   "logical_qubits": 189
+  }
+ },
+ "per_nu": [
+  {
+   "n_p": 13,
+   "walk_steps_per_run": 9905,
+   "walk_steps_std_qsp": 19732,
+   "T_walk_step": 3668.6958634468992,
+   "T_walk_parts": {
+    "select_kinetic": 44,
+    "potential_oracle": 3032,
+    "reflections": 168,
+    "rotations": 424.69586344689907
+   },
+   "T_prep": 101804,
+   "T_qft": 1352,
+   "T_run": 36444453.05055394,
+   "eps_rot": 3.522387809725903e-11,
+   "alpha_H": 465.53599999999994,
+   "alpha_walk": 232.76799999999997,
+   "alpha_kin": 399.99999999999994,
+   "alpha_pot": 65.53600000000002,
+   "b": 9,
+   "m": 18,
+   "qubits_parts": {
+    "x": 12,
+    "p": 13,
+    "prep_lcu": 21,
+    "gqsp": 1,
+    "arith_work": 107,
+    "phase_grad": 35
+   },
+   "qubits_run": 189,
+   "target": 0.01,
+   "nu": 8.0,
+   "n": 6,
+   "L": 12.8,
+   "dx": 0.4,
+   "h": 4,
+   "eps_grid": 0.004559403934216785,
+   "eps_grid_measured": 0.002480938272405751,
+   "kind": "smooth_w0.5",
+   "eta_max": 39.9951171875,
+   "p_a": -1.9186563733441784,
+   "P_succ": 0.3375617485740479,
+   "amp_err_schr": 2.196158943579274e-05,
+   "delta_tot": 0.0026842862309357897,
+   "b_amp": [
+    0.010404895386712106,
+    0.036147374548074346,
+    0.014091609668472378,
+    0.0267626190316364
+   ],
+   "AE_log2_iterations": [
+    18,
+    16,
+    17,
+    16
+   ],
+   "AE_iterations": [
+    262144,
+    65536,
+    131072,
+    65536
+   ],
+   "calls_per_estimate_set": 1048580,
+   "median_reps": 11,
+   "T_total": 420366638725152.4,
+   "T_total_no_boost": 38215148975013.85,
+   "logical_qubits": 190
+  },
+  {
+   "n_p": 12,
+   "walk_steps_per_run": 5054,
+   "walk_steps_std_qsp": 10036,
+   "T_walk_step": 3660.747617098528,
+   "T_walk_parts": {
+    "select_kinetic": 44,
+    "potential_oracle": 3032,
+    "reflections": 168,
+    "rotations": 416.74761709852794
+   },
+   "T_prep": 68896,
+   "T_qft": 1152,
+   "T_run": 18574062.94251855,
+   "eps_rot": 5.5747519712676176e-11,
+   "alpha_H": 458.87346938775516,
+   "alpha_walk": 229.43673469387758,
+   "alpha_kin": 392.00000000000006,
+   "alpha_pot": 66.8734693877551,
+   "b": 9,
+   "m": 18,
+   "qubits_parts": {
+    "x": 12,
+    "p": 12,
+    "prep_lcu": 21,
+    "gqsp": 1,
+    "arith_work": 107,
+    "phase_grad": 35
+   },
+   "qubits_run": 188,
+   "target": 0.01,
+   "nu": 16.0,
+   "n": 6,
+   "L": 18.285714285714285,
+   "dx": 0.5714285714285714,
+   "h": 8,
+   "eps_grid": 0.004928909880118918,
+   "eps_grid_measured": 0.0022477607163348483,
+   "kind": "smooth_w1",
+   "eta_max": 19.9951171875,
+   "p_a": -1.9186563733441784,
+   "P_succ": 0.27164446374293777,
+   "amp_err_schr": 0.00016263694127882644,
+   "delta_tot": 0.0035726643461865435,
+   "b_amp": [
+    0.006316461271761749,
+    0.03740627199940573,
+    0.009782847574381729,
+    0.02445063465972825
+   ],
+   "AE_log2_iterations": [
+    18,
+    16,
+    17,
+    16
+   ],
+   "AE_iterations": [
+    262144,
+    65536,
+    131072,
+    65536
+   ],
+   "calls_per_estimate_set": 1048580,
+   "median_reps": 11,
+   "T_total": 214242699264815.12,
+   "T_total_no_boost": 19476609024074.1,
+   "logical_qubits": 189
+  }
+ ],
+ "shares": {
+  "ae": 0.7,
+  "schr": 0.1,
+  "sim": 0.1,
+  "pot": 0.1
+ },
+ "confidence": 0.95
+}

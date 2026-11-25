@@ -1,0 +1,24 @@
+[
+ {
+  "readout": "A",
+  "target": 0.01,
+  "n": 6,
+  "m": 17,
+  "basis_states": 204096,
+  "T_select": 3224,
+  "T_kinetic": 44,
+  "T_select_qualtran": 3392,
+  "work": 107
+ },
+ {
+  "readout": "B",
+  "target": 0.01,
+  "n": 6,
+  "m": 15,
+  "basis_states": 204096,
+  "T_select": 2088,
+  "T_kinetic": 44,
+  "T_select_qualtran": 2144,
+  "work": 83
+ }
+]

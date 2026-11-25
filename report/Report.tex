@@ -1,0 +1,99 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,geometry,booktabs,parskip,xcolor,graphicx,hyperref}
+\geometry{margin=2.3cm}
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
+\graphicspath{{../simulation/figures/}}
+\input{../paper/generated}
+\title{\textbf{Logical qubits and T gates for two-asset optimal execution}\\[0.3em]
+\large Short report on Steps 3--10}
+\author{Xavier Bergeron, Quantum ETS}
+\date{24 November 2026 (replaces the version of 22 November)}
+\begin{document}
+\maketitle
+% Build from this directory. Numbers come from ../paper/generated.tex.
+
+\section*{Answer}
+
+Logical counts for the route Cole--Hopf, Schr\"odingerisation, qubitised simulation, readout. The error budgets use
+floating-point evaluations of proved bounds; see \path{WorkPlan.tex}.
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Target relative error of $\mathbf v^*(\mathbf X,0)$ & 5\% & \textbf{1\%} & 0.1\%\\
+\midrule
+A: amplitude estimation, qubits & \QAFive & \textbf{\QAOne} & \QATenth\\
+A: T gates, one estimate set & $\TAsingleFive$ & $\TAsingleOne$ & $\TAsingleTenth$\\
+A: T gates, targeting 95\% (median of 11) & $\TAFive$ & $\mathbf{\TAOne}$ & $\TATenth$\\
+B: sampling, qubits & \QBFive & \textbf{\QBOne} & \QBTenth\\
+B: T gates, targeting 95\% & $\TBFive$ & $\mathbf{\TBOne}$ & $\TBTenth$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Readout B fits the Gaussian covariance of the solution, returns the whole feedback matrix, and does not extend to
+non-quadratic problems. A direct polynomial of the same walk, without the auxiliary variable, needs \DirA{} (A) and \DirB{} (B)
+times fewer T gates at 1\%. The classical Riccati solution takes less than a millisecond, so no quantum advantage is claimed.
+
+\paragraph{Off the quadratic case.} The quadratic feedback does not depend on the artificial viscosity $\nu$, which is why large
+$\nu$ can be used. With a quartic terminal penalty ($\kappa=0.1$) the bias forces $\nu\approx\NqNuOne$ at 1\%, and direct readout needs
+$\NqDirectOne$ runs per estimate set. Recentring on the extremal of the quadratic model keeps the circuit and needs $\NqRecOne$ runs
+($\NqTOne$ T gates in total).
+
+\section*{What changed since 22 November}
+
+The first version gave 172 qubits and $4.0\times10^{13}$ T gates at 1\%, and
+198 and $1.4\times10^{16}$ at 0.1\%. Those figures are withdrawn:
+\begin{enumerate}
+\item The chosen grids met the error target only because two error terms of
+opposite sign cancelled at $\mathbf X$ for the chosen readout span. The report
+itself had warned against exactly this when choosing the domain. The budgets
+now charge the larger of a cancellation-free estimate and a numerical
+error-bound estimate. Neither numerical quantity is a validated enclosure.
+\item Amplitude estimation was costed without its control qubit and with
+iterate counts that were not powers of two. The comparator ancillas were
+undercounted.
+\item The emulation did not include the rounded potential. It now does.
+\item Several statements were too strong: the boundary comparison was
+quoted as exact, the wrap-around error as 4\%, the integrator as a Krylov
+method, and the smooth auxiliary profile as derived here (it is a variant of
+arXiv:2505.00370).
+\end{enumerate}
+The revision of the evening of 24 November halved the walk length (an identity term of the LCU was paid for), aligned the auxiliary grid
+with the recovery window (gain \WindowGain{} in success probability), charged GQSP leakage and the acceptance fluctuation, and corrected the
+statement on the growth with the number of assets.
+
+\section*{Where the cost comes from}
+
+\begin{enumerate}
+\item Runs: $\ReadoutRuns$ per estimate set (A), $\RunsBOne$ (B) at 1\%.
+\item Walk steps: about $\alpha\,\eta_{\max}T$ per run.
+\item The potential oracle: \OracleMin--\OracleMax\% of a walk step.
+\end{enumerate}
+\begin{center}
+\includegraphics[width=0.95\textwidth]{tcount.png}
+\end{center}
+Over the $\rho$ and $\lambda$ sweeps at 1\%, A ranges over
+$\SweepAmin$--$\SweepAmax$ and B over $\SweepBmin$--$\SweepBmax$ T gates. A
+continuum model predicts growth of about \GrowthA{} per asset for A. The success probability of B decays by \FacMargin{} per asset
+with the shifted window (\FacPlain{} without), and its runs grow by a factor \GrowthBTotal{} from 1 to 10 assets.
+
+\section*{What is proved}
+
+The grid error has a complete expansion with uniform remainders, for any number of assets. Its leading
+part consists of a quartic and a quadratic term of strictly opposite signs, so the
+radial rate error vanishes at exactly one $\nu$ (Theorem 3 of the paper). An a-posteriori bound covers the truncation to
+a box. The Lean~4 development checks formal counterparts of the mathematical
+statements, with the scope qualifications in the paper (\path{lean/}). The constants
+in the numerical error-bound estimates are floating-point evaluations, not
+validated enclosures.
+
+\section*{Evidence and limits}
+
+Emulations of both costed pipelines (2000 trials each) meet their targets.
+SELECT is compiled to gates, simulated exactly at the costed sizes, and charged at its AND count.
+GQSP truncation and gate synthesis are budgeted, not emulated. No
+error-correction overhead, no simulation beyond two assets, $H=I$ and integer
+$10\rho$ only. Full details: \path{paper/Paper.tex} and \path{WorkPlan.tex}.
+
+\end{document}

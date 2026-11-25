@@ -1,11 +1,20 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath,amssymb,geometry,booktabs,parskip,xcolor,hyperref}
+\usepackage{amsmath,amssymb,amsthm,array,geometry,booktabs,parskip,xcolor,hyperref}
 \geometry{margin=2.3cm}
 \hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
 \title{\textbf{Work plan}\\\large Quantum resources for multi-asset optimal execution}
 \author{Research route and notes for the paper}
 \date{}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\x}{\mathbf x}
+\newcommand{\X}{\mathbf X}
+\newcommand{\vv}{\mathbf v}
+\newcommand{\tr}{\operatorname{tr}}
+\DeclareUrlCommand\lean{\urlstyle{tt}}
+% Numbers generated from simulation/results by simulation/make_numbers.py.
+\input{paper/generated}
 \begin{document}
 \maketitle
 
@@ -22,17 +31,372 @@ The two-asset execution problem has a classical Riccati solution, which
 provides the reference answer. The contribution is a resource estimate;
 no quantum speedup is claimed.
 
-\textbf{Step 4 derivation recorded. Step 3 verification and Step 4 numerical
-PDE validation remain open.}
+\textbf{All steps executed; the following numbers were corrected on 24 November 2026
+but remain provisional pending the independent review below.
+For 1\% error in the initial optimal rate: readout A (pointwise amplitude
+estimation) needs \QAOne{} logical qubits and $\TAOne$ T gates; readout B
+(sampling, quadratic models only) needs \QBOne{} and $\TBOne$ (targeting 95\%
+confidence).} The figures first recorded on 22 November (172 qubits,
+$4.0\times10^{13}$ T at 1\%) are withdrawn: their grids met the error target
+only through a cancellation of two error terms at $\mathbf X$ (Step 5), the
+amplitude-estimation control qubit and a power-of-two iterate count were
+missing, and the comparator ancillas were undercounted (Step 8). The paper is
+\path{paper/Paper.tex}.
 Step 1 is not needed. Step 2 starts from the published Eq.~16 with $R=0$.
-Step 4 tests Chen's substitution and gives a step-by-step
-compatible-diffusion derivation with Kappen's exact source location and
-a worked scalar example. This route preserves this quadratic model's
-feedback. No spatial-grid PDE
-validation or complete quantum resource count is available.
+Step 3 verifies the benchmark. Step 4 tests Chen's substitution, derives
+the compatible-diffusion Cole--Hopf PDE and validates it on finite grids.
+Steps 5--9 choose $\nu$, the grid, the Schr\"odingerised $p$-grid, the
+circuit and the readout. Step 10 emulates the costed pipeline end to end.
+Every number comes from the scripts in \path{simulation/}, whose outputs
+are in \path{simulation/results/}. Open items are listed at the end of
+Step 10.
 
 \texttt{WorkPlan.tex} holds derivations, sources and checks for the paper;
 \texttt{Summary.tex} holds equations and one-line statuses.
+
+\section*{Independent review record, 24 November 2026}
+
+\textbf{Status: a Codex review of the current draft and a Claude Code review of an earlier snapshot are recorded; no human
+referee has read the paper.} The paragraphs below are the record of the checks, in the order in which they
+were made; numbers quoted in them as ``former'' or ``saved'' are historical. They do not certify every formula
+in the repository.
+The classical HJB, Riccati equation and Cole--Hopf factors were checked by
+direct substitution. The benchmark script reproduced the finite-penalty
+rate $(3.1576999103,1.5274461111)$, and \texttt{lake build} and
+\texttt{lake env lean scripts/AxiomCheck.lean} completed, the latter checking
+307 declarations (323 after the additions of the evening) with the three listed standard axioms. The Lean check proves
+the formal statements actually encoded; their correspondence to every paper
+claim and the numerical resource estimates still needs an independent audit.
+Equation 16 and its assumptions should be checked against the published
+source \cite{bergault2022}; for the price-independent, $R=0$ reduction the
+notation map includes $\lambda=\gamma/2$ and $\Phi=2\Gamma$.
+
+\subsection*{Priority checks for the next reviewer}
+\paragraph{Finite amplitude budget, revised.}
+Let $L=(\varepsilon-\varepsilon_{\rm grid})\|\mathbf v^*\|d/(2\sqrt2\nu)$
+and $\delta=1-e^{-L}$. Suppose the three deterministic amplitude errors,
+measured against the same reference amplitude, sum to at most $0.3\delta$,
+and amplitude estimation has relative error at most $0.7\delta$ against
+the prepared amplitude. Their composition lies between
+$(1-0.3\delta)(1-0.7\delta)=1-\delta+0.21\delta^2$ and
+$(1+0.3\delta)(1+0.7\delta)=1+\delta+0.21\delta^2$. The lower endpoint is
+at least $1-\delta$. Multiplying the upper endpoint by $1-\delta$ gives
+$1-0.79\delta^2-0.21\delta^3\le1$, so it is at most $1/(1-\delta)$.
+Since $1-\delta=e^{-L}$, each node's log-amplitude error is at most $L$.
+For each of the two rate components, the two unequal stencil-node errors add
+in log space and are bounded by $2L$. The Euclidean rate error is therefore
+at most $2\sqrt2\nu L/d$. The code now uses this finite allocation, computes
+the estimation tolerance against the smallest allowed prepared amplitude, and
+uses $\log(1+0.1\delta)$ for the potential-rounding share. Source: the
+logarithmic recovery formula in Section~7 of the paper. Caveat: this is a
+conditional error-composition statement; the numerical grid estimate,
+individual deterministic-error bounds and circuit implementation remain to
+be validated. Exit criterion: regenerate the counts and verify those
+conditions for every selected configuration. After recalculation the 1\%
+readout-A estimate is \QAOne{} logical qubits and $\TAOne$ T gates, compared
+with $2.0\times10^{14}$ T before the finite-budget correction; the 0.1\%
+estimate is $\TATenth$ T, compared with $2.6\times10^{17}$ T. The nine selected
+readout-A benchmark and sweep configurations meet their allocated QAE and
+sampled-profile shares; this does not validate the numerical profile estimates.
+
+\paragraph{Finite-budget regression checks, 24 November 2026.}
+The exact counterexample is $|\log(1-0.1)|=0.1053605>0.1$, so the earlier
+linear logarithm bound cannot be used for a negative relative perturbation.
+The focused tests now check that example, positive and negative errors at and
+near $\delta=1-e^{-L}$, unequal signed errors at all four stencil nodes, and
+the product of three deterministic shares with an estimation error measured
+against the prepared amplitude. For the latter, the deterministic deviations
+are bounded against the same reference amplitude and summed by the triangle
+inequality; multiplying by the estimation factor gives the interval
+$[1-\delta,(1-\delta)^{-1}]$. The test command is
+\texttt{../.venv/bin/python -m unittest tests.test\_error\_budget}, run from
+\path{simulation/}; four tests passed. This verifies the finite inequality and
+its conditional composition, not the truth of the sampled profile errors,
+potential model, or coherent-simulation error bounds. Task 1's overall verify
+item remains open until those assumptions and selected circuit instances are
+validated or explicitly kept empirical.
+
+\paragraph{Targeted novelty search, 24 November 2026.}
+The primary-source search found quantum annealing for discrete multi-period
+trading with transaction costs and market impact (Rosenberg \emph{et al.},
+\url{https://arxiv.org/abs/1508.06182}), quantum Riccati/LQR algorithms
+(Krovi, \url{https://arxiv.org/abs/2404.07303}; Huang \emph{et al.},
+\url{https://arxiv.org/abs/2610.26843}), and quantum algorithms for
+Hamilton--Jacobi value and gradient readout (Jin and Liu,
+\url{https://arxiv.org/abs/2512.07919}). Cole--Hopf with
+Schr\"odingerisation also appears in a 2026 Wasserstein-proximal method
+(\url{https://arxiv.org/abs/2606.28752}). Finite auxiliary-interval recovery
+and smooth profiles predate this paper (Jin, Liu and Ma,
+\url{https://arxiv.org/abs/2403.19123}; Nguyen and Tura,
+\url{https://arxiv.org/abs/2611.02357}), as do uniform all-orders lattice
+expansions (Gurevich, \url{https://arxiv.org/abs/1504.02673}). The broad
+claims of a first quantum treatment of optimal execution, HJ gradient
+readout, or finite-interval Schr\"odingerisation are therefore unsupported.
+The plausible narrower contributions are a cost model for this specific
+continuous-time HJB execution-feedback pipeline and the explicit grid
+hierarchy for Gaussian data under a quadratic potential, with its rate-error
+sign structure. The
+search did not find an exact match for those results, which does not establish
+priority. See \path{research_notes/Quantum execution algorithm novelty/}
+and \path{reports/Quantum execution algorithm novelty.md}. The search was
+targeted and did not complete citation-chain coverage of proceedings,
+theses, patents, non-English publications, or unpublished work. The related-
+work wording should state the narrow scope and cite the closest primary work;
+the result remains provisional pending citation-chain review.
+
+\paragraph{Hypotheses checked against the Lean statements.}
+The grid-rate expansion uses an integer stencil span $h\ge1$, so $d=h\Delta$
+is a positive lattice separation and $d\ge\Delta$ in the remainder proof.
+The shifted-window probability assumes $T,\omega>0$ and
+$g\in L^2(\mathbb R)$ with $g(p)=e^{-p}$ on $p\ge0$, which makes its
+normalisation finite and nonzero. The manuscript and the shared grid theorem
+now state these hypotheses explicitly. Sources: Theorem~\ref{thm:grid},
+\path{lean/ExecutionProofs/Leading.lean} and
+\path{lean/ExecutionProofs/Window.lean}. Caveat: the Lean window theorem
+assumes a mode decomposition; its weight integral is checked separately.
+Exit criterion: compare the remaining theorem hypotheses and conclusions with
+their formal statements, including the recovery normalisation.
+
+\paragraph{Independent Riccati integration check.}
+For 60 reproducible random positive-definite $H,\Phi$ and positive-semidefinite
+$C$ matrices in dimensions $1,2,4$, an adaptive Runge--Kutta solve of
+$P_s'=2\lambda C-\tfrac12 P_sH^{-1}P_s$ was compared with the block-matrix
+exponential. The largest relative matrix difference was $2.98\times10^{-12}$;
+the smallest $\det Y$ and smallest eigenvalue of the symmetrized $P$ were
+$1.021$ and $0.166$, respectively. Source and seed:
+\path{review/validation/check_riccati.py} and
+\path{review/validation/riccati-results.json}. Caveat: this samples only
+well-conditioned finite-dimensional examples and is not a general proof or an
+optimal-control verification theorem. Exit criterion: retain the analytical
+derivation and document the remaining formal scope separately.
+
+\paragraph{Deterministic optimal-control verification.}
+Let $V_c(\x,r)=\tfrac12\x^\top P_{T-r}\x$ with $P$ from the Riccati
+equation, and let $J[\vv]$ be the finite-horizon cost for an $L^2$ control
+and $\dot\x=-\vv$. The HJB identity gives
+\[
+ \vv^\top H\vv+\lambda\x^\top C\x+\frac{d}{dr}V_c(\x,r)
+ =\left(\vv-\tfrac12H^{-1}P_{T-r}\x\right)^\top H
+  \left(\vv-\tfrac12H^{-1}P_{T-r}\x\right).
+\]
+Integrating and using $V_c(\x,T)=\tfrac12\x^\top\Phi\x$ proves
+$J[\vv]-V_c(\x,t)$ is the integral of this nonnegative square. The linear
+feedback attains equality and has a finite-horizon solution. Source: direct
+completion of the square applied to the HJB and terminal condition in
+Step~2. Caveat: controls are unconstrained and square-integrable; this is a
+paper proof, not a Lean formalization of the optimal-control statement.
+The independent numerical check in
+\path{review/validation/check_control_identity.py} tested 20 random
+two-asset instances and sinusoidal controls; the largest absolute residual of
+the integrated identity was $3.5\times10^{-10}$. Exit criterion: retain the
+formalization caveat; the numerical test does not replace the proof.
+
+\paragraph{Scope of the Lean comparison.}
+\lean{proposition_one} in \lean{GeneralImpact} constructs a Gaussian solution of the
+linear equation, verifies its HJB residual and computes its feedback. Its
+statement does not identify $Y,Z$ with the block-matrix exponential or prove
+optimality for the control problem. \lean{grid_theorem_main} constructs a
+hierarchy and a constant for each fixed $K$; it does not by itself state one
+infinite hierarchy with the explicit integral constant. The paper now
+describes these as formal counterparts rather than claiming that these
+additional assertions are all formalized. Source: the theorem signatures in
+\path{lean/ExecutionProofs/GeneralImpact.lean} and
+\path{lean/ExecutionProofs/GridTheorem.lean}. Caveat: related lemmas may
+support a further formal proof, but a successful build does not fill this
+statement-level gap. Exit criterion: formalize the missing identifications
+and optimality argument, or preserve these scope qualifications.
+
+\paragraph{Amplitude-estimation call count.}
+For $M=2^t$ phase outcomes, the controlled powers contain
+$\sum_{j=0}^{t-1}2^j=M-1$ Grover iterations. If each iteration uses one state
+preparation and its inverse, the standard circuit uses $2M-1$ calls including
+the initial preparation; the resource script charges $2M+1$, two more.
+Source: the phase-estimation circuit in
+\cite{brassard2002}. Caveat: this comparison does not validate the compiled
+controlled reflections, state preparation or their T costs. Exit criterion:
+verify those implementations at gate level or keep the resource model
+conditional.
+
+\paragraph{Half-integer Fourier transform.}
+For $N=2^{n_p}$, $p_l=-L_p+2L_pl/N$, $\eta_k=(k-c)\pi/L_p$ and
+$c=(N-1)/2$, the normalized forward-transform matrix factors as
+\[
+ F_{kl}=e^{i\pi(k-c)}\,N^{-1/2}e^{-2\pi ikl/N}\,e^{2\pi icl/N}.
+\]
+The two diagonal phase factors surround the ordinary discrete Fourier
+transform. Each basis function changes sign under $p\mapsto p+2L_p$.
+Source: the frequency convention implemented in
+\path{simulation/step7_schrodinger.py}. The direct matrix, FFT and inverse
+agree for $N=4,8,16,32$ in \path{simulation/tests/test_auxiliary_fourier.py}.
+Caveat: this check does not establish the circuit compilation cost or a
+complete finite-grid wrap-error bound. Exit criterion: account for the phases
+in the circuit and validate the bound for all costed configurations.
+
+\paragraph{Profile-error selection.}
+The selection in \path{simulation/step8_resources.py} takes an envelope only
+over the tested frequencies in \path{simulation/step7_schrodinger.py}, and
+uses its $64^2$ data when the selected grid is larger. The selected benchmark
+configurations are separately emulated at their actual sizes in
+\path{simulation/step10_validation.py}. We separately evaluated the six
+non-benchmark readout-A sweep optima at their actual grid, rounded operator,
+auxiliary grid and stencil nodes using
+\path{review/validation/check_sweep_readout.py}. The combined amplitude
+errors were at most $0.486$ of their allocated budget, and the relative
+rate errors with exact amplitudes ranged from $1.38\times10^{-3}$ to
+$2.95\times10^{-3}$. Source: the saved costed configurations and the
+Chebyshev recovery calculation; results are in
+\path{review/validation/sweep-results.json}. This is a numerical check, not
+a bound between tested frequencies or across grid sizes; it does not emulate
+amplitude-estimation sampling, GQSP truncation or gate synthesis. Exit
+criterion: independently validate the numerical error estimates and the
+implemented circuit, or retain the stated empirical scope.
+
+\paragraph{Grid-bound sensitivity check.}
+The 1\% benchmark check in \path{review/validation} recomputed $B_2$ with
+33 and 65 time points at spatial mesh $0.08$, and
+compared the result with the saved 33-time, $0.04$-mesh value. The estimates
+were $0.0027688470$, $0.0027687421$ and $0.0027688725$, respectively.
+The largest wrapped-edge value among 257 equally spaced times was the same,
+to displayed precision, as the maximum among the nested 33 times
+($0.0277106767$). Source: the saved 1\% configuration, the grid hierarchy
+and the numerical matrix exponential; the results are recorded in
+\path{review/validation/grid-sensitivity.json}. Caveat: these comparisons are
+floating-point mesh diagnostics and do not bound unsampled extrema or numerical
+error. Exit criterion: construct validated spatial and temporal enclosures,
+or retain the error-bound estimates and all dependent accuracy claims as
+conditional.
+
+\paragraph{QAE sampler.}
+For $\theta=\arcsin\sqrt a/\pi$ the canonical phase-estimation law on
+$y=0,\ldots,M-1$ is proportional to
+$[\operatorname{sinc}(M(y/M-\theta))/\operatorname{sinc}(y/M-\theta)]^2$.
+The opposite eigenphase gives the same distribution of
+$\sin^2(\pi y/M)$ under $y\mapsto-y\pmod M$. The sampler now uses all $M$
+distinct outcomes, without a truncated tail or duplicated endpoint. Source:
+canonical amplitude estimation \cite{brassard2002}. All three selected
+benchmark configurations were emulated again with 2000 trials each; all
+trials with a median of 11 were within their respective targets. For the
+largest selected $M=2^{24}$, the unnormalised floating-point probability sum
+was $1+3.7\times10^{-14}$. Caveat: this sum check does not enclose every
+individual probability, and synthesis errors are budgeted but not emulated.
+Exit criterion: independently check numerical accuracy and the results at sweep
+configurations.
+
+\paragraph{Comparator scale, revised.}
+For $Q=5\mathbf x^\top C\mathbf x/\Delta x^2\ge0$, choose $k$ so that
+$2^k>\max Q$ and set $q=\lfloor2^mQ/2^k\rfloor$. Then
+$0\le q<2^m$ and $0\le Q-2^{k-m}q<2^{k-m}$, including when $\max Q$ is
+exactly a power of two. The resource script and its small-unitary check now
+use the same strict scaling rule. Source: the comparator construction in
+Section~6 of the paper. Caveat: floating-point evaluation of $Q$ and the
+arithmetic implementation still require independent audit. Exit criterion:
+check all selected benchmark and sweep inputs and regenerate affected costs.
+An audit of the saved pre-revision readout-A optima found $Q_{\max}=16384$
+at $\rho=0.6$, $\lambda=1$, so the former rule used $k=14$ at equality;
+the strict rule uses $k=15$. The other saved readout-A optima did not hit
+the endpoint. After recalculation, the 18 selected readout-A and readout-B
+benchmark and sweep configurations satisfy $Q_{\max}<2^k$ and $q<2^m$.
+This audit evaluates $Q$ in floating point and does not validate a compiled
+arithmetic circuit.
+
+\paragraph{Exact comparator arithmetic in the emulation.}
+For quarter-integer coordinates write $a_i=4z_i\in\mathbb Z$ and
+$w=10\rho\in\mathbb Z$. The circuit computes
+\[
+ 16Q=5a_1^2+w a_1a_2+5a_2^2.
+\]
+The former floating-point evaluation of $Q$ could lie just below a truncation
+boundary: at $\rho=0.4$ and $(z_1,z_2)=(-6,3.5)$ it returned
+$157.24999999999997$ instead of $157.25$, changing the $m-k=4$ comparator
+integer from $2516$ to $2515$. Across the 18 previously selected benchmark
+and sweep configurations, a direct comparison with the integer polynomial
+found such discrepancies in every configuration except the two with
+$\rho=0$. The emulator now forms the quarter-grid polynomial with integer
+arithmetic before dividing by 16; its regression test covers the example.
+Source: the comparator construction of Section~6 and the implementation in
+\path{simulation/step8_resources.py}. Caveat: the subsequent PDE and quantum
+emulations still use floating-point arithmetic, and the gate-level circuit is
+not compiled. Exit criterion: rerun all affected benchmark and sweep resource
+and emulation calculations, and update their derived tables and figures.
+\begin{enumerate}
+\item \emph{Amplitude error propagation.} An earlier version of
+  \path{paper/Paper.tex} claimed $|\Delta v_a|\le\nu(\delta_{a+}+\delta_{a-})/d$
+  for relative amplitude errors bounded by $\delta_{a\pm}$. This is not a
+  finite-error bound: for a relative error $-0.1$ the logarithmic error is
+  $-\log(0.9)>0.1$. If $0\le\delta_j<1$, a valid bound is
+  \[
+    |\Delta v_a|\le\frac{\nu}{d}
+      \left[-\log(1-\delta_{a+})-\log(1-\delta_{a-})\right].
+  \]
+  The paper and allocation now use the finite bound above. Validate the
+  assumptions on all error sources and regenerate the costs. The old
+  expression was a first-order approximation.
+\item \emph{Numerical certificate.} The bound in the grid theorem requires
+  true spatial suprema and an integral in time; box truncation requires a
+  bound for \emph{every} time. \path{simulation/certify_grid.py} samples 33
+  times and estimates the constants in floating point on a spatial mesh.
+  A sampled maximum can be smaller than the true maximum. The paper mentions
+  these sampled values in the budgets. The paper now labels them numerical
+  estimates. Supply validated upper bounds with numerical error control and
+  check both the lattice constant and the boundary source.
+\item \emph{Sampling confidence and run count.} The $95\%$ constant is a
+  Monte Carlo estimate of a large-sample Gaussian limit; the output is a
+  discrete, truncated, perturbed distribution. Furthermore
+  $R=\lceil n_s/P_{\rm succ}\rceil$ gives approximately $n_s$ \emph{expected}
+  accepted samples, not $n_s$ with high probability. For the saved 1\%
+  configuration, $R=741051$, $P_{\rm succ}=0.2814801018453269$ and
+  $n_s=208591$ give $\Pr[\operatorname{Bin}(R,P_{\rm succ})<n_s]\simeq0.4994$.
+  This fact alone does not disprove the observed success rate. Derive an
+  end-to-end finite-sample guarantee, including acceptance fluctuations and
+  the actual discrete distribution, or describe the confidence as empirical.
+\item \emph{Amplitude-estimation emulation.} The previous sampler truncated
+  the Fej\'er outcome range for large $M$ and duplicated an endpoint for
+  smaller $M$. The revised sampler uses all $M$ outcomes and the revised
+  end-to-end emulation has been run. Audit numerical accuracy for the largest
+  $M$ and update all reported tables from the regenerated results.
+\item \emph{Auxiliary boundary convention.} The paper uses
+  $\eta_k=(k-(N_p-1)/2)\pi/L_p$. For even $N_p$,
+  $e^{i\eta_k(p+2L_p)}=-e^{i\eta_kp}$: these are antiperiodic modes.
+  Check the QFT phases, boundary wrap and circuit against the actual
+  half-integer basis; state the convention and prove the wrap bound for it.
+\item \emph{Comparator endpoint.} The former scaling allowed $2^k=\max 5\x^\top C\x/\Delta x^2$.
+  At equality, truncation gives $q=2^m$, which is not an $m$-bit integer,
+  and the strict inequality $V-V_m<V'2^{-m}$ fails if it is saturated to
+  $2^m-1$. Require a strict scale bound, or specify saturation and a
+  non-strict rounding bound. Equality and its two neighbours now pass the
+  strict-scale test; verify the costed benchmark and sweep inputs.
+\item \emph{Bibliography and public reproducibility.} The arXiv version
+  \url{https://arxiv.org/abs/2212.14703} and the published article
+  \url{https://doi.org/10.1103/PhysRevA.108.032603} use different titles;
+  cite the journal title accurately. Check every other citation against its
+  source and make the simulation and Lean files available with the paper.
+  A local LaTeX build does not test arXiv's processing of the source package.
+\end{enumerate}
+
+\subsection*{Scope, paper edits and exit criterion}
+The theoretical grid expansion, sign proof, quantum block encoding, GQSP
+gate accounting, readout error composition, all parameter sweeps, standalone
+stage copies and bibliography have not yet received a line-by-line independent
+review. In particular, small-unitary checks and passing numerical assertions
+do not by themselves establish a complete fault-tolerant circuit or exact
+cost. Compare the listed Lean theorem hypotheses and conclusions with each
+paper statement and record any gaps. Check the restrictions needed for
+nonquadratic extensions and the source claims against the cited papers.
+Until these checks are complete, use ``estimate'' for the reported counts,
+and distinguish empirical confidence from a mathematical guarantee in the
+abstract, results, report and README. Existing plots show the numerical
+tradeoffs; no new graph is needed to establish the issues above.
+
+For a draft arXiv source package, include the paper's four input files and
+five figures, together with an ancillary archive of simulation sources,
+results and Lean sources. The package must be extracted and built independently;
+a successful local build is not an arXiv preview or a scientific review.
+
+Exit criterion: an independent reviewer reproduces each item, repairs or
+qualifies the affected claims, checks the whole formula inventory and sources,
+reruns the dependent simulations and Lean/LaTeX builds, and updates this
+record and the short status together. Do not mark the paper verified before
+that record exists.
 
 \subsection*{Model and notation}
 
@@ -75,22 +439,174 @@ from Step 2 make the operator a sum of harmonic oscillators:
 These follow from the standard full-space oscillator spectrum, with
 $\kappa_i=\sqrt{\lambda\mu_i}$. The levels are decay rates in
 $e^{-s\hat H}$; the ground-state contribution decays as $e^{-E_0s}$,
-$E_0=\tfrac12\sum_i\kappa_i$.
+$E_0=\tfrac12\sum_i\kappa_i$ ($E_0T=0.979$ for the benchmark; the grid
+operators give $E_{\min}=0.975$--$0.978$).
 
 For finite $\Phi$, the quadratic solution of Step 4 gives
 \[
  \psi(\mathbf X,s)=\exp\!\left[-\frac{\mathbf X^\top P_s\mathbf X}{8\nu}
  -\frac14\int_0^s\operatorname{tr}(H^{-1}P_r)\,dr\right].
 \]
-Larger $\nu$ broadens the Gaussian. Its unnormalized value alone does not
-predict readout probability, which depends on the normalized grid state.
 
-\subsection*{Exit criterion}
+\subsection*{Scale invariance (derived here)}
 
-Sweep $\nu$ and record $\ell_i$, $E_0T$, domain size, control error and
-normalized probabilities near $\mathbf X$. Select $\nu$ using the grid and
-readout costs together. The full-space spectrum does not certify a
-truncated numerical domain.
+Put $\boldsymbol\xi=\mathbf x/\sqrt\nu$. Then
+$\hat H=-\nabla_\xi\!\cdot(H^{-1}\nabla_\xi)+\tfrac\lambda4\boldsymbol\xi^\top C\boldsymbol\xi$
+and $\psi(\mathbf x,0)=e^{-\boldsymbol\xi^\top\Phi\boldsymbol\xi/8}$, so
+the rescaled problem contains no $\nu$:
+\begin{equation}
+ \psi_\nu(\mathbf x,s)=\psi_1(\mathbf x/\sqrt\nu,s),\qquad
+ \mathbf v^*=-2\sqrt\nu\,H^{-1}\nabla_\xi\log\psi_1(\mathbf X/\sqrt\nu,T-t).
+ \label{eq:scale}
+\end{equation}
+Choosing $\nu$ therefore only moves the readout point
+$\tilde{\mathbf X}=\mathbf X/\sqrt\nu$ relative to a fixed Gaussian.
+Grid errors depend on $\Delta x/\sqrt\nu$, $L/\sqrt\nu$ and
+$\tilde{\mathbf X}$. The norm ratio $\|\psi(T)\|^2/\|\psi(0)\|^2$ is
+independent of $\nu$ ($0.134$ on every grid tested).
+
+\subsection*{Grid error theorem (derived here; 24 November 2026)}
+
+This replaces the formal expansion of $\log\psi_d$ used before. Write
+$\Delta=\Delta x$, $V=\lambda\x^\top C\x/(4\nu)$. The statement and proof are
+shared with the paper (\path{paper/grid_theorem.tex}, \path{paper/grid_proof.tex}).
+
+\input{paper/grid_theorem}
+
+\subsection*{Proof}
+\phantomsection\label{app:proof}
+
+The flow of Step 2 with $H=I$ satisfies, for every vector $\mathbf w$,
+\begin{equation}
+ \bigl[(Y\mathbf w)\cdot(Z\mathbf w)\bigr]'=\tfrac12|Z\mathbf w|^2
+ +2\lambda(Y\mathbf w)^\top C\,(Y\mathbf w)\ge0 .
+ \label{eq:form}
+\end{equation}
+The monotone quantity used for part (iv) is
+\begin{equation}
+ \frac{d}{ds}\Bigl[B+2\tr(\nabla^2\!A\,P_s^{-1})\Bigr]
+ =-4\lambda\tr\bigl(\nabla^2\!A\,P_s^{-1}CP_s^{-1}\bigr)\le0
+ \quad\text{along }\dot\x=\tfrac12P_s\x .
+ \label{eq:mono}
+\end{equation}
+
+\input{paper/grid_proof}
+
+\subsection*{Box truncation and the numerical error-bound estimate}
+
+\input{paper/grid_box}
+
+With $S=\psi(1+\Delta^2p_1+\Delta^4p_2)$ and $E=B_2\Delta^6+U$, the theorem and the
+proposition give $|\psi_\square-S|\le E$ at the stencil nodes and, if $E<S$,
+\begin{equation}
+ |v_a-v_a^*|\le|v_a[S]-v_a^*|-\frac\nu d\sum_\pm
+ \log\Bigl(1-\frac ES\Bigr)\Big|_{\X\pm d\,\mathbf e_a}.
+ \label{eq:cert}
+\end{equation}
+The \emph{cancellation-free estimate} is the relative size of
+$|\Delta\mathbf v^{(4)}|+|\Delta\mathbf v^{(2)}|$, the magnitudes of the quartic
+and quadratic parts of Eq.~\eqref{eq:dv}. It exceeds the measured error in all \CfCount{}
+configurations with $\nu\ge1$.
+
+\subsection*{Numerical check}
+
+For $\nu=1$, $B_0=\BKZero$, $B_1=\BKOne$, $B_2=\BKTwo$; $B_K$ scales as
+$\nu^{-(K+1)}$. Suprema of the residuals for $K=0,1,2$ at $s=T$ and bounds
+$B_K\delta^{2K+2}$, $\delta=\Delta/\sqrt\nu$ (\path{simulation/grid_theorem.py}; orders $\OrderT$):
+\begin{center}\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+$\delta$ & $K=0$ & $K=1$ & $K=2$\\
+\midrule
+\TableT
+\bottomrule
+\end{tabular}
+\end{center}
+Numerical error-bound estimates (\path{simulation/certify_grid.py}): \CertCount{} of the \CertTotal{}
+benchmark grids and spans with $\nu\ge1$ have one; it always exceeds the measured error, with median
+ratio \CertMedian. For the costed configurations ($\nu$; grid; $h$, measured, cancellation-free,
+lattice remainder, $\max U$, estimated bound):
+\begin{center}\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\TableD
+\bottomrule
+\end{tabular}
+\end{center}
+Every readout-A budget, also in the sweeps, charges the larger of the
+cancellation-free estimate and the numerical error-bound estimate. Before this change the 0.1\% configuration charged
+$1.8\times10^{-4}$ while its numerical error-bound estimate was $2.5\times10^{-4}$ (box truncation). It now
+charges the latter; the estimate at that stage changed from $2.6\times10^{17}$ T
+and 235 qubits to $2.6\times10^{17}$ T and 236 qubits. The present counts also
+include the later finite-budget correction.
+
+\subsection*{Machine check (Lean 4, \path{lean/})}
+
+Formal counterparts of the paper's mathematical statements are proved in
+Lean~4 with Mathlib v4.36.0, with the scope qualifications in the independent
+review record. Build with
+\texttt{lake exe cache get}, \texttt{lake build}; \path{scripts/AxiomCheck.lean} checks that no
+declaration uses axioms beyond \lean{propext}, \lean{Classical.choice} and \lean{Quot.sound}
+(307 declarations; the check was seen to fail on a deliberate \lean{sorry}).
+
+\begin{sloppypar}
+Modules: \lean{MaxPrinciple}, \lean{SecondDifference}, \lean{LinearSystem}, \lean{Riccati},
+\lean{GridExpansion}, \lean{PolyGauss}, \lean{Hierarchy}, \lean{GridTheorem} (part (i):
+\lean{grid_theorem_main}), \lean{Leading} (\lean{eval_source_one}, \lean{rate_expansion}), \lean{PSD},
+\lean{Sign}, \lean{SignTheorem}, \lean{Radial} (\lean{radial_error_sign}), \lean{Truncation}
+(\lean{box_truncation}); the paper's other results are in \lean{GeneralImpact}
+(\lean{proposition_one}, \lean{norm_ratio}), \lean{Feedback}, \lean{Window}, \lean{Comparator}, \lean{Rounding}.
+The paper's appendix lists every theorem.
+\end{sloppypar}
+
+\textbf{Caveats.} $H=I$, uniform lattice, $\Phi\succ0$. The constants are floating-point
+evaluations ($B_2$ on a mesh of 0.04 and, like $g$, at 33 times), not interval enclosures.
+\lean{grid_theorem_main} has some constant; \lean{grid_expansion} gives Eq.~\eqref{eq:bk} for any
+primitive of the norm bounds. \lean{shifted_window} assumes the mode decomposition. Not formalised: numbers,
+circuits, readout statistics. Readout B's systematic error is measured, not certified.
+\textbf{Exit criterion (open):} independently compare the Lean statements with the paper,
+validate numerical upper bounds, and recalculate every costed readout-A configuration.
+
+\subsection*{Sweep and result}
+
+Script \path{simulation/step5_nu_sweep.py}. For each
+$\nu\in\{0.2,\dots,16\}$ the domain is fixed first: the smallest half-width
+$L_\nu$ whose feedback changes by less than $10^{-5}$ (relative) when the box is
+enlarged 1.6 times. The grid $N=2^n$ is then refined at $L\ge L_\nu$ with
+$\Delta x=4/k$ (Step 8). Columns: relative feedback error at $\mathbf X$, $h=1$;
+last column: smallest normalised probability among the four neighbours of
+$\mathbf X$.
+\begin{center}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+$\nu$ & $N=32$ & $N=64$ & $N=128$ & $N=256$ & $p_{\min}$, $N=64$\\
+\midrule
+\TableG
+\bottomrule
+\end{tabular}
+\end{center}
+The error is second order. Its low values near $\nu=1$ are the sign change of
+Theorem~\ref{thm:grid}(iv), not better resolution. The same cancellation makes some
+wide spans look several times more accurate (measured, predicted, bound):
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+$\nu$; grid; $h$ & measured & leading order & cancellation-free\\
+\midrule
+\TableC
+\bottomrule
+\end{tabular}
+\end{center}
+All budgets below charge the larger of the cancellation-free estimate and the numerical error-bound estimate.
+$\nu=0.2$ (Step~4's example) puts $\mathbf X$ about $7\sigma$ into the tail of
+$|\psi|^2$ and is unusable for pointwise readout.
+
+\subsection*{Exit criterion (met)}
+
+$\ell_i$, $E_0T$, domain size, control error and normalised probabilities near
+$\mathbf X$ are recorded for every $\nu$. The final $\nu$ is fixed jointly with
+the other costs in Step 8. The full-space spectrum does not certify the
+truncated domain; the truncation test does.
 
 \section{Step 6: discretisation}
 \label{sec:stage6}
@@ -98,8 +614,8 @@ truncated numerical domain.
 \subsection*{Construction and bound}
 
 Use $N_x=2^{n_x}$ points per asset on $[-L,L)$, with $\Delta x=2L/N_x$.
-Choose boundary conditions explicitly and enlarge $L$ to test truncation.
-For a central second difference,
+Each axis grid is shifted by less than $\Delta x$ so that $\mathbf X$ is a
+node. For a central second difference,
 \[
  (D_{2,a}\psi)_{\mathbf j}
  =\frac{\psi_{\mathbf j+\mathbf e_a}-2\psi_{\mathbf j}
@@ -118,136 +634,626 @@ with the stencil/domain bound
  \label{eq:norm-bound}
 \end{equation}
 The kinetic bound uses $\|-D_{2,a}\|\le4/\Delta x^2$; the potential bound
-uses $|x_a|\le L$. These are standard finite-difference estimates applied
-here, and must be checked for the chosen boundary stencil.
+uses $|x_a|\le L$.
 
-\subsection*{Exit criterion}
+\subsection*{Choices made and checks (script \path{simulation/step5_nu_sweep.py})}
 
-Preserve Hermiticity, compare the norm bound with numerical eigenvalues,
-and quantify recovered-control error against Riccati as $\Delta x$, $L$
-and $\nu$ vary. The final choice must resolve the Gaussian widths and
-include the starting portfolio. No circuit-cost advantage is assumed from
-the stencil alone.
+\begin{enumerate}
+\item \emph{Boundary.} Periodic, i.e.\ $D_{2,a}$ built from cyclic shifts,
+because that is what the circuit's incrementers implement. Dirichlet
+boundaries change the feedback by at most $\BoundaryDiff$ at $N=64$ for all
+seven $\nu$ (Step 5). $\hat H_d$ is real
+symmetric and positive definite in both cases.
+\item \emph{Spacing.} $\Delta x=4/k$, $k\in\mathbb N$, is the smallest
+such value with $N\Delta x/2\ge L_\nu$. Then $\mathbf X/\Delta x$ and
+all grid offsets are quarter-integers, so the circuit's coordinate
+arithmetic is exact with two fractional bits (Step 8). This costs up to 19\% in $\Delta x$ at $N=32$ and at most 8\% for $N\ge64$.
+\item \emph{Norm bound.} For $H=I$, Eq.~\eqref{eq:norm-bound} equals the
+LCU normalisation $\alpha_H$ of Step 8, up to the comparator's power-of-two
+scale. At $\nu=2$, $\lambda_{\max}(\hat H_d)=70.6,\,242,\,976$ against
+$\alpha_H=90.8,\,261,\,995$ for $N=32,64,128$. The bound holds and is
+nearly tight on fine grids, where the kinetic term dominates.
+\end{enumerate}
+
+\subsection*{Exit criterion (met)}
+
+Hermiticity is preserved, the bound is compared with numerical
+eigenvalues, and the recovered-control error against Riccati is quantified
+as $\Delta x$, $L$ and $\nu$ vary (Steps 4 and 5). The chosen grids resolve
+the Gaussian and contain the stencil around $\mathbf X$.
 
 \section{Step 7: Schr\"odingerisation}
 \label{sec:stage7}
 
 \subsection*{Construction and source}
 
-The heat evolution $e^{-s\hat H_d}$ is nonunitary. Embed it in a larger
-unitary system before applying quantum Hamiltonian simulation.
-Following Jin, Liu and Yu \cite{jin2023}: with $A=-\hat H_d$ Hermitian
-and negative semidefinite, set $w=e^{-p}\psi$ for an auxiliary variable $p$
-for $p>0$, extend the initial data as
-$w(0,p)=e^{-|p|}\psi(0)$ on the real line, and Fourier-transform in $p$
-with frequencies $\eta_k$. This gives the
-Schr\"odinger equation
+The heat evolution $e^{-s\hat H_d}$ is nonunitary. Following Jin, Liu and
+Yu \cite{jin2023} (Sec.~3.1, Eqs.~3.2--3.4), set $w=e^{-p}\psi$ for $p>0$
+and extend the initial data to $w(0,p)=g(p)\psi(0)$ on the real line,
+where the source uses $g(p)=e^{-|p|}$. Fourier transforming in $p$ gives
 \begin{equation}
   i\,\partial_s\hat w=H_S\hat w,\qquad H_S=-\hat H_d\otimes D_\eta,\qquad
-  \|H_S\|=\|\hat H_d\|\,\eta_{\max},\ \ \eta_{\max}=\pi/\Delta p
+  \|H_S\|=\|\hat H_d\|\,\eta_{\max}.
   \label{eq:schrodinger}
 \end{equation}
-with $\psi=e^{p^*}w(\cdot,p^*)$ recovered at $p^*>0$.
-The generator and extension follow Sec.~3.1, Eqs.~3.2--3.4 of
-\cite{jin2023}. Derive the finite $p$-range, spacing and recovery probability
-for this instance. A constant shift of $\hat H_d$ preserves
-$\nabla\log\psi$, but does not remove the need to account for recovery cost.
-\subsection*{Exit criterion}
 
-Recover $\psi$ to the target accuracy in a small classical simulation of
-the enlarged system, with auxiliary-domain error and success probability
-included. The unitary generator alone does not close this step.
+\subsection*{Mode picture and recovery (derived here)}
+
+On an eigenpair $(E,\boldsymbol\phi_E)$ of $\hat H_d$ the transport equation
+$\partial_sw=\hat H_d\partial_pw$ is a pure shift:
+$w_E(s,p)=g(p+Es)\,\psi_E(0)$. If $g(p)=e^{-p}$ on $p\ge p_a$, then
+$w_E(s,p)=e^{-Es}g(p)\psi_E(0)$ for all $p\ge p_a$, because $E\ge0$.
+Hence $w(T,p)=e^{-p}\psi(T)$ on $p\ge p_a$. More generally, if $g=e^{-p}$ on
+$p\ge0$ this holds for all $p\ge-E_{\min}T$, because every mode has
+$p+ET\ge0$ there. The window may therefore start at $p_a=-cT$ with any
+$c\le E_{\min}$. This is equivalent to shifting $\hat H_d$ by a constant and
+needs no gates. Keeping $[p_a,p_a+\omega]$, $\omega=3$,
+\[
+ P_{\rm succ}=\frac{e^{2cT}(1-e^{-2\omega})}{2\|g\|^2}\,
+ \frac{\|\psi(T)\|^2}{\|\psi(0)\|^2}.
+\]
+We use $c=0.98E_0$ and checked $c\le E_{\min}$ on every costed grid, including
+all sweep points (\path{simulation/check_window.py}). On the discrete grid the
+window starts at a grid point: before the revision of 24 November it started at the first
+multiple of $\Delta p$ above $-cT$, and the realised gain was 3.5--5.6 instead of
+$e^{2cT}$. The grid is now offset by $o=(p_a+L_p)\bmod\Delta p$, so that a point
+sits at $p_a=-cT$; the circuit prepares $g(p_l+o)$ and nothing else changes. The realised gain is
+\WindowGain{} ($g_1$, $\eta_{\max}=20$). Found by the independent review
+(\path{review/claude-response-current.md}, finding 2).
+
+\subsection*{Discrete $p$-grid: two findings}
+
+The circuit uses $N_p=2^{n_p}$ points on $[-L_p,L_p)$ and the
+half-integer frequencies $\eta_k=(k-\tfrac{N_p-1}2)\pi/L_p$, so
+$\eta_{\max}\approx\pi/\Delta p$. On this grid the shift is spectral
+interpolation of $g$.
+\begin{enumerate}
+\item \emph{Wrap-around.} A mode with $ET+p_a+3>L_p$ wraps across the
+periodic boundary and lands on the $e^{p}$ tail of $g$. Grid operators
+have $E_{\max}\approx70$--$300$. The initial data carry relative spectral
+weight from $3\times10^{-10}$ up to $10^{-5}$ above $E=40$, growing with
+$N$ and $\nu$. A likely source is the nonzero boundary values of
+$\psi(\cdot,0)$ along the weakly penalised $x_2$ direction; this was not
+tested separately. With $L_p=16$ or $32$ and the smooth profiles the readout amplitudes at
+$N=64$ are wrong by up to \UnsafeBench\% (benchmark), and by more than their own size
+at $\lambda=4$. The rule
+\begin{equation}
+ L_p\ge\tfrac12\left(E_{\max}T+p_a+\omega+20\right),\qquad E_{\max}\le\alpha_H,
+ \label{eq:safe-lp}
+\end{equation}
+bounds any wrapped contribution. The interpolant is antiperiodic, so the images of $g$ carry signs
+$(-1)^r$; if $|g(p)|\le e^{-|p|}$ for $|p|\ge R$ and $|y|\le2L_p-R$, then
+\[
+ \Bigl|\sum_{r\ne0}(-1)^rg(y+2L_pr)\Bigr|\le\frac{2e^{-R}}{1-e^{-2L_p}}
+ \qquad(\text{\lean{wrap_bound} in \lean{Wrap}}),
+\]
+because $|y\pm2L_pr|\ge R+2L_p(r-1)$ for $r\ge1$. Equation~\eqref{eq:safe-lp} gives the hypothesis with
+$R=20$ for $y=p+ET$, $p$ in the window, $0\le E\le\alpha_H$; a wrapped contribution changes
+$w(T,p,\x)$ by at most $2e^{-20}(1-e^{-2L_p})^{-1}\|\psi(0)\|$ (Cauchy--Schwarz over the eigenmodes).
+Caveat: the lemma concerns the images of $g$; the interpolant differs from the antiperiodic extension by the
+aliasing error, which is measured. The rule costs only $p$-qubits,
+$n_p=\lceil\log_2(2L_p\eta_{\max}/\pi)\rceil$, because the walk cost
+depends on $\eta_{\max}$ and not on $L_p$.
+\item \emph{Smoothness of $g$.} The kink of $e^{-|p|}$ gives first-order
+convergence in $\Delta p$. Smooth profiles that remove it are due to Jin, Liu,
+Ma, Peng and Yu \cite{jlmpy}; we use a variant of their cut-off construction
+(their Sec.~3.1),
+\begin{equation}
+ g_w(p)=\begin{cases}e^{-p},&p\ge0,\\
+ S(p/w)e^{-p}+(1-S(p/w))e^{p},&-w<p<0,\\
+ e^{p},&p\le-w,\end{cases}
+ \label{eq:smooth-g}
+\end{equation}
+where $S(y)=f(y+1)/[f(y+1)+f(-y)]$ and $f(z)=e^{-1/z}$ for $z>0$,
+$f(z)=0$ otherwise.
+All derivatives of $S$ vanish at $y=-1,0$, so $g_w$ is smooth and its
+Fourier coefficients decay faster than any power. Its bump on $(-w,0)$
+lowers $P_{\rm succ}$.
+\end{enumerate}
+
+\subsection*{Classical simulation of the enlarged system}
+
+Script \path{simulation/step7_schrodinger.py} (exact diagonalisation,
+$N=32,64$) and \path{simulation/chebyshev.py} (Chebyshev expansion for any
+grid; it agrees with diagonalisation to $4\times10^{-14}$). Largest relative
+error of the recovered readout amplitudes over all spans, $\nu=2$, $N=64$,
+shifted window, with $P_{\rm succ}$ in brackets:
+\begin{center}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+$\eta_{\max}$ ($n_p$) & $e^{-|p|}$ & $g_{1/2}$ & $g_1$ & $g_2$\\
+\midrule
+\TableP
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Exit criterion (met) and caveat}
+
+$\psi$ is recovered to below $10^{-6}$ relative amplitude error in a classical
+simulation of the enlarged system, with auxiliary-domain error and success
+probability included. The smooth profile is not new \cite{jlmpy}; the window
+shift is a standard spectral shift. No novelty is claimed for either.
 
 \section{Step 8: resource count}
 \label{sec:stage8}
 
-\subsection*{Formulas and sources}
+\subsection*{Circuit (derived here; script \path{simulation/step8_resources.py})}
 
-Let $n_p=\log_2N_p$ encode the auxiliary coordinate, and let $n_{\rm anc}$
-be the working qubits of the actual circuit. Then
+\emph{Registers.} $x_1,x_2$ ($n$ qubits each), $p$ ($n_p$), PREPARE
+ancillas $(t;k_1k_0;r_1..r_m)$, one GQSP signal qubit, arithmetic
+workspace, and a phase-gradient register used by state preparation.
+
+\emph{Block encoding of $\hat H_d-\alpha I$ ($H=I$).} The LCU is
+\[
+ \hat H_d-\alpha I\approx-\underbrace{\tfrac{\nu}{\Delta x^2}\sum_a(S_a+S_a^\dagger)}_{4\text{ equal terms}}
+ -\tfrac{V'}2B,\qquad
+ \langle0^m|H^{\otimes m}BH^{\otimes m}|0^m\rangle
+ =\operatorname{diag}\!\left(1-\tfrac{2q(\mathbf x)}{2^m}\right),
+\]
+where $B=\sum_r|r\rangle\langle r|\otimes(-1)^{[r<q(\mathbf x)]}$ and
+$q$ is the top $m$ bits of $5\mathbf x^\top C\mathbf x/\Delta x^2$
+($2\rho=4/5$ gives integer weights $5,5,4$). Hence $V'q/2^m$ approximates
+$V$ to within $V'2^{-m}$, and
 \begin{equation}
- N_q=Mn_x+n_p+n_{\rm anc}.
- \label{eq:nq}
+ \alpha=\frac{4\nu}{\Delta x^2}+\frac{V'}2,\qquad\alpha_H=2\alpha,\qquad
+ V'=\frac{\lambda\Delta x^2}{4\nu}\,\frac{2^{k}}5,\quad
+ 2^k>\max 5\mathbf x^\top C\mathbf x/\Delta x^2.
+ \label{eq:alpha}
 \end{equation}
-For a block encoding with normalization $\alpha\ge\|H_S\|$, qubitization/QSVT
-provides the asymptotic query bound \cite{lowchuang2019,gilyen2019}
-\begin{equation}
- Q=O\!\left(\alpha T+\frac{\log(1/\varepsilon)}{\log\log(1/\varepsilon)}\right),
- \qquad N_T^{\rm simulation}=Q\,T_{\rm block}+T_{\rm synthesis}.
- \label{eq:queries}
-\end{equation}
-$T_{\rm block}$ is the T-cost of one block-encoding call and
-$T_{\rm synthesis}$ counts synthesized phase rotations. The norm bound
-in Step 6 does not itself construct a block encoding or determine its
-normalization. State preparation, recovery and repeated readout calls must
-be included in the total cost.
+The spectrum of $\hat H_d$ is in $[0,\alpha_H]$. The earlier circuit encoded $\hat H_d$ itself with normalisation
+$\alpha_H$, i.e.\ it paid for an identity term. The constant $\alpha$ contributes $e^{i\eta\alpha T}$, a translation of
+$p$ by $\alpha T$: the integer part (in units of $\Delta p$) relabels the window, the fractional part is added to the
+offset of the prepared profile. This halves the walk length and removes two ancillas (independent review, finding 1).
+PREPARE is one $R_y$ on $t$ (weights $4\nu/\Delta x^2:V'/2$) and Hadamards
+elsewhere. SELECT applies $-S_a^{\pm1}$ as controlled $\pm1$ increments
+and then flips the direction bit, which makes SELECT Hermitian.
+The potential branch computes $z_a=j_a-o_a$ (exact: offsets are
+quarter-integers), $|z_a|^2$, $|z_1z_2|$ with its sign, and $5q$ by five
+additions. It then compares $r<q$, applies a phase, and uncomputes.
 
-\subsection*{Exit criterion}
+\emph{Circuit-level check.} For $n=2$ and $m=2$ (a
+512-dimensional unitary) the explicit PREPARE and SELECT matrices give
+$\mathrm{SELECT}^2=I$ and
+$\langle0|\mathrm{PREP}^\dagger\mathrm{SELECT}\,\mathrm{PREP}|0\rangle
+=(K+V_m-\alpha I)/\alpha$ exactly, with $|V_m-V|\le V'2^{-m}$. The walk
+operator's eigenphases contain $\pm\arccos[(E-\alpha)/\alpha]$ for every
+eigenvalue $E$.
 
-Specify the encoding, arithmetic precision and error allocation; derive
-$\alpha$, $n_{\rm anc}$ and gate costs from that circuit. Produce a numerical
-qubit/T-gate estimate for the benchmark and cross-check it at circuit level.
-The query bound alone is not a numerical resource estimate.
+\emph{Gate-level compilation of SELECT} (\path{simulation/compile_select.py}). SELECT is a permutation of basis states
+with signs. The script builds it from $X$, CNOT, AND, AND$^\dagger$ (measurement based, no T), $Z$ and $CZ$: controlled
+increments; coordinates by one constant addition; absolute values; two squarers (off-diagonal products only, carries
+limited to three bits beyond the row, checked on all inputs up to 11 bits); one multiplier; in-place accumulation;
+a carry chain for $[r<q]$; $CZ$; uncomputation. The gate list is simulated exactly on every grid point and on
+$2\times10^5$ random basis states of each of the \CompileCount{} selected configurations (benchmark and sweeps, A and
+B). It returns the correct state, sign and $q$, and all work qubits to zero. The resource script charges this
+circuit (\path{simulation/select_circuit.py}). Qualtran's block costs for the same layout, charged before, differ from it by
+between $-\CompileMax\%$ and $+\CompileMin\%$: at $\rho=0$ they undercount, which an assertion in the sweeps exposed. Caveat: only
+SELECT is compiled; reflections are multi-controlled $Z$ with the standard count, and PREPARE is one rotation.
+
+\emph{Time evolution.} With $u=\sum_jb_j2^j$ and
+$\eta=\Delta\eta(u-\tfrac{N_p-1}2)=\sum_j s_j2^{j-1}\Delta\eta$,
+$s_j=\pm1$, the evolution factorises:
+$e^{-iH_ST}=\prod_j e^{is_j\tau_j\hat H_d}$ with $\tau_j=2^{j-1}\Delta\eta T$
+and $\sum_j\tau_j=\eta_{\max}T$. The sign $s_j$ costs a Clifford $Z$ on bit
+$j$ at every SELECT. Each factor is a GQSP polynomial in the qubitization
+walk \cite{motlaghwiebe2024,berry2024gqsp}. It uses $K_j+3$ walk calls ($K_j+1$ directionally controlled, two
+controlled, \cite{berry2024gqsp} Thm.~2 and Eqs.~(9)--(11)), where $K_j\ge\alpha\tau_j$ is even. Standard QSP needs about
+$2K_j$ calls.
+
+\emph{Tail budget.} Let $\theta_j=2\sum_{k>K_j}|J_k(\alpha\tau_j)|$. The truncated pair $(P_K,Q_K)$ is
+rescaled by $1/(1+\theta_j)$ and completed by $(P',Q')$ with $P'^2+Q'^2\le4\theta_j$ to leading order. In the block
+$\langle+|\cdot|+\rangle$ the completion cancels, so the block errs by at most $a_j=2\theta_j$. Unitarity bounds the leak
+to $|-\rangle$, and the return from it, by $\sqrt{2a_j}$. After $n_p$ segments the success branch errs by at most
+$\sum_ja_j+\tfrac12(\sum_j\sqrt{2a_j})^2$ to leading order, i.e.\ $2n_p(n_p+1)\theta$ for equal tails. We therefore require
+$\theta_j\le\varepsilon_{\rm state}/[4n_p(n_p+1)]$; the other half of $\varepsilon_{\rm state}$ is for rotations. Source:
+derived here. Caveat: not formalised; the rotation and tail errors are added at first order.
+
+\emph{Gate costs.} SELECT is charged at the AND count of the compiled circuit
+(Toffoli and logical-AND both 4 T \cite{gidney2018}); multi-controlled $Z$ from Qualtran 0.7 \cite{qualtran}.
+Compute and uncompute are both counted. Rotations cost
+$3\log_2(1/\varepsilon_{\rm rot})+2$ T \cite{rossselinger2016}, four per
+walk step (PREPARE, PREPARE$^\dagger$, GQSP). Gaussian state preparation
+uses QROM-driven Grover--Rudolph \cite{groverrudolph2002,babbush2018}:
+about $2\cdot2^{2n}+2n\,b_{\rm rot}$ Toffolis for $\psi(0)$ and likewise
+for $g(p)$. Each QFT on $p$ is costed at $n_p^2$ Toffolis.
+
+\emph{Error budget.} Let $\varepsilon$ be the target relative error of
+$\mathbf v^*(\mathbf X,0)$. The grid error $\varepsilon_{\rm grid}$
+(Steps 5, 9) must be $\le\varepsilon/2$. The remainder is converted into a
+relative-amplitude budget $\delta=1-e^{-L}$, where
+$L=(\varepsilon-\varepsilon_{\rm grid})\|\mathbf v^*\|h\Delta x/(2\sqrt2\nu)$.
+It is split 70\% to amplitude estimation and 10\% each to
+Schr\"odingerisation, coherent simulation (GQSP truncation plus
+rotation synthesis, $\varepsilon_{\rm state}=0.1\,\delta\,b_{\min}$) and
+potential truncation ($m=\lceil\log_2(TV'/\log(1+0.1\delta))\rceil$,
+subject to the exact-arithmetic cap).
+
+\emph{Potential rounding.} $-\hat H_d$ has nonnegative off-diagonal entries, so
+$e^{-s\hat H_d}$ preserves positivity; if $0\le V-V_m\le\delta_V$ then
+$\psi\le\psi_m\le e^{T\delta_V}\psi$ entrywise. This replaces the earlier
+heuristic estimate.
+
+\emph{Qubits.} At the peak of the potential oracle,
+$N_q=2n+n_p+(3+m)+1+N_{\rm work}+b_{\rm rot}$ with $N_{\rm work}$ the peak workspace of the compiled SELECT, plus one
+recycled control qubit for amplitude estimation, with $b=n+3$ bits per
+coordinate (readout A) or $n+1$ (readout B, centred grid).
+
+\subsection*{Result}
+
+Readout A, cheapest over $\nu$, $N$, span $h$ and the profiles of Step 7:
+\begin{center}\footnotesize
+\begin{tabular}{@{}lccc@{}}
+\toprule
+target $\varepsilon$ & 5\% & 1\% & 0.1\%\\
+\midrule
+\TableA
+\bottomrule
+\end{tabular}
+\end{center}
+Readout B (Step 9):
+\begin{center}\footnotesize
+\begin{tabular}{@{}lccc@{}}
+\toprule
+target $\varepsilon$ & 5\% & 1\% & 0.1\%\\
+\midrule
+\TableB
+\bottomrule
+\end{tabular}
+\end{center}
+Qubits by register ($\mathbf x$, $p$, PREPARE, signal, arithmetic, phase
+gradient, control, total):
+\begin{center}\footnotesize
+\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+\TableQ
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Caveats and exit criterion}
+
+Logical counts only: no layout, routing or distillation. Toffolis are 4 T.
+QROM uncomputation and the QFT are costed coarsely (preparation is
+\PrepShareA\% of a run at 1\%). The circuit is specialised to $H=I$ and integer
+$10\rho$. The encoding, precision, error allocation, $\alpha_H$, $n_{\rm anc}$
+and gate costs are specified and cross-checked at matrix level, so the exit
+criterion is met. SELECT is compiled to gates; QROM, QFT and the GQSP phases are not.
+
+\subsection*{The direct polynomial (what the auxiliary variable costs)}
+
+$\hat H_d$ is Hermitian and nonnegative, so $e^{-T\hat H_d}$ needs no auxiliary variable. With
+$x=\hat H_d/\alpha-1\in[-1,1]$ and $\beta=\alpha T$,
+\[
+ e^{-T\hat H_d}=e^{-\beta}\Bigl[I_0(\beta)+2\sum_{k\ge1}(-1)^kI_k(\beta)T_k(x)\Bigr],\qquad
+ 2e^{-\beta}\sum_{k>K}I_k(\beta)\le{\rm tol}\ \text{ for }K\approx\sqrt{2\beta\log(2/{\rm tol})} .
+\]
+As a Laurent polynomial of degree $K$ in the walk it is bounded by $1+{\rm tol}$; GQSP implements it with $2K$ controlled
+walk steps on one signal qubit (one extra AND for the kinetic control and one for the phase of the potential branch).
+There is no leakage argument, since there is one segment and its success is flagged. $P_{\rm succ}$ is the norm ratio, without the
+window factor. Script \path{simulation/direct_polynomial.py}: same grids, budgets and arithmetic as the selected
+configurations; the truncated series is applied numerically and compared with the semigroup. Columns: walk steps (Schr.), runs (Schr.), T
+gates (ratio), qubits (Schr.).
+\begin{center}\footnotesize
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\TableX
+\bottomrule
+\end{tabular}
+\end{center}
+Source: Sachdeva and Vishnoi (2014); Gily\'en \emph{et al.}, \url{https://arxiv.org/abs/1806.01838}. The quadratic saving for
+Hermitian semigroups is known; the numbers for this problem are derived here. Caveat: the configurations are not
+re-optimised for the polynomial, so its counts are upper bounds. Schr\"odingerisation remains necessary for non-Hermitian
+generators. Exit criterion: met.
 
 \section{Step 9: readout}
 \label{sec:stage9}
 
-\subsection*{Observable and cost}
+\subsection*{Readout A: pointwise amplitude estimation}
 
-The output is the initial selling rate, recovered from nearby positive
-amplitude ratios:
-\[
- \partial_{x_j}\log\psi(\mathbf X)\approx
- \frac{\log\psi(\mathbf X+\Delta x\mathbf e_j)-\log\psi(\mathbf X)}{\Delta x}.
-\]
-This forward difference has first-order error, separate from the
-second-order Laplacian stencil. Normalized amplitudes and probabilities are
-\[
- a_j=\frac{\psi(\mathbf x_j)}{\sqrt{\sum_k|\psi(\mathbf x_k)|^2}},\qquad
- p_j=|a_j|^2.
-\]
-For a positive heat solution, probability ratios determine amplitude ratios.
-Amplitude estimation \cite{brassard2002} resolves a small amplitude to
-relative error $\epsilon_a$ with query scaling
-$O(1/(\epsilon_a|a_j|))$, given coherent preparation access. Each call
-includes preparation and recovery. Log-amplitude errors are divided by
-$\Delta x$ and multiplied by $2\nu H^{-1}$ in the recovered control.
+\begin{equation}
+ v_a=-2\nu\,\eta_a^{-1}\,
+ \frac{\log b(\mathbf X+h\Delta x\mathbf e_a)-\log b(\mathbf X-h\Delta x\mathbf e_a)}{2h\Delta x},
+ \qquad b_j=\sqrt{P_{\rm succ}\,p_j}.
+ \label{eq:readout}
+\end{equation}
+$b_j^2$ is the probability of the joint event ``$p$ in window and
+$\mathbf x=\mathbf x_j$'', so $P_{\rm succ}$ cancels in the ratio. Relative
+errors $\delta_j<1$ give
+$|\Delta v_a|\le(\nu/(h\Delta x))\sum_\pm[-\log(1-\delta_{a\pm})]$.
+Amplitude estimation \cite{brassard2002} with $M_j=2^{t_j}$ phase outcomes has relative
+error at most $\pi/(M_jb_j)+\pi^2/(2M_j^2b_j^2)$ with probability at least
+$8/\pi^2$; we charge $2M_j+1$ coherent runs, a conservative allowance.
+A semiclassical Fourier transform
+\cite{griffiths} needs one extra qubit. Each $t_j$ is chosen to meet its
+allocated per-node budget. The median of $r=11$
+repetitions gives 95\% joint confidence (binomial bound). Iterative variants
+\cite{grinko2021} may be cheaper.
 
-\subsection*{Exit criterion}
+\subsection*{Readout B: sampling (quadratic models only)}
 
-Allocate $\epsilon_a$ from the desired control error and include the resulting
-readout calls in the total T-count. Report normalized probabilities near
-$\mathbf X$; small probabilities can dominate the resource estimate.
+$|\psi(\mathbf x,T)|^2\propto e^{-\mathbf x^\top P_T\mathbf x/(4\nu)}$ has covariance
+$\Sigma=2\nu P_T^{-1}$. Accepted samples of $\mathbf x$ give
+$\hat P=2\nu\hat\Sigma^{-1}$ and the rate $\tfrac12\hat P\mathbf x$ for every
+$\mathbf x$; by scale invariance $\nu=1$ suffices and $\mathbf X$ need not be a
+node. Error metric: $\|(\hat P-P_T)P_T^{-1}\|_2$, uniform in $\mathbf x$. The
+systematic part $r$ adds grid error and rounding plus Schr\"odingerisation
+error in norm, both measured against the known $P_T$.
+
+\emph{Coherent error.} If the accepted vector $v$ ($\|v\|^2=P_{\rm succ}$, support in a box of half-width $L$, so
+$|\x|^2\le2L^2$) is replaced by $v'$ with $\|v'-v\|\le e$, the unnormalised second moments change by at most
+$2L^2(2e\sqrt{P_{\rm succ}}+e^2)$ and the normaliser by $2e\sqrt{P_{\rm succ}}+e^2$; the normalised matrix changes by at most
+$8L^2e/\sqrt{P_{\rm succ}}$ to first order, and the metric by that over $\sigma_{\min}(\Sigma)$. The script takes
+$e=0.01\,\varepsilon P_{\rm succ}\sigma_{\min}/(8L^2)$ and charges $0.02\,\varepsilon$.
+
+\emph{Samples and runs.} The 96\% quantile of the statistical part is $\kappa/\sqrt{n_s}$, $\kappa=\KappaB$ (large-sample Wishart limit, Monte
+Carlo), so $n_s=[\kappa/(0.98\,\varepsilon-r)]^2$. The number of runs is the smallest $R$ with
+$\Pr[\operatorname{Bin}(R,P_{\rm succ})\ge n_s]\ge0.99$; $0.96\times0.99>0.95$. Script
+\path{simulation/step9_sampling.py}. The first factor is asymptotic; the emulation tests it with a one-sided
+Clopper--Pearson bound at level 0.001. This readout uses the Gaussian form of
+$\psi$ and does not extend to nonquadratic costs.
+
+\subsection*{Exit criterion (met, with the stated scope)}
+
+The acceptance fluctuation and the coherent error are charged; the emulated success probabilities have lower bounds of at least
+\LowerBound\%. Synthesis errors are budgeted and not emulated; the Wishart quantile is asymptotic.
 
 \section{Step 10: validation and paper}
 \label{sec:stage10}
 
-\subsection*{Required results}
+\subsection*{End-to-end emulation}
 
-Validate the full Steps 4--9 route against the classical solution, including
-the $\lambda\to0$ straight-line liquidation limit. Sweep
-$\lambda$, correlation $\rho$, target accuracy $\varepsilon$, $\nu$ and $n_x$;
-keep the asset count $M$ explicit. Record terminal penalty, boundary
-conditions, numerical errors and all preparation/recovery/readout costs
-beside the resource tables.
+Scripts \path{simulation/step10_validation.py} (A) and
+\path{simulation/step9_sampling.py} (B), with the costed parameters, the
+comparator-rounded potential, the discrete $p$-grid and simulated measurement
+statistics; 2000 trials each. Columns: amplitude error (budget), rate error
+with exact amplitudes, 95\% quantile, \% within $\varepsilon$ for $r=11,3,1$
+(A), and for B in the uniform metric and at $\mathbf X$.
+\begin{center}\footnotesize
+\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+\TableE
+\bottomrule
+\end{tabular}
+\end{center}
+GQSP truncation and gate-synthesis errors are budgeted but not emulated. In
+the limit $\lambda=0$ the grid feedback matches Riccati to $\ZeroRiskErr$ and
+approaches $\mathbf X/T$ as $\Phi\to\infty$.
 
-\subsection*{Writing notes and exit criterion}
+\subsection*{Sweeps over $\rho$ and $\lambda$ (1\% target)}
 
-Retain the source-to-notation map, the sales-only proof and the
-finite-penalty comparison in the paper. Separate source results from the
-specializations derived here. The benchmark is synthetic and classically
-solvable; the paper's claim must match its resource estimates.
+\path{simulation/run_sweeps.sh}. Columns: A T gates, qubits, $\nu$; grid; B T
+gates, qubits, $P_{\rm succ}$, \% within $\varepsilon$.
+\begin{center}\footnotesize
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+$\rho$; $\lambda$ & & & & & & &\\
+\midrule
+\TableS
+\bottomrule
+\end{tabular}
+\end{center}
 
-Before claiming novelty, compare the proposed route with the work combining
-viscous Hamilton--Jacobi equations, Cole--Hopf and Schr\"odingerisation at
-\url{https://arxiv.org/abs/2606.28752} and nonlinear-PDE simulation at
-\url{https://arxiv.org/abs/2508.01640}. Detailed comparison remains open.
+\subsection*{Scaling with $M$}
 
-Completion requires a reproducible classical validation, an explicit circuit
-and error budget, and resource tables that include readout. No downstream
-numerical result is currently complete.
+\path{simulation/scaling_m.py}: continuum Gaussian model of the number of
+coherent runs ($C=(1-\rho)I+\rho\mathbf 1\mathbf 1^\top$, $\Phi=1.5I$, spacing
+$0.25\sqrt\nu$), an extrapolation for $M>2$. Columns: $P_{\rm succ}$ for
+$p\ge0$, $c=0.98E_0$, $c=E_0$; runs A; runs B ($p\ge0$); runs B (shifted).
+\begin{center}\footnotesize
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+$M$ & & & & & &\\
+\midrule
+\TableM
+\bottomrule
+\end{tabular}
+\end{center}
+Readout A grows by about \GrowthA{} per asset. $P_{\rm succ}$ is a product over the eigenmodes of $C$; with
+$\kappa_\mu=\sqrt{\lambda\mu}$, $y=\cosh\kappa_\mu T+\tfrac{\varphi}{2\kappa_\mu}\sinh\kappa_\mu T$,
+$z=\varphi\cosh\kappa_\mu T+2\kappa_\mu\sinh\kappa_\mu T$ and $\Phi=\varphi I$, the mode contributes
+$y^{-1}\sqrt{\varphi y/z}\,e^{2c_\mu T}$, where $c_\mu=\tfrac12\kappa_\mu$ for the exact shift. Since
+$\|e^{-(\hat H_\mu-E_{0,\mu})T}\psi(0)\|\le\|\psi(0)\|$ it is at most one, with equality only for the ground state. The $M-1$ modes
+$\mu=1-\rho$ give \FacPlain{} per asset without a shift, \FacMargin{} with $c=0.98E_0$ and \FacExact{} with $c=E_0$. The earlier
+statement that sampling grows ``roughly linearly'' and that the shift decides whether the decay is exponential was wrong: the
+shift changes the base. Runs B grow by a factor \GrowthBTotal{} from $M=1$ to $10$.
 
-\begin{thebibliography}{9}
+\subsection*{Non-quadratic data}
+
+\emph{Barrier.} With $\psi_i=e^{-W_i/4\nu}$ on a grid, keeping one term of the normalisation gives
+\[
+ p_j=\frac{\psi_j^2}{\sum_i\psi_i^2}\le e^{-(W_j-W_k)/2\nu}\quad\text{for all }j,k
+ \qquad(\text{\lean{amplitude_barrier}}).
+\]
+If the recovered control has a relative bias of at least $\beta\nu$ that must not exceed $\varepsilon$, then
+$p_j\le e^{-w\beta/2\varepsilon}$ with $w\le W_j-W_k$ (\lean{barrier_of_bias}). All benchmark optima use $\nu\ge4$, which is
+allowed only because the quadratic feedback does not depend on $\nu$.
+
+\emph{Recentring.} Let $\boldsymbol\xi'=-2\nu H^{-1}\boldsymbol\alpha$, $\boldsymbol\alpha'=-G(\boldsymbol\xi)$,
+$\gamma'=\nu\boldsymbol\alpha\cdot H^{-1}\boldsymbol\alpha+G(\boldsymbol\xi)\cdot\boldsymbol\xi-V(\boldsymbol\xi)$ and
+$\psi=e^{\boldsymbol\alpha\cdot\x+\gamma}\phi(\x-\boldsymbol\xi,s)$. Then
+\[
+ \psi_s=\nu\nabla\!\cdot(H^{-1}\nabla\psi)-V\psi\quad\text{if}\quad
+ \phi_s=\nu\nabla\!\cdot(H^{-1}\nabla\phi)-[V(\boldsymbol\xi+\mathbf y)-V(\boldsymbol\xi)-G(\boldsymbol\xi)\cdot\mathbf y]\phi .
+\]
+Proof: substitute; the terms $2\nu\boldsymbol\alpha\cdot H^{-1}\nabla\phi$ and $\boldsymbol\xi'\cdot\nabla\phi$ cancel, and the remaining
+coefficient of $\phi$ is $\nu\boldsymbol\alpha\cdot H^{-1}\boldsymbol\alpha-\boldsymbol\alpha'\cdot\x-\gamma'-[\dots]=-V(\x)$.
+(\lean{recentre}, \lean{recentred_feedback}; the derivatives are hypotheses.) With $G=\nabla V$ the curves are the extremals of the control
+problem in time remaining, $\boldsymbol\pi=-4\nu\boldsymbol\alpha$ is the costate, and the feedback is the reference control plus
+$-2\nu H^{-1}\nabla\log\phi$. For quadratic running cost the operator and the circuit do not change.
+
+\emph{Test} (\path{simulation/nonquadratic.py}): terminal cost $\tfrac12\mathbf y^\top\Phi\mathbf y+\kappa\sum_ay_a^4$. The kernel is Gaussian,
+so $v_\nu$ is a two-dimensional quadrature and $v_0$ a Newton solve. $\kappa=0$: bias $\NqBiasZero$ at every $\nu$. $\kappa=0.1$: bias
+$\NqSlope\,\nu$ as $\nu\to0$; the quadratic reference is wrong by \NqRef\% ($\kappa=0.5$: \NqRefHard\%). Columns: $\kappa$; $\varepsilon$;
+direct $\nu$, smallest amplitude, runs; extrapolated runs; recentred $\nu$, grid and span, runs, T gates, qubits.
+\begin{center}\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lccccccccc@{}}
+\toprule
+\TableN
+\bottomrule
+\end{tabular}
+\end{center}
+The bias, span and grid errors are measured against the exact references and added in norm, with the largest grid error over the spans; the
+profile and rounding errors are measured on the costed configuration; the readout is emulated (99.9\% lower bound at least \NqLower\%).
+Sources: the semiclassical displaced frame (Heller 1975; Hagedorn 1980) and importance sampling in path-integral control (Kappen and
+Ruiz, \url{https://arxiv.org/abs/1505.01874}); the bias series is Fleming and Souganidis (1986). The proof of Lemma 12 of \cite{jinliu2025}
+contains the inverse point probability, which its statement omits. Caveats: the bias inequality is measured, not proved, for the quartic
+case; configurations are selected at the known answer; for $\kappa=0.5$ at 0.1\% no configuration was found with the quadratic reference;
+trajectory optimisation and Feynman--Kac Monte Carlo are classical competitors without a grid. Exit criterion: met for quadratic
+running costs; other running costs need a time-dependent potential and are not costed.
+
+\subsection*{Answer to the project question}
+
+For the two-asset benchmark targeting 1\% and 95\% confidence: readout A
+\textbf{\QAOne{} logical qubits, $\TAOne$ T gates}; readout B
+\textbf{\QBOne{} logical qubits, $\TBOne$ T gates}. At 0.1\%:
+\QATenth{} and $\TATenth$ (A), \QBTenth{} and $\TBTenth$ (B). The classical
+Riccati solution takes less than a millisecond; no speedup is claimed.
+
+\subsection*{Independent review and changes, 24 November 2026 (evening)}
+
+Two reviews were made through Markdown files: by Codex (\path{review/codex-findings.md}, tasks X1--X6 of
+\path{coordination.md}) and by a separate Claude Code process started by Codex
+(\path{review/claude-response-current.md}). The second is the same model as the one that made the revisions, so it is independent in
+context but not in kind. Accepted and done: the identity term of the LCU (counts halved), the offset of the $p$ grid, the GQSP tail with
+leakage, acceptance fluctuation and coherent error of B, $P_{\rm succ}$ evaluated on the actual auxiliary grid (it was taken from the
+$64^2$ grid; at 0.1\% the amplitudes were overestimated by $7\times10^{-4}$, more than their deterministic share), doubled $B_2$ and $g$, the
+statement on the growth with $M$, the non-quadratic case, the wording on Lean and on the search space, missing scripts
+(\path{boundary_check.py}, \path{compile_select.py}, \path{run_all.sh}). Not done: validated enclosures of $B_2$ and $g$ (labelled
+numerical, charged twice), compilation of QROM, QFT and GQSP phases, re-optimisation for the direct polynomial. The novelty record is
+\path{review/novelty.md}. Independent numerical checks of the new results: Codex (\path{review/validation/}) confirmed the leakage bound on
+exact block unitaries and by a block argument, the recentring identity by finite differences for a random SPD $H$ and a non-quadratic
+potential, and the quartic rates by shooting ($v_0=(3.2281407,1.5139894)$) and by a spectral solve (relative bias $0.026772$ at $\nu=1$).
+\path{simulation/tests/test_recentring.py} does the same with other methods (Pontryagin boundary-value problem, grid extrapolation, a
+quartic running cost along a non-optimal characteristic); four mutations of it fail one assertion each.
+
+\subsection*{Writing notes and remaining items}
+
+The paper is \path{paper/Paper.tex}; its numbers come from
+\path{paper/generated.tex}. Related work checked for it: smooth
+Schr\"odingerisation profiles \cite{jlmpy}; pointwise values and gradients of
+Hamilton--Jacobi viscosity solutions \cite{jinliu2025}; Cole--Hopf with
+Schr\"odingerisation for Wasserstein proximal operators \cite{jly2026};
+Carleman plus Schr\"odingerisation \cite{sasaki2026}; a quantum Riccati
+algorithm \cite{krovi2024}; and the list in \path{review/novelty.md}. Still open: simulation for $M>2$; general $H$ and $\rho$;
+recentring for non-quadratic running costs.
+
+\subsection*{Codex hostile review and final count reconciliation, 24 November 2026}
+
+The request for a hostile review and response was exchanged through
+\path{coordination.md}. Claude Code's saved review, \path{review/claude-response-current.md}, concerns an earlier tree.
+No response to the final X4 findings had arrived when this edit was prepared. Codex therefore made the limited paper edits logged
+in the board; the board remains open for a Claude rebuttal. This is not an independent sign-off on the changed manuscript.
+
+\paragraph{Direct polynomial.}
+For a walk eigenvalue $z=e^{i\theta}$, $x=(z+z^{-1})/2$ and a degree-$K$ Chebyshev polynomial in $x$ has Laurent degree $K$.
+Multiplying by $z^K$ gives degree $2K$, hence the $2K$ GQSP signal-query count. Let
+\[
+ \tau_K=2e^{-\beta}\sum_{k>K}I_k(\beta),\qquad
+ p_K(x)=e^{-\beta}\Bigl[I_0(\beta)+2\sum_{k=1}^{K}(-1)^kI_k(\beta)T_k(x)\Bigr].
+\]
+For $x\in[-1,1]$, the uniform Bessel-tail estimate gives
+$\|p_K-e^{-\beta(1+x)}\|\le\tau_K$ and $\|p_K\|\le1+\tau_K$. The contraction assumed for GQSP is
+$p_K/(1+\tau_K)$, for which
+\[
+ \left\|\frac{p_K}{1+\tau_K}-e^{-\beta(1+x)}\right\|
+ \le\frac{\tau_K+\tau_K\|e^{-\beta(1+x)}\|}{1+\tau_K}\le2\tau_K.
+\]
+The resource script allocates $\tau_K\le\varepsilon_{\rm state}/4$, so this term is at most
+$\varepsilon_{\rm state}/2$. The analytic tail argument is uniform; the numerical check in
+\path{simulation/direct_polynomial.py} applies the scaled series on finite tested grids and is corroboration, not a uniform proof.
+The script now uses that same scaled output to compute point amplitudes and $P_{\rm succ}$ for the direct-polynomial resource estimates.
+The regression test \path{simulation/tests/test_direct_polynomial.py} first failed on the old behavior: for its hand-checkable
+$\beta=1$, $K=1$ case it returned amplitude $1$ instead of the contraction-scaled value $0.7882376779493919$. After the correction,
+\texttt{PYTHONPATH=. ../.venv/bin/python -m unittest tests.test\_direct\_polynomial} passes. The production check also verifies the
+finite-grid error against both $2\tau_K$ and $\varepsilon_{\rm state}/2$.
+The $2K$ query structure is supported by Motlagh and Wiebe, \url{https://arxiv.org/abs/2308.01501v2}.
+GQSP phase and complement synthesis are not compiled, so the direct-polynomial T count remains an analytic estimate.
+
+After the X4 review, I corrected the calculator to use the contraction-scaled polynomial output in its finite-grid check,
+readout amplitudes and sampling success probability. The pre-correction direct-polynomial result is preserved from the prior
+submission archive as \path{review/validation/direct-before-scale.json}. Reproduction from \path{simulation/} uses these commands in order:
+\begin{verbatim}
+../.venv/bin/python direct_polynomial.py
+../.venv/bin/python make_numbers.py
+../.venv/bin/python figures.py
+\end{verbatim}
+For direct B at 0.1\%, the run count and ideal polynomial success probability changed as follows:
+\[
+ R:441{,}308{,}420\to441{,}308{,}419,\qquad
+ P_{\rm succ}:0.13358762137068483\to0.13358762162555138.
+\]
+The probability change reflects the finite polynomial error, not a uniform scalar rescaling of the exact semigroup. The T total
+changed from $4.193461022353578\times10^{14}$ to $4.193461012851242\times10^{14}$. Displayed table macros and all other
+direct-polynomial counts were unchanged at their rounding precision. These outputs omit gate-synthesis error in the emulation
+and do not represent a compiled GQSP circuit.
+
+\paragraph{Jin--Liu comparison.}
+In v2 of Jin and Liu, \url{https://arxiv.org/html/2512.07919v2}, their Lemma 12 statement omits a point-overlap term that its proof derives:
+\[
+ J=\frac{(1/q+1/\|\mathbf u\|^2)^2}{\|\mathbf u\|^2},\qquad
+ q=|\langle x_a|u\rangle|^2.
+\]
+For unit-norm input and contractive evolution, $\|\mathbf u\|^2\le1$, hence $J\ge q^{-2}$.
+The paper now attributes this factor to the proof, not to the lemma statement, and distinguishes their absolute HJ-value error from
+the relative control error here. This comparison does not establish an impossibility for other access models.
+
+\paragraph{Scaling and quartic comparison.}
+The factors $\FacPlain$, $\FacMargin$ and $\FacExact$ in Table~12 are contributions from each repeated eigenmode
+$1-\rho=0.6$. They are not total finite-$M$ ratios because the common-mode eigenvalue changes with $M$; for $c=0.98E_0$,
+the total $M=1$ to $M=2$ ratio is about $0.966$, while the repeated-mode factor is $0.9845$. The text now connects readout-A
+run growth to inverse point amplitude and the changing $P_{\rm succ}$.
+
+For the quartic direct and extrapolated rows, stencil values use continuum quadrature, but the norm ratio and $P_{\rm succ}$ use
+the finite-difference solver in \path{simulation/nonquadratic.py}. At all 11 distinct viscosities in those rows, refining the norm
+calculation from $128^2$ to $256^2$ changed $P_{\rm succ}$ by 0.040--0.063\% relative; this is a convergence check, not an enclosure.
+Those run counts use the asymptotic $2\pi/(\delta b)$ estimate. Recentred counts use the implemented power-of-two QAE schedule;
+only the recentred T count is costed, including the median of 11. The abstract now labels its run counts as coherent calls per
+four-amplitude estimate set before confidence boosting and limits the recentering claim to a reference that tracks the minimizer.
+
+\paragraph{Changed generated counts.}
+I compared \path{paper/generated.tex} with the saved macro baseline in
+\path{review/validation/}. The old values below are the saved generated macros; they are not treated as validated results.
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Readout and target & Old T gates & New T gates & Qubits, old $\to$ new\\
+\midrule
+A, 5\% & $3.4\times10^{12}$ & $1.4\times10^{12}$ & $166\to161$\\
+A, 1\% & $2.7\times10^{14}$ & $1.1\times10^{14}$ & $190\to186$\\
+A, 0.1\% & $4.0\times10^{17}$ & $1.9\times10^{17}$ & $236\to231$\\
+B, 5\% & $4.0\times10^{10}$ & $1.5\times10^{10}$ & $142\to137$\\
+B, 1\% & $6.4\times10^{12}$ & $2.2\times10^{12}$ & $165\to160$\\
+B, 0.1\% & $1.8\times10^{16}$ & $8.6\times10^{15}$ & $192\to187$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At 1\%, estimate-set runs changed from $1.0\times10^6$ to $7.9\times10^5$ for A and from $7.3\times10^5$ to
+$4.6\times10^5$ for B. Across the six sweeps, A changed from $1.5\times10^{14}$--$6.5\times10^{14}$ to
+$6.9\times10^{13}$--$2.1\times10^{14}$ T gates, and B from $2.2\times10^{12}$--$1.6\times10^{13}$ to
+$1.4\times10^{12}$--$4.5\times10^{12}$. The pipeline regenerated these values after the SELECT-cost correction;
+the deltas do not validate the numerical assumptions that remain open in Steps 1, 3, 4, 6 and 7.
+
+\paragraph{Independent checks and scope.}
+The Codex checks X7--X9 and reproduction commands are in \path{review/codex-findings.md}; scripts and outputs are in
+\path{review/validation/}. X7 derives the $2n^2$ tail-return bound for an abstract sequence of block unitaries, conditional on
+per-segment leakage $\ell\le2\sqrt{\text{tail}}$, and found no violation in 18 exact-matrix cases; it does not prove that the
+Berry completion satisfies that premise. X8 found the expected second-order residual decrease for one seeded SPD matrix and a
+smooth non-quadratic potential; it is a local numerical check, not a proof. X9's independent shooting gave
+$v_0=(3.2281407207,1.5139894399)$, while an independent Fourier-pseudospectral heat solve gave
+$v_\nu=(3.3203653307,1.5386192414)$ at $128^2$, with relative bias 0.02677207. Its finite periodic box and second-order
+time integration make the refinement a convergence check, not an enclosure. These checks corroborate selected calculations;
+they do not close the remaining circuit, enclosure, sampling or generality items.
+
+\paragraph{Novelty and source package.}
+The targeted literature search in \path{review/novelty.md} found related quantum trading, Riccati/LQR, HJ point-readout and
+Schr\"odingerisation work, but no exact match for the paper's narrow end-to-end resource accounting in the sources searched.
+The search was not exhaustive, so this is a candidate contribution, not a verified priority claim. The local package
+\path{paper/arxiv-submission.zip} contains the main TeX source, its four included TeX files, five figures and ancillary research
+sources. The package was built from a clean directory. The author still needs to inspect arXiv's processed preview and choose the
+submission category and license; no submission was made.
+
+\begin{thebibliography}{99}
 \bibitem{chen2001} W.~Chen (2001),
 \emph{Direct linearization method for nonlinear PDE's and the related
 kernel RBFs}, Sec.~2, Eqs.~(1)--(7), and Sec.~4.
@@ -255,7 +1261,7 @@ kernel RBFs}, Sec.~2, Eqs.~(1)--(7), and Sec.~4.
 
 \bibitem{almgrenchriss2000} R.~Almgren and N.~Chriss,
 \emph{Optimal Execution of Portfolio Transactions}, J.~Risk 3(2), 5--39
-(2000), Appendix~A.3.
+(2001), Appendix~A.3.
 
 \bibitem{bergault2022} P.~Bergault, F.~Drissi and O.~Gu\'eant,
 \emph{Multi-asset optimal execution and statistical arbitrage strategies
@@ -283,5 +1289,63 @@ Sec.~3.1. \url{https://arxiv.org/abs/2212.14703}.
 \bibitem{brassard2002} G.~Brassard, P.~H\o yer, M.~Mosca and A.~Tapp,
 \emph{Quantum amplitude amplification and estimation}, Contemp.~Math.~305,
 53--74 (2002). \url{https://arxiv.org/abs/quant-ph/0005055}.
+
+\bibitem{motlaghwiebe2024} D.~Motlagh and N.~Wiebe,
+\emph{Generalized quantum signal processing}, PRX Quantum 5, 020368 (2024).
+\url{https://arxiv.org/abs/2308.01501}.
+
+\bibitem{berry2024gqsp} D.~W.~Berry, D.~Motlagh, G.~Pantaleoni and
+N.~Wiebe, \emph{Doubling the efficiency of Hamiltonian simulation via
+generalized quantum signal processing}, Thm.~3 and Eq.~(11).
+\url{https://arxiv.org/abs/2401.10321}.
+
+\bibitem{qualtran} M.~P.~Harrigan \emph{et al.}, \emph{Expressing and
+analyzing quantum algorithms with Qualtran} (2024); software version 0.7.0.
+\url{https://arxiv.org/abs/2409.04643}.
+
+\bibitem{gidney2018} C.~Gidney, \emph{Halving the cost of quantum
+addition}, Quantum 2, 74 (2018). \url{https://arxiv.org/abs/1709.06648}.
+
+\bibitem{rossselinger2016} N.~J.~Ross and P.~Selinger, \emph{Optimal
+ancilla-free Clifford+T approximation of z-rotations}, Quantum
+Inf.~Comput.~16, 901--953 (2016). \url{https://arxiv.org/abs/1403.2975}.
+
+\bibitem{groverrudolph2002} L.~Grover and T.~Rudolph, \emph{Creating
+superpositions that correspond to efficiently integrable probability
+distributions} (2002). \url{https://arxiv.org/abs/quant-ph/0208112}.
+
+\bibitem{babbush2018} R.~Babbush \emph{et al.}, \emph{Encoding electronic
+spectra in quantum circuits with linear T complexity}, Phys.~Rev.~X 8,
+041015 (2018). \url{https://arxiv.org/abs/1805.03662}.
+
+\bibitem{grinko2021} D.~Grinko, J.~Gacon, C.~Zoufal and S.~Woerner,
+\emph{Iterative quantum amplitude estimation}, npj Quantum Inf.~7, 52
+(2021). \url{https://arxiv.org/abs/1912.05559}.
+
+\bibitem{jlmpy} S.~Jin, N.~Liu, C.~Ma, Y.~Peng and Y.~Yu, \emph{On the
+Schr\"odingerization method for linear non-unitary dynamics with optimal
+dependence on matrix queries} (2025), Sec.~3.1.
+\url{https://arxiv.org/abs/2505.00370}.
+
+\bibitem{jinliu2025} S.~Jin and N.~Liu, \emph{Quantum algorithms for viscosity
+solutions to nonlinear Hamilton--Jacobi equations based on an entropy
+penalisation method} (2025). \url{https://arxiv.org/abs/2512.07919}.
+
+\bibitem{jly2026} S.~Jin, N.~Liu and Y.~Yu, \emph{Schr\"odingerization based
+quantum algorithms for regularized Wasserstein proximal operators} (2026).
+\url{https://arxiv.org/abs/2606.28752}.
+
+\bibitem{sasaki2026} S.~Sasaki, K.~Endo and M.~Muramatsu, \emph{Hamiltonian
+simulation for nonlinear partial differential equation by
+Schr\"odingerization}, Sci.~Rep.~16, 11743 (2026).
+\url{https://arxiv.org/abs/2508.01640}.
+
+\bibitem{krovi2024} H.~Krovi, \emph{Quantum algorithms to simulate quadratic
+classical Hamiltonians and optimal control} (2024).
+\url{https://arxiv.org/abs/2404.07303}.
+
+\bibitem{griffiths} R.~B.~Griffiths and C.-S.~Niu, \emph{Semiclassical Fourier
+transform for quantum computation}, Phys.~Rev.~Lett.~76, 3228 (1996).
+\url{https://arxiv.org/abs/quant-ph/9511007}.
 \end{thebibliography}
 \end{document}

@@ -1,0 +1,107 @@
+% Shared by Paper.tex and ../WorkPlan.tex.
+\paragraph{Riccati matrix.}
+For $H=I$, $Y'=\tfrac12Z$ and $Z'=2\lambda CY$. Equation~\eqref{eq:form} gives
+$(Y\mathbf w)\cdot(Z\mathbf w)\ge\mathbf w^\top\Phi\mathbf w$. With $\mathbf w=Y^{-1}\x$ this is
+$\x^\top P_s\x\ge\mathbf w^\top\Phi\mathbf w$, and $Y$ is bounded on $[0,T]$, so $P_s\succeq mI$
+for some $m>0$ and all $s\in[0,T]$. $P_s$ is symmetric because
+$(Y\mathbf w)\cdot(Z\mathbf w')-(Y\mathbf w')\cdot(Z\mathbf w)$ is constant and vanishes at $0$.
+
+\paragraph{Maximum principle.}
+\emph{Let $u$ be bounded on the lattice times $[0,T]$, $u(\cdot,0)\le0$, and
+$u'\le\nu\sum_aD_{2,a}u-Vu+g(s)$ with $V\ge0$, $g\ge0$. Then $u(\cdot,s)\le G(s)=\int_0^sg$.}
+Put $\xi(\x)=1+|\x-\X|^2$, so that $\nu\sum_aD_{2,a}\xi=2\nu M=:c$, and
+$w=u-G-\epsilon\bigl(\xi+(c+1)s\bigr)$ with $\epsilon>0$. Since $u$ is bounded and $\xi$ has
+finite sublevel sets, $w$ has a maximum, at $(\x_1,s_1)$ say. Suppose it is positive. Then
+$s_1>0$, so $w'\ge0$ there, $\sum_aD_{2,a}w\le0$ and $u>0$. But
+\[
+ w'\le\nu\sum_aD_{2,a}u-Vu-\epsilon(c+1)=\nu\sum_aD_{2,a}w+\epsilon c-Vu-\epsilon(c+1)<0 ,
+\]
+a contradiction. Let $\epsilon\to0$. The argument uses only nonnegative jump rates and a
+barrier, so it also covers boxes. If
+$|u'-\nu\sum_aD_{2,a}u+Vu|\le g$ and $u(\cdot,0)=0$, the statement for $\pm u$ gives $|u|\le G$; in particular bounded solutions are unique.
+
+\paragraph{Existence.}
+With $\kappa=2M\nu/\Delta^2$, solutions are the fixed points of
+\[
+ u(\x,s)\mapsto e^{-(V+\kappa)s}u(\x,0)
+ +\int_0^se^{-(V+\kappa)(s-r)}\frac\nu{\Delta^2}\sum_{a,\pm}u(\x\pm\Delta\mathbf e_a,r)\,dr,
+\]
+a contraction on bounded continuous functions in the norm $\sup e^{-\mu s}|u|$ for large $\mu$,
+because $V\ge0$.
+
+\paragraph{(i) Consistency and stability.}
+Taylor's theorem with the Lagrange remainder gives, for $L\in C^{2J+4}$,
+\[
+ \Bigl|\frac{L(\Delta)+L(-\Delta)-2L(0)}{\Delta^2}-\sum_{j=0}^Jc_j\Delta^{2j}L^{(2j+2)}(0)\Bigr|
+ \le c_{J+1}\Delta^{2J+2}\sup|L^{(2J+4)}| .
+\]
+Let $S_K=\sum_{k\le K}\Delta^{2k}\psi_k$ and apply this to $\psi_k$ with $J=K-k$. Reordering the
+sums in Eq.~\eqref{eq:hier},
+\[
+ \partial_sS_K=\nu\sum_aD_{2,a}S_K-VS_K+r,\qquad
+ |r|\le\Delta^{2K+2}\,\nu\sum_{k\le K}c_{K-k+1}\sum_a\bigl\|\partial_a^{2(K-k)+4}\psi_k(s)\bigr\|_\infty .
+\]
+The maximum principle for $\psi_\Delta-S_K$, which vanishes at $s=0$, is
+Eq.~\eqref{eq:bk}, provided the $\psi_k$ exist and the norms are finite.
+
+\paragraph{(i) Existence of the hierarchy.}
+For a polynomial $q$, $\partial_a(q\psi)=(\mathcal D_aq)\psi$ with
+$\mathcal D_aq=\partial_aq+\varphi_aq$, and $\partial_s\psi=\nu\nabla^2\psi-V\psi$. Hence
+Eq.~\eqref{eq:hier} for $\psi_k=p_k\psi$ is
+\[
+ \partial_sp_k=\nu\nabla^2p_k-\tfrac12(P_s\x)\!\cdot\!\nabla p_k
+ +\nu\sum_{i<k}c_{k-i}\sum_a\mathcal D_a^{2(k-i)+2}p_i,\qquad p_k(\cdot,0)=0 .
+\]
+The operator maps polynomials of degree at most $n$ to such polynomials, and the source is a
+known polynomial. This is a linear ordinary differential equation with continuous
+coefficients in a finite-dimensional space, so $p_k$ exists on $[0,T]$. Every
+$\partial_a^n\psi_k$ is a polynomial, with coefficients continuous in $s$, times
+$\psi\le e^{-m|\x|^2/(8\nu)}/\sqrt{\det Y}$. It is bounded, and its supremum norm is continuous in $s$.
+
+\paragraph{(ii)} For $k=1$ the source is
+$\tfrac\nu{12}\sum_a\mathcal D_a^41$ and
+$\mathcal D_a^41=\varphi_a^4+6\varphi_a^2\varphi_{aa}+3\varphi_{aa}^2$. Let $A$, $B$, $D$ solve, with zero
+initial data,
+\begin{equation}
+\begin{aligned}
+ A_s&=-\tfrac12(P_s\x)\!\cdot\!\nabla A+\tfrac1{3072}\sum_a(P_s\x)_a^4,\\
+ B_s&=-\tfrac12(P_s\x)\!\cdot\!\nabla B+\nabla^2A-\tfrac1{128}\sum_a(P_s)_{aa}(P_s\x)_a^2,\\
+ D_s&=\nabla^2B+\tfrac1{64}\sum_a(P_s)_{aa}^2 .
+\end{aligned}
+\label{eq:abd}
+\end{equation}
+Then $\nu^{-3}A+\nu^{-2}B+\nu^{-1}D$ solves Eq.~\eqref{eq:chi}, whose solution is unique.
+
+\paragraph{(iii)}
+On the segments $\X+t\mathbf e_a$, $|t|\le d_0$, the Gaussian $\psi(\cdot,T)$ is bounded below by a
+positive constant. Part (i) with $K=2$ gives
+$\psi_\Delta/\psi=1+\Delta^2p_1+\Delta^4p_2+O(\Delta^6)$, so for small $\Delta$, uniformly in $|t|\le d_0$,
+\[
+ \log\psi_\Delta=\log\psi+\Delta^2p_1+\Delta^4q+O(\Delta^6),\qquad q=p_2-\tfrac12p_1^2 .
+\]
+Insert this in Eq.~\eqref{eq:readout}. The first term gives $v_a^*$ exactly, the second $\Delta v_a$. The polynomial $q$ is Lipschitz on the
+segment, so the third contributes $O(\Delta^4)$ after division by $2d$. The last contributes
+$O(\Delta^6)/d=O(\Delta^5)$ since $d\ge\Delta$.
+
+\paragraph{(iv)}
+Fix $\mathbf w\ne0$ and let $\x(s)=Y_s\mathbf w$, $\mathbf z(s)=Z_s\mathbf w=P_s\x(s)$, so $\dot\x=\tfrac12P_s\x$. Along this
+curve Eq.~\eqref{eq:abd} integrates to
+$A=\tfrac1{3072}\int_0^s\sum_az_a^4\,dr>0$, because $\x\cdot\mathbf z\ge\mathbf w^\top\Phi\mathbf w>0$ implies
+$\mathbf z\ne0$. Let $h=\nabla^2A$ at $\x(s)$ and $\mathbf p_a=P_s\mathbf e_a$. Differentiating the equation
+for $A$ twice,
+\[
+ h'=-\tfrac12(hP_s+P_sh)+\tfrac1{256}\sum_az_a^2\,\mathbf p_a\mathbf p_a^\top,\qquad
+ (Y^\top hY)'=\tfrac1{256}\sum_az_a^2\,(Y^\top\mathbf p_a)(Y^\top\mathbf p_a)^\top\succeq0 ,
+\]
+so $h\succeq0$. Since $P_s'=2\lambda C-\tfrac12P_s^2$, $(P_s^{-1})'=\tfrac12I-2\lambda P_s^{-1}CP_s^{-1}$ and
+\[
+ \bigl[\tr(hP_s^{-1})\bigr]'=-\tfrac12\tr h+\tfrac1{256}\sum_az_a^2(P_s)_{aa}
+ -2\lambda\tr(hP_s^{-1}CP_s^{-1}).
+\]
+Add twice this to $B'=\tr h-\tfrac1{128}\sum_az_a^2(P_s)_{aa}$: the first two terms cancel and
+Eq.~\eqref{eq:mono} remains. Its right-hand side is $\le0$ because $h\succeq0$ and
+$P_s^{-1}CP_s^{-1}\succeq0$. Both terms in the bracket vanish at $s=0$, so
+$B\le-2\tr(hP_s^{-1})$. Finally $\x^\top h\x=12A>0$ by homogeneity, so $h\ne0$, and
+$h\succeq0$, $P_s^{-1}\succ0$ give $\tr(hP_s^{-1})>0$. Every point is of the form $Y_s\mathbf w$, which
+proves Eq.~\eqref{eq:signs}. The last statement is Euler's identity,
+$\x\cdot\nabla A=4A$ and $\x\cdot\nabla B=2B$.\hfill\qedsymbol

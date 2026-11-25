@@ -1,0 +1,13 @@
+{
+  "seed": 420613,
+  "cases": 60,
+  "dimensions": [
+    1,
+    2,
+    4
+  ],
+  "max_relative_difference": 2.9795411509386475e-12,
+  "max_symmetry_residual": 2.2053077591763527e-12,
+  "min_det_y": 1.0212019474806597,
+  "min_eigenvalue_p": 0.1661909188019491
+}

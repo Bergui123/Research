@@ -1,0 +1,38 @@
+# Codex review for discussion
+
+## Submission assessment
+
+The paper builds, and its research question and benchmark are clearly described. It should not yet be represented as verified or arXiv-ready. The long work plan already records substantive open issues that the manuscript, README, and short summary do not consistently reflect. The following items need resolution or clear qualification before submission.
+
+1. **Amplitude error composition.** `paper/Paper.tex`, readout A, uses a linear bound on log-amplitude errors. For a relative perturbation `-δ`, the absolute logarithmic error is `-log(1-δ) > δ`. The claimed finite-error bound and allocated budget need a valid nonlinear inequality and recomputed counts, or must be identified as approximate. Confirm how Schrödingerisation, potential rounding, simulation and estimation errors compose relative to the same reference amplitudes.
+2. **Grid error is not numerically certified.** `simulation/certify_grid.py` uses 33 time samples for boundary values and sampled floating-point extrema for the remainder. The underlying theorem is conditional on actual bounds for every time and the spatial supremum. There is no demonstrated enclosure of those extrema. Calling the resulting numerical values certified throughout the paper overstates the evidence, despite the local caveat. The cancellation-free leading-order expression is also not a general finite-grid bound by itself.
+3. **Sampling confidence is empirical/approximate.** `simulation/step9_sampling.py` uses a simulated asymptotic Gaussian/Wishart quantile and a discrete, perturbed distribution. The costed `ceil(n_s/P_succ)` runs deliver `n_s` accepted samples only in expectation. The 2,000-trial validation is informative but does not establish a finite-sample 95% guarantee, and omits quantum synthesis errors. The lower expected accepted count alone does not prove the target is missed.
+4. **QAE simulation law is truncated.** `simulation/step10_validation.py`, `sample_qae`, truncates and renormalizes the Fejér distribution for large `M`; for smaller even `M`, its inclusive endpoints duplicate one periodic outcome. The manuscript calls this the exact outcome law. See the existing independent review record in `WorkPlan.tex` for calculated tail masses.
+5. **Auxiliary Fourier convention.** For even `N_p`, the frequencies in the paper are half-integral multiples of π/L, hence antiperiodic under a `2 L_p` shift. The manuscript calls the interval periodic. Check the wrap bound, discrete transform and circuit phase corrections against the implemented convention.
+6. **Comparator endpoint.** If the maximum scaled quadratic equals `2^k`, the value `q=2^m` is not representable by `m` bits. State a strict scale bound or a saturating encoding and correct rounding bound, and verify the selected instances.
+7. **Bibliography.** The cited arXiv preprint 2212.14703 and the journal paper are related versions with different titles. The title of Physical Review A 108, 032603 is “Quantum simulation of partial differential equations: Applications and detailed analysis”, according to the [publisher](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.108.032603); the cited [arXiv version](https://arxiv.org/abs/2212.14703) uses the title currently printed. Distinguish the two titles. Also check all other references against primary sources.
+8. **Reproducibility and packaging.** A clean arXiv source package needs all four included TeX files and all five figures, arranged so the compiler can find them. The manuscript refers to `simulation/` and `lean/` without a public archival location or a stated plan for ancillary files. Check arXiv's [submission guidelines](https://info.arxiv.org/help/submit/index.html) and verify the compiled preview. Public release, author metadata, license, and submission are author decisions.
+
+## Verification so far
+
+- Local `pdflatex` succeeded, producing 19 pages. This checks compilation, not the mathematics or arXiv processing.
+- `lake build` completed, and `lake env lean scripts/AxiomCheck.lean` reported 307 declarations with only the three listed standard axioms. This checks formal statements, not necessarily that they match every prose claim or the numerical costs.
+- Existing changes were present when this review began. Preserve them.
+
+## Questions for Claude Code
+
+Please independently check these points, find errors in this review, prioritize any additional blockers, and give exact source locations. For each issue distinguish an actual false statement, an unproved guarantee, and an empirical approximation. In particular, can you identify a concrete inconsistency in the circuit or state-preparation accounting, and does the Lean theorem correspond exactly to the proposition stated in the paper? Do not infer that a successful build settles either question.
+
+## Changes made after this review
+
+The review above describes the draft as it stood when the questions were sent. The manuscript now states the finite logarithmic bound, labels the existing amplitude budget as first-order, describes the numerical grid bounds and confidence estimates as provisional, identifies the half-integer boundary convention and comparator endpoint requirement, corrects the QAE-emulation description, and uses the published journal title. `WorkPlan.tex`, `Summary.tex`, the short report and README were updated consistently. The resource scripts and saved numbers have not been recalculated; these edits do not resolve the underlying quantitative checks. Claude Code did not return an independent review because the account usage limit was reached, as recorded in `claude-review.md`.
+
+The manuscript, work plan, summary and report each compiled locally with two pdfLaTeX passes after the edits. The summary has an existing 2.58 pt overfull box near its Step 4 equation. The Lean build and axiom check passed before the prose edits; no Lean source was changed.
+
+## Follow-up corrections
+
+The finite log-amplitude allocation is now implemented in `simulation/step8_resources.py`, including estimation against the lower allowed prepared amplitude and a `log1p` rounding allocation. The comparator scale now strictly exceeds the evaluated maximum, including at exact powers of two. The former readout-A sweep optimum at correlation 0.6 hit that endpoint. After recomputation, 18 selected benchmark and sweep configurations pass the floating-point scale/representability check.
+
+`simulation/step10_validation.py` now samples all `M` distinct QAE outcomes. The benchmark emulations, resource and sampling estimates, generated tables, and figures were rerun. The current 1% estimates are 190 logical qubits and approximately 2.7e14 T gates for readout A, and 165 qubits and approximately 6.5e12 T gates for readout B. Six focused regression checks pass. The largest selected QAE distribution, with `M = 2**24`, had a raw floating-point probability sum within 3.7e-14 of one.
+
+The half-integer transform matches its explicit matrix for 4, 8, 16 and 32 points. This does not validate the circuit's phase costs or the finite-grid wrap bound. Grid-error constants remain sampled estimates, sampling confidence remains empirical/asymptotic, and profile errors are selected from a finite set with larger grids reusing the 64-by-64 values. All readout-A sweep points have not been emulated at their actual configurations. The complete circuit and all theorem-to-Lean correspondences remain to be independently audited. The full numerical pipeline and full literature audit have not been rerun in this follow-up. The paper remains provisional and Claude Code still has not produced an independent review.

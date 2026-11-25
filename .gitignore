@@ -7,3 +7,6 @@
 *.toc
 *.pdf
 .venv/
+__pycache__/
+lean/.lake/
+paper/arxiv-draft.zip

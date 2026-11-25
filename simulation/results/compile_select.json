@@ -1,0 +1,68 @@
+[
+ {
+  "readout": "A",
+  "target": 0.05,
+  "n": 5,
+  "m": 14,
+  "basis_states": 201024,
+  "T_select": 2456,
+  "T_kinetic": 36,
+  "T_select_qualtran": 2616,
+  "work": 95
+ },
+ {
+  "readout": "A",
+  "target": 0.01,
+  "n": 6,
+  "m": 17,
+  "basis_states": 204096,
+  "T_select": 3072,
+  "T_kinetic": 44,
+  "T_select_qualtran": 3232,
+  "work": 107
+ },
+ {
+  "readout": "A",
+  "target": 0.001,
+  "n": 8,
+  "m": 21,
+  "basis_states": 265536,
+  "T_select": 4488,
+  "T_kinetic": 60,
+  "T_select_qualtran": 4640,
+  "work": 131
+ },
+ {
+  "readout": "B",
+  "target": 0.05,
+  "n": 5,
+  "m": 12,
+  "basis_states": 201024,
+  "T_select": 1480,
+  "T_kinetic": 36,
+  "T_select_qualtran": 1544,
+  "work": 71
+ },
+ {
+  "readout": "B",
+  "target": 0.01,
+  "n": 6,
+  "m": 14,
+  "basis_states": 204096,
+  "T_select": 1964,
+  "T_kinetic": 44,
+  "T_select_qualtran": 2008,
+  "work": 83
+ },
+ {
+  "readout": "B",
+  "target": 0.001,
+  "n": 7,
+  "m": 16,
+  "basis_states": 216384,
+  "T_select": 2512,
+  "T_kinetic": 52,
+  "T_select_qualtran": 2536,
+  "work": 95
+ }
+]

@@ -1,0 +1,16 @@
+% Shared by Paper.tex and ../WorkPlan.tex.
+\begin{proposition}[box truncation]
+\label{prop:box}
+Let $\psi_\square$ solve the periodic problem on the box and $\psi_\Delta$ the
+lattice problem with the same data on the box. Let $g$ bound $\psi_\square$ on the nodes
+reached by wrapping and $\psi_\Delta$ on the first nodes outside the box, for
+$0\le s\le T$. Let $U$ solve the box problem with zero data and with the value
+$g$ at every outside neighbour. Then $|\psi_\square-\psi_\Delta|\le U$ on the box.
+\end{proposition}
+\begin{proof}
+Let $e=\psi_\square-\psi_\Delta$. Keep the neighbours inside the box and count the rate
+$\nu/\Delta^2$ of every step that leaves it as a killing rate. Both solutions are
+nonnegative, so $e$ solves the resulting equation with a source of
+absolute value at most $\nu\Delta^{-2}g$ per leaving step, which is the source of $U$.
+Apply the maximum principle (proof of Theorem~\ref{thm:grid}) to $\pm e-U$.
+\end{proof}

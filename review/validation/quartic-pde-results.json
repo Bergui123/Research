@@ -1,0 +1,140 @@
+{
+  "method": "Independent Hamiltonian shooting for the inviscid characteristic; Fourier pseudospectral Strang splitting of the 2D heat equation for nu=1.",
+  "parameters": {
+    "kappa": 0.1,
+    "nu": 1.0,
+    "lambda": 1.0,
+    "T": 1.0,
+    "C": [
+      [
+        1.0,
+        0.4
+      ],
+      [
+        0.4,
+        1.0
+      ]
+    ],
+    "Phi": [
+      [
+        2.0,
+        0.3
+      ],
+      [
+        0.3,
+        1.0
+      ]
+    ],
+    "X": [
+      3.0,
+      1.0
+    ]
+  },
+  "inviscid_shooting": {
+    "terminal_point": [
+      0.9767035398902449,
+      0.23688001013960466
+    ],
+    "endpoint": [
+      2.9999999999999996,
+      0.9999999999999998
+    ],
+    "endpoint_residual": 4.965068306494546e-16,
+    "initial_velocity": [
+      1.1985807716630072,
+      0.26760390487404645
+    ],
+    "terminal_velocity": [
+      3.228140720666585,
+      1.5139894398886677
+    ],
+    "v0": [
+      3.228140720666585,
+      1.5139894398886677
+    ],
+    "terminal_cost": 1.1427312179966922
+  },
+  "viscous_pde_cases": [
+    {
+      "n": 128,
+      "dt": 0.002,
+      "dx": 0.125,
+      "steps": 500,
+      "psi_at_X": 0.021347086631881243,
+      "grad_log_psi": [
+        -1.6601826653327783,
+        -0.7693096206785672
+      ],
+      "vnu": [
+        3.3203653306655565,
+        1.5386192413571345
+      ],
+      "relative_bias_vs_shooting": 0.02677207326372113
+    },
+    {
+      "n": 256,
+      "dt": 0.002,
+      "dx": 0.0625,
+      "steps": 500,
+      "psi_at_X": 0.021347086631897466,
+      "grad_log_psi": [
+        -1.6601826652211045,
+        -0.7693096206123693
+      ],
+      "vnu": [
+        3.320365330442209,
+        1.5386192412247386
+      ],
+      "relative_bias_vs_shooting": 0.026772073193620693
+    },
+    {
+      "n": 256,
+      "dt": 0.001,
+      "dx": 0.0625,
+      "steps": 1000,
+      "psi_at_X": 0.021347106855261776,
+      "grad_log_psi": [
+        -1.6601819762096302,
+        -0.7693091333534159
+      ],
+      "vnu": [
+        3.3203639524192603,
+        1.5386182667068318
+      ],
+      "relative_bias_vs_shooting": 0.02677162927567418
+    },
+    {
+      "n": 384,
+      "dt": 0.002,
+      "dx": 0.041666666666666664,
+      "steps": 500,
+      "psi_at_X": 0.021347086631895273,
+      "grad_log_psi": [
+        -1.6601826652310285,
+        -0.7693096206161403
+      ],
+      "vnu": [
+        3.320365330462057,
+        1.5386192412322806
+      ],
+      "relative_bias_vs_shooting": 0.026772073199544635
+    },
+    {
+      "n": 384,
+      "dt": 0.001,
+      "dx": 0.041666666666666664,
+      "steps": 1000,
+      "psi_at_X": 0.02134710685525795,
+      "grad_log_psi": [
+        -1.660181976196738,
+        -0.7693091333455652
+      ],
+      "vnu": [
+        3.320363952393476,
+        1.5386182666911303
+      ],
+      "relative_bias_vs_shooting": 0.026771629267551295
+    }
+  ],
+  "scope": "Finite periodic box and second-order time splitting are numerical approximations. Resolution/timestep convergence is reported; this is independent of the Mehler-kernel quadrature in nonquadratic.py."
+}

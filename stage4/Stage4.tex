@@ -1,6 +1,6 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath,amssymb,geometry,parskip,xcolor,hyperref}
+\usepackage{amsmath,amssymb,geometry,booktabs,parskip,xcolor,hyperref}
 \geometry{margin=2.3cm}
 \hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
 \title{Stage 4: can the execution HJB be made linear?}
@@ -512,6 +512,63 @@ spatial derivative still recovers the feedback, but the proposed $\psi$
 does not satisfy the stated linear PDE. The prefactor records the scalar
 correction needed for both the PDE and the recovered value.
 
+\subsection*{8. Numerical finite-domain validation (exit criterion met)}
+
+\textbf{Why this check?} The Gaussian solution holds on all of
+$\mathbb R^2$. A grid solver works on a bounded box with a boundary
+condition and a finite stencil. This check measures what the
+truncation, boundary and stencil do to the recovered feedback.
+
+\textbf{Set-up.} Solve Eq.~\eqref{eq:stage4-twoasset} ($\nu=0.2$) on
+$[-L,L)^2$ with $N=2^n$ points per axis. Each axis grid is shifted by
+less than $\Delta x$ so that $\mathbf X=(3,1)$ is a node, which avoids
+interpolation. The Laplacian is the central second difference with
+(i)~periodic boundaries (the cyclic shifts the circuit of Step~8
+implements) or (ii)~homogeneous Dirichlet boundaries. The time evolution
+$e^{-\hat H_d}$ is applied by a truncated-Taylor matrix exponential
+(SciPy \texttt{expm\_multiply}), accurate to rounding, so it carries no
+time-step error. The feedback is recovered by
+$v_a=-2\nu[\log\psi(\mathbf X+\Delta x\mathbf e_a)
+-\log\psi(\mathbf X-\Delta x\mathbf e_a)]/(2\Delta x)$. The value is
+recovered by Eq.~\eqref{eq:stage4-value-recovery}. Both are compared with
+the finite-penalty Riccati values above. Script:
+\path{simulation/step4_pde.py}.
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$N$ & $\Delta x$ ($L=4$) & feedback error & value error\\
+\midrule
+32 & 0.25 & $8.84\times10^{-2}$ & $3.78\times10^{-2}$\\
+64 & 0.125 & $2.66\times10^{-2}$ & $1.08\times10^{-2}$\\
+128 & 0.0625 & $7.03\times10^{-3}$ & $2.80\times10^{-3}$\\
+256 & 0.03125 & $1.78\times10^{-3}$ & $7.08\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Errors are relative 2-norm (feedback) and relative absolute (value).
+\begin{enumerate}
+\item \emph{Grid.} The error falls by $3.3$, $3.8$ and $3.9$ per halving
+of $\Delta x$, i.e.\ second order. A 1\% feedback tolerance needs
+$\Delta x\le0.07$ at $\nu=0.2$.
+\item \emph{Domain and boundary.} At equal $\Delta x$, $L=4,5,6,8$ give
+the same errors to three digits. Periodic and Dirichlet errors differ by
+less than $5\times10^{-4}$ relative at $L=4$ and agree to seven digits for
+$L\ge5$. At every $\nu$ of Step~5 the two boundaries give feedbacks within
+$1.1\times10^{-5}$ of each other on the $N=64$ grid.
+\item \emph{Time.} Crank--Nicolson with $16,\dots,256$ steps ($L=6$,
+$N=64$) converges to the exponential at second order. The feedback
+differences are $2.7\times10^{-4},\dots,1.1\times10^{-6}$.
+\item \emph{Separation of errors.} The coefficient-integration error
+(Step~3, item~5) is below $4\times10^{-15}$. It is negligible beside the
+grid error.
+\end{enumerate}
+The pointwise relative error of $\psi(\mathbf X)$ is much larger than the
+feedback error (e.g.\ $0.37$ against $0.055$ at $L=6$, $N=64$). The grid
+error in $\log\psi$ is smooth, so most of it cancels in the difference.
+Readout must therefore use ratios of nearby amplitudes, never one
+absolute amplitude. Step~5 shows that the grid cost depends strongly
+on $\nu$.
+
 \subsection*{Caveats and exit criterion}
 
 The failure identified here is a missing nonlinear constraint in the
@@ -536,15 +593,17 @@ The value correction and its terminal limit also require care.
 missing constraint demonstrated. The compatible-diffusion transformation,
 its inverse, and exact recovery of the original quadratic feedback are
 derived. The finite-penalty coefficient comparison has been checked.
-Step 3's wider verification remains open.
+Step 3 is verified. The finite-domain PDE validation of part~8 is
+complete.
 
-\textbf{Exit criterion for numerical Step 4.} Solve
-Eq.~\eqref{eq:stage4-twoasset} on specified finite domains with stated
-boundary conditions, recover the feedback, and compare it with the same
-finite-penalty Riccati solution. Refine the spatial/time grids and enlarge
-the domain until the feedback error meets a declared tolerance. Report
-that error separately from coefficient-integration error. This numerical
-PDE validation remains to be done before downstream resource claims.
+\textbf{Exit criterion for numerical Step 4 (met).} The criterion was:
+solve Eq.~\eqref{eq:stage4-twoasset} on finite domains with stated boundary
+conditions; compare the recovered feedback with the finite-penalty Riccati
+solution; refine until a declared tolerance is met. Part~8 does this.
+The declared 1\% tolerance is met at $\Delta x=0.0625$
+($7.0\times10^{-3}$), with second-order grid convergence. Domain,
+boundary-condition and time-step effects are negligible, and the
+coefficient-integration error is reported separately.
 
 \begin{thebibliography}{9}
 \bibitem{chen2001} W.~Chen (2001),
