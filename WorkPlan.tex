@@ -162,10 +162,24 @@ The paper and source archive were rebuilt after this citation change:
 \path{cd paper && ./make_submission.sh} completed successfully, compiled the
 archive from a clean directory, and \path{unzip -t paper/arxiv-submission.zip}
 reported no errors. Archive SHA-256:
-\texttt{1852695188fd125da95ab65284d0f6d1f3fc0855f32286b447cccfbf4b0dcfb5}.
+\texttt{ecdbc7f156b003f6bf430ec07245e71a823ba3725c72c6bbb178f2bc92ca61f3}.
 The paper PDF is 26 pages. All four local TeX documents build in two passes
 with no unresolved references or overfull boxes; two underfull bibliography
 boxes remain in the paper and one underfull module-list box in this plan.
+
+\paragraph{Official arXiv package check, 24 November 2026.}
+I checked the current arXiv TeX and ancillary-file instructions:
+\url{https://info.arxiv.org/help/submit_tex.html} and
+\url{https://info.arxiv.org/help/ancillary_files.html}. The clean source
+archive has the TeX inputs and five PDFLaTeX-compatible figures at its root
+and in \path{figures/}, plus the code archive under \path{anc/}. The nested
+archive contains no \texttt{.tex}, \texttt{.sty} or \texttt{.cls} files. The
+paper previously used path-like links for files that live only inside the
+nested ancillary archive; these are now displayed with non-linking URL-style
+text to avoid broken relative links. The official processed preview still
+has to be inspected after an author uploads the package. Final archive
+SHA-256 after this change:
+\texttt{ecdbc7f156b003f6bf430ec07245e71a823ba3725c72c6bbb178f2bc92ca61f3}.
 
 \paragraph{Focused grid-theorem search, 24 November 2026.}
 A separate search used combinations of Gaussian initial data, unbounded

@@ -8,5 +8,6 @@ Focus on:
 2. The new related-work discussion of Wang, Hu and Zhang, arXiv:2608.09675. Check the primary paper at https://arxiv.org/abs/2608.09675 and confirm whether the distinction from this execution HJB pipeline is accurate.
 3. The grid-expansion/sign-structure novelty claim, including whether the comparison with Gurevich 1504.02673 is accurate and whether arXiv:2602.16339 changes the assessment.
 4. Whether the novelty claim is appropriately narrow and supported by the cited sources. Do not treat a targeted search as proof of priority.
+5. Whether the refreshed arXiv package and code-path references follow the current official source/ancillary-file guidance.
 
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.

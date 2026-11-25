@@ -869,7 +869,7 @@ Schr\"odingerisation is the more general method: it applies to non-Hermitian gen
 which arise when the inventory has a drift. For the present class of
 problems it should be read as an upper bound that the direct polynomial improves.
 The GQSP phases and complement polynomial have not been compiled, so these T counts are analytic estimates.
-The finite-grid check in \path{simulation/direct_polynomial.py} applies the contraction-scaled series to the tested input vectors;
+The finite-grid check in \nolinkurl{simulation/direct_polynomial.py} applies the contraction-scaled series to the tested input vectors;
 it checks those instances but does not prove a uniform bound or verify a circuit. Readout probabilities and run counts use the
 scaled polynomial output.
 
@@ -1210,7 +1210,7 @@ not change the circuit.
 \section{Machine-checked proofs}
 \label{app:lean}
 
-The folder \path{lean/} contains a Lean~4 development on Mathlib (both v4.36.0).
+The folder \nolinkurl{lean/} contains a Lean~4 development on Mathlib (both v4.36.0).
 It proves the formal statements listed in Table~\ref{tab:lean} without
 \lean{sorry} and without \lean{native_decide}. These are counterparts of the
 paper's statements, with the qualifications below. A script collects the axioms of all its
@@ -1266,7 +1266,7 @@ quantifiers of \lean{grid_theorem_main} alone. \lean{wrap_bound} concerns the im
 \section{Verification of the reference model}
 \label{app:verify}
 
-Scripts in \path{simulation/} assert the following.
+Scripts in \nolinkurl{simulation/} assert the following.
 \begin{itemize}
 \item \emph{Symbolic.} The two-asset HJB, its feedback, the Riccati
 reduction and the sign map from Eq.~16 of \cite{bdg} (with $R=0$) are
@@ -1294,14 +1294,15 @@ controls has maximum absolute residual $3.5\times10^{-10}$.
 \section{Reproducibility}
 \label{app:code}
 
-The ancillary archive \path{research-sources.zip} contains the simulation scripts (\path{simulation/}), the saved
-results and the Lean sources (\path{lean/}). Every table entry and headline count is generated from the result files by
-\path{simulation/make_numbers.py}. A few constants in the running text, and
+The ancillary file named \texttt{research-sources.zip} contains the
+simulation scripts, saved results and Lean sources. Every table entry and
+headline count is generated from the result files by
+\nolinkurl{simulation/make_numbers.py}. A few constants in the running text, and
 Appendix~\ref{app:verify}, are quoted by hand from the same files and from
 the scripts' assertions. The scripts use NumPy, SciPy, SymPy, Matplotlib and
-Qualtran (versions in \path{simulation/requirements.txt}). \path{simulation/run_all.sh} runs the
-whole pipeline in order in about two hours on 16 cores; \path{make_numbers.py} and \path{figures.py} then write the
-tables and figures. The proofs are checked from \path{lean/} with \texttt{lake exe cache get}, \texttt{lake build} and
+Qualtran (versions in \nolinkurl{simulation/requirements.txt}). \nolinkurl{simulation/run_all.sh} runs the
+whole pipeline in order in about two hours on 16 cores; \nolinkurl{make_numbers.py} and \nolinkurl{figures.py} then write the
+tables and figures. The proofs are checked from \nolinkurl{lean/} with \texttt{lake exe cache get}, \texttt{lake build} and
 \texttt{lake env lean scripts/AxiomCheck.lean}.
 
 \paragraph{Use of AI tools.} Generative AI systems (Anthropic Claude and OpenAI Codex) were used to write code, Lean proofs and text, and to
