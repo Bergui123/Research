@@ -357,9 +357,24 @@ transform. Each basis function changes sign under $p\mapsto p+2L_p$.
 Source: the frequency convention implemented in
 \path{simulation/step7_schrodinger.py}. The direct matrix, FFT and inverse
 agree for $N=4,8,16,32$ in \path{simulation/tests/test_auxiliary_fourier.py}.
-Caveat: this check does not establish the circuit compilation cost or a
-complete finite-grid wrap-error bound. Exit criterion: account for the phases
-in the circuit and validate the bound for all costed configurations.
+A separate ideal gate simulation factors the transform as
+\[
+ F=e^{-i\pi c}Z_0 Q_-\prod_{j=0}^{n_p-1}P_j(2\pi c2^j/N),\qquad
+ e^{i\eta_kET}=e^{-ic\pi ET/L_p}\prod_j e^{i\pi2^jET k_j/L_p}.
+\]
+Here $Q_-$ uses $n_p$ Hadamards, $n_p(n_p-1)/2$ controlled phase gates
+and $\lfloor n_p/2\rfloor$ swaps. For $N=4,8,16,32$, the forward and
+inverse circuits, five scalar energy shifts per size, and the shifted input
+profile agree with direct matrices; the largest evolution-entry difference is
+$2.08\times10^{-14}$. An exact two-node shift acquires the antiperiodic sign
+at the boundary, and unwrapped shifted-window samples recover $e^{-(p+ET)}$
+within $1.01\times10^{-15}$. A 121-point, 100-image diagnostic of the
+wrap lemma lies below its analytic bound, but is not a proof between samples.
+Source, gate order, counts and commands are in \path{review/validation/},
+file \texttt{fourier-circuit.md}. Caveat: the gates use ideal phases; their
+synthesis and finite-grid aliasing are not enclosed. Exit criterion: compile
+the phase gates at the charged precision and validate aliasing for the costed
+configurations, or retain the conditional resource estimates.
 
 \paragraph{Profile-error selection.}
 The selection in \path{simulation/step8_resources.py} takes an envelope only

@@ -1,0 +1,73 @@
+{
+  "scope": "Ideal elementary-gate simulation for scalar eigenvalues and shifted profile samples; no phase synthesis or finite-grid alias enclosure.",
+  "wrap_lemma_diagnostic": {
+    "R": 2.0,
+    "L": 4.0,
+    "sampled_y": 121,
+    "finite_image_terms": 100,
+    "max_abs_finite_sum": 0.13529072978158843,
+    "analytic_bound": 0.2707613968029315
+  },
+  "cases": [
+    {
+      "n_p": 2,
+      "grid_size": 4,
+      "transform_max_error": 1.6529836499704672e-16,
+      "inverse_max_error": 1.6529836499704672e-16,
+      "fft_max_error": 8.777083671441753e-17,
+      "evolution_max_error": 1.154945935056053e-15,
+      "two_node_wrap_max_error": 4.805827935071591e-16,
+      "shifted_window_recovery_max_error": 1.1506757480450425e-16,
+      "qft_H": 2,
+      "qft_controlled_phases": 1,
+      "qft_swaps": 1,
+      "input_phase_gates": 2,
+      "output_Z": 1
+    },
+    {
+      "n_p": 3,
+      "grid_size": 8,
+      "transform_max_error": 3.650675994272796e-16,
+      "inverse_max_error": 3.650675994272796e-16,
+      "fft_max_error": 1.1857187100668868e-16,
+      "evolution_max_error": 1.5584779102501579e-15,
+      "two_node_wrap_max_error": 9.252588866663623e-16,
+      "shifted_window_recovery_max_error": 1.377756591850791e-16,
+      "qft_H": 3,
+      "qft_controlled_phases": 3,
+      "qft_swaps": 1,
+      "input_phase_gates": 3,
+      "output_Z": 1
+    },
+    {
+      "n_p": 4,
+      "grid_size": 16,
+      "transform_max_error": 1.4655364458042816e-15,
+      "inverse_max_error": 1.4648134867763266e-15,
+      "fft_max_error": 7.652942545767337e-16,
+      "evolution_max_error": 1.4707587332254336e-14,
+      "two_node_wrap_max_error": 5.022911944866639e-15,
+      "shifted_window_recovery_max_error": 3.9820488529902404e-16,
+      "qft_H": 4,
+      "qft_controlled_phases": 6,
+      "qft_swaps": 2,
+      "input_phase_gates": 4,
+      "output_Z": 1
+    },
+    {
+      "n_p": 5,
+      "grid_size": 32,
+      "transform_max_error": 1.7541545747588743e-15,
+      "inverse_max_error": 1.7211254595357095e-15,
+      "fft_max_error": 1.0270090413943892e-15,
+      "evolution_max_error": 2.0780532643445318e-14,
+      "two_node_wrap_max_error": 7.0723614710471554e-15,
+      "shifted_window_recovery_max_error": 1.0020194105157825e-15,
+      "qft_H": 5,
+      "qft_controlled_phases": 10,
+      "qft_swaps": 2,
+      "input_phase_gates": 5,
+      "output_Z": 1
+    }
+  ]
+}

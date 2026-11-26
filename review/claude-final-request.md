@@ -26,4 +26,7 @@ Focus on:
 
 15. The optional controlled SELECT and small controlled-walk check in `review/validation/controlled-walk.md`: audit the control-zero behavior, signs, inverse, uncomputation, reflected-walk decomposition, control arity, Qualtran cost and what the matrix check does and does not establish. Do not infer that GQSP or the complete QAE state-preparation circuit is compiled.
 
+
+16. The ideal auxiliary Fourier-gate construction in `review/validation/fourier-circuit.md`: check bit ordering, both diagonal phase factors, global phases, inverse gate order, evolution sign, shifted window, antiperiodic wrap and the stated distinction between the analytic image bound and unvalidated interpolation aliasing.
+
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.

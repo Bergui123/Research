@@ -565,8 +565,12 @@ the interpolant is antiperiodic over $2L_p$. The forward transform is
 The phase in $k$ is a $Z$ gate up to a global phase, and the phase in $l$ is a product
 of $n_p$ single-qubit rotations, which we charge. At the output it is diagonal in
 $p$, commutes with the projector on the window and cancels in the Grover
-iterate. The implemented transform agrees with the explicit matrix for
-$N_p=4,8,16,32$. Two effects matter.
+iterate. An ideal Hadamard, controlled-phase and swap circuit, including these
+phase factors and its inverse, agrees with the explicit transform for
+$N_p=4,8,16,32$. Scalar evolutions and a two-node antiperiodic boundary shift
+also agree with their explicit matrices; the largest evolution entry error is
+$2.08\times10^{-14}$. Phase synthesis and finite-grid aliasing are not
+validated by this check. Two effects matter.
 
 \emph{Wrap-around.} A mode with $ET$ comparable to $2L_p$ returns from the
 other side. The spectrum of $\Hd$ extends to $\alpha_H=8\nu/\Delta x^2+V'\gg1$
