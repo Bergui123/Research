@@ -41,6 +41,15 @@ zip -q -r "$out/src/anc/research-sources.zip" simulation lean \
  review/validation/check_projected_box_numerical.py review/validation/projected-box-numerical.json \
  review/validation/check_projected_recost.py review/validation/projected-recost.json \
  review/validation/check_projected_emulation.py review/validation/projected-emulation.json \
+ review/validation/b2_polynomial_majorant.py review/validation/b2-polynomial-majorant.json \
+ review/validation/b2-polynomial-majorant.md review/validation/check_b2_polynomial_symbolic.py \
+ review/validation/b2-polynomial-symbolic.json review/validation/check_b2_polynomial_majorant.py \
+ review/validation/b2-polynomial-check.json review/validation/check_b2_polynomial_reselection.py \
+ review/validation/b2-polynomial-reselection.json review/validation/expansion-enclosures-56.json \
+ review/validation/projected-b2-56.json review/validation/projected-b2-56-old-stencils.json \
+ review/validation/projected-box-numerical-56.json review/validation/projected-recost-56.json \
+ review/validation/projected-emulation-56.json review/validation/test_b2_polynomial_extension.py \
+ review/validation/compare_b2_polynomial_repeats.py review/validation/b2-polynomial-repeats.json \
  review/validation/check_controlled_walk.py review/validation/controlled-walk.json review/validation/controlled-walk.md \
  review/validation/check_controlled_select_profiles.py review/validation/controlled-profiles.json \
  review/validation/check_fourier_circuit.py review/validation/fourier-circuit.json review/validation/fourier-circuit.md \

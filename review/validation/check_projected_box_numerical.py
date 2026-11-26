@@ -1,4 +1,5 @@
 """Floating-point diagnostic of the rational box and rate-error bounds."""
+import argparse
 from fractions import Fraction as F
 import json
 from pathlib import Path
@@ -15,14 +16,21 @@ from step5_nu_sweep import neighbours  # noqa: E402
 
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--bounds',type=Path,default=ROOT/'review/validation/projected-box-bound.json')
+    parser.add_argument('--selection',type=Path,default=ROOT/'review/validation/b2-riccati-reselection.json')
+    args=parser.parse_args()
     assert (RHO, LAM, T) == (0.4, 1.0, 1.0)
-    data = json.loads((ROOT/'review/validation/projected-box-bound.json').read_text())
-    saved = json.loads((ROOT/'review/validation/b2-riccati-reselection.json').read_text())['case']
+    data = json.loads(args.bounds.read_text())
+    saved = json.loads(args.selection.read_text())['case']
     selections = [saved['alternative']['0.05']['best'], saved['alternative']['0.01']['best'],
                   saved['larger_box']['selection']['best']]
     out = []
     for case, selection in zip(data['cases'], selections):
         n, nu, dx, h = case['n'], float(F(case['nu'])), float(F(case['dx'])), case['h']
+        assert (n,nu,h,float(case['target'])) == (2**selection['n'],selection['nu'],selection['h'],selection['target'])
+        assert abs(dx-selection['dx'])<1e-12
+        assert abs(selection['L']-n*dx/2)<1e-12
         x1, _ = axis_grid(n,n*dx/2,3.,dx)
         x2, _ = axis_grid(n,n*dx/2,1.,dx)
         box, _ = grid_operator(x1,x2,dx,nu,periodic=False)

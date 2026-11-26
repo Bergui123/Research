@@ -1,0 +1,6 @@
+{
+  "sample_times": 101,
+  "max_polynomial_coefficient_ratio": 0.999999538445441,
+  "max_ladder_coefficient_ratio": 0.9779055424236903,
+  "scope": "Floating-point samples only; the all-time claim uses the rational residual certificate."
+}

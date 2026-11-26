@@ -1,4 +1,5 @@
 """Diagnostic only: compare the rational intervals with the numerical expansion."""
+import argparse
 from fractions import Fraction
 import json
 from pathlib import Path
@@ -12,7 +13,10 @@ from grid_theorem import expansion  # noqa: E402
 
 
 def main():
-    data = json.loads((ROOT / 'review/validation/expansion-enclosures.json').read_text())
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--input',type=Path,default=ROOT/'review/validation/expansion-enclosures.json')
+    args=parser.parse_args()
+    data = json.loads(args.input.read_text())
     checked = 0
     for case in data['cases']:
         nu, dx = float(Fraction(case['nu'])), float(Fraction(case['dx']))

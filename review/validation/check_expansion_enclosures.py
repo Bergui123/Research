@@ -2,6 +2,7 @@
 
 Run verify_polynomial_nodes.py and compare it with polynomial-residual-bound.json first.
 """
+import argparse
 from fractions import Fraction as F
 import gzip
 import json
@@ -38,6 +39,9 @@ def upper(x, denom=10**15):
 
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--case-set',choices=('b2-875','b2-56'),default='b2-875')
+    args=parser.parse_args()
     nodes = json.loads(gzip.decompress((ROOT / 'review/validation/polynomial-quad-nodes.json.gz').read_bytes()))
     pn = json.loads((ROOT / 'review/validation/riccati-quad-nodes.json').read_text())
     cert = json.loads((ROOT / 'review/validation/polynomial-residual-bound.json').read_text())
@@ -53,7 +57,10 @@ def main():
     poly = [{ij: F(v, q) for ij, v in zip(indices[k], nodes['nodes'][-1][k])} for k in range(2)]
     errors = [{int(d): F(v) for d, v in block.items()} for block in cert['coefficient_error_l1_bounds_at_T']]
     result = []
-    for target, dx, h in [('0.05', F(1, 4), 16), ('0.01', F(4, 33), 16), ('0.001', F(2, 15), 16)]:
+    cases = [('0.05', F(1, 4), 16), ('0.01', F(4, 33), 16), ('0.001', F(2, 15), 16)]
+    if args.case_set == 'b2-56':
+        cases = [('0.05', F(1, 2), 8), ('0.01', F(1, 4), 16), ('0.001', F(2, 15), 16)]
+    for target, dx, h in cases:
         nu, span = F(8), h * dx
         node_values = []
         for x, y in [(3 + span, F(1)), (3 - span, F(1)), (F(3), 1 + span), (F(3), 1 - span)]:

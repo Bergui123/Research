@@ -32,4 +32,7 @@ Focus on:
 
 17. Check the added classical execution-HJB citation to Forsyth (2011), its description, and the updated novelty search record; assess the breadth of the remaining no-match claim.
 
+
+18. Review `review/validation/b2-polynomial-majorant.md`: check that the terminal nonnegative coefficient-error polynomials bound all earlier times, the Gaussian weights and both directional factors give the stated rational `B2<56`, and the new stencils match the rational box bounds and re-costed profiles. Check the search's numerical and global-optimality qualifications and whether the earlier `B2<875` evidence is preserved.
+
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.

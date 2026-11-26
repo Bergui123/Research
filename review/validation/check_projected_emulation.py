@@ -24,6 +24,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("target", nargs="?")
     parser.add_argument("--all", action="store_true")
+    parser.add_argument("--selection", type=Path, default=ROOT / "review/validation/projected-recost.json")
     args = parser.parse_args()
     if args.all:
         output = []
@@ -31,13 +32,13 @@ def main():
             env = os.environ.copy()
             env.update(EXEC_RHO="0.4", EXEC_LAM="1", OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1")
             print(f"emulating target={target}", file=sys.stderr, flush=True)
-            output.append(json.loads(subprocess.check_output([sys.executable, __file__, target], env=env, text=True)))
+            output.append(json.loads(subprocess.check_output([sys.executable, __file__, target, "--selection", str(args.selection)], env=env, text=True)))
         print(json.dumps(output, indent=2))
         return
     if args.target not in ("0.05", "0.01", "0.001"):
         parser.error("provide a benchmark target or --all")
     assert (RHO, LAM) == (0.4, 1.0)
-    cases = json.loads((ROOT / "review/validation/projected-recost.json").read_text())["cases"]
+    cases = json.loads(args.selection.read_text())["cases"]
     cfg = next(case["best"] for case in cases if case["target"] == args.target)
     assert cfg is not None and cfg["target"] == float(args.target)
     step10_validation.RNG = np.random.default_rng(20261122)

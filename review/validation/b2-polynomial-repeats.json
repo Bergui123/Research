@@ -1,0 +1,9 @@
+{
+  "selected_configs_and_trial_samples_match": true,
+  "numeric_fields_changed": 2,
+  "max_absolute_change": 2.90878432451791e-14,
+  "tolerances": {
+    "relative": 1e-10,
+    "absolute": 1e-12
+  }
+}

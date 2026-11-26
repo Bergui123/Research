@@ -1,0 +1,138 @@
+{
+  "scope": "Three exploratory benchmark configurations, ideal rational grid; conditional on the preceding boundary, B2 and expansion proofs. Circuit cost and total algorithm error are not established.",
+  "fixed_point_denominator": 1000000000000000000,
+  "substeps": 128,
+  "last_poisson_term": 60,
+  "cases": [
+    {
+      "target": "0.05",
+      "n": 64,
+      "nu": "8",
+      "dx": "1/2",
+      "h": 8,
+      "boundary_a": "3/10",
+      "radius": "31/2",
+      "ghost_upper": "9667733993/62500000000",
+      "box_upper": [
+        "377151854413/1000000000000000",
+        "349898189/40000000000000",
+        "65633435909/500000000000000",
+        "19930378817/500000000000000"
+      ],
+      "box_upper_decimal": [
+        0.0003771518544124275,
+        8.747454724375307e-06,
+        0.00013126687181709202,
+        3.9860757633471925e-05
+      ],
+      "lattice_upper": "7/4096",
+      "S_lower": [
+        "82676939872933/1000000000000000",
+        "402000104246101/1000000000000000",
+        "129948476557903/1000000000000000",
+        "139652428482117/500000000000000"
+      ],
+      "E_below_S": true,
+      "reference_norm_lower": "3507728624408509/1000000000000000",
+      "relative_grid_bound_upper": "22381564004643/1000000000000000",
+      "relative_grid_bound_upper_decimal": 0.022381564004643,
+      "half_target": "1/40",
+      "within_half_target": true,
+      "uniformization_rates": [
+        71,
+        71
+      ],
+      "tail_units_per_substep": [
+        1,
+        1
+      ]
+    },
+    {
+      "target": "0.01",
+      "n": 128,
+      "nu": "8",
+      "dx": "1/4",
+      "h": 16,
+      "boundary_a": "3/10",
+      "radius": "63/4",
+      "ghost_upper": "153234744633/1000000000000",
+      "box_upper": [
+        "35824200313/100000000000000",
+        "343124323/40000000000000",
+        "1221923783/10000000000000",
+        "40641435717/1000000000000000"
+      ],
+      "box_upper_decimal": [
+        0.0003582420031296226,
+        8.57810807460094e-06,
+        0.00012219237829920733,
+        4.06414357164795e-05
+      ],
+      "lattice_upper": "7/262144",
+      "S_lower": [
+        "5171358758129/62500000000000",
+        "25094540544767/62500000000000",
+        "64999215414597/500000000000000",
+        "139554945033681/500000000000000"
+      ],
+      "E_below_S": true,
+      "reference_norm_lower": "3507728624408509/1000000000000000",
+      "relative_grid_bound_upper": "25415779639/7812500000000",
+      "relative_grid_bound_upper_decimal": 0.003253219793792,
+      "half_target": "1/200",
+      "within_half_target": true,
+      "uniformization_rates": [
+        263,
+        263
+      ],
+      "tail_units_per_substep": [
+        1,
+        1
+      ]
+    },
+    {
+      "target": "0.001",
+      "n": 256,
+      "nu": "8",
+      "dx": "2/15",
+      "h": 16,
+      "boundary_a": "3/10",
+      "radius": "253/15",
+      "ghost_upper": "111128423647/1000000000000",
+      "box_upper": [
+        "5731950477/250000000000000",
+        "1622339263/1000000000000000",
+        "9754668073/1000000000000000",
+        "2483013209/500000000000000"
+      ],
+      "box_upper_decimal": [
+        2.2927801907346816e-05,
+        1.6223392629538877e-06,
+        9.754668072357397e-06,
+        4.966026417190001e-06
+      ],
+      "lattice_upper": "7/11390625",
+      "S_lower": [
+        "84997614143689/500000000000000",
+        "394630557962947/1000000000000000",
+        "13371485089329/62500000000000",
+        "321531196561021/1000000000000000"
+      ],
+      "E_below_S": true,
+      "reference_norm_lower": "3507728624408509/1000000000000000",
+      "relative_grid_bound_upper": "320128205863/1000000000000000",
+      "relative_grid_bound_upper_decimal": 0.000320128205863,
+      "half_target": "1/2000",
+      "within_half_target": true,
+      "uniformization_rates": [
+        908,
+        908
+      ],
+      "tail_units_per_substep": [
+        1,
+        1
+      ]
+    }
+  ],
+  "B2_upper_applied": 56
+}

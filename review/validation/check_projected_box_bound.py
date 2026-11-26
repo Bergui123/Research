@@ -4,6 +4,7 @@ See projected-box-bound.md for the comparison proof and limitations. The
 only nonlinear functions below are bounded with rational series; propagation
 uses outward-rounded fixed-point integer operations and a uniformization tail.
 """
+import argparse
 from fractions import Fraction as F
 import json
 import math
@@ -119,7 +120,17 @@ def max_abs_interval(interval):
 
 
 def main():
-    expansions = json.loads((ROOT/'review/validation/expansion-enclosures.json').read_text())['cases']
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--b2',type=int,choices=(56,875),default=875)
+    parser.add_argument('--case-set',choices=('b2-875','b2-56'),default='b2-875')
+    args=parser.parse_args()
+    assert args.case_set != 'b2-56' or args.b2 == 56
+    if args.b2==56:
+        cert=json.loads((ROOT/'review/validation/b2-polynomial-majorant.json').read_text())
+        assert F(cert['B2_upper_rational']) < 56
+    expansion_file=('expansion-enclosures-56.json' if args.case_set == 'b2-56'
+                    else 'expansion-enclosures.json')
+    expansions = json.loads((ROOT/'review/validation'/expansion_file).read_text())['cases']
     pn = json.loads((ROOT/'review/validation/riccati-quad-nodes.json').read_text())
     reference = reference_interval(pn)
     ref_lower = sqrt_down(sum(min_abs_interval(v)**2 for v in reference))
@@ -131,6 +142,12 @@ def main():
         ('0.01', F(4,33), 256, 16, F(3,10)),
         ('0.001', F(2,15), 256, 16, F(3,10)),
     ]
+    if args.case_set == 'b2-56':
+        parameters = [
+            ('0.05', F(1,2), 64, 8, F(3,10)),
+            ('0.01', F(1,4), 128, 16, F(3,10)),
+            ('0.001', F(2,15), 256, 16, F(3,10)),
+        ]
     cases = []
     for (target, dx, n, h, a), expansion in zip(parameters, expansions):
         nu, period = F(8), n*dx
@@ -150,7 +167,7 @@ def main():
         unit=[r1['plus']+r2['center'], r1['minus']+r2['center'],
               r1['center']+r2['plus'], r1['center']+r2['minus']]
         box=[ghost*u for u in unit]
-        lattice=875*(dx*dx/nu)**3
+        lattice=args.b2*(dx*dx/nu)**3
         slo=[F(v['lower']) for v in expansion['nodes']]
         shi=[F(v['upper']) for v in expansion['nodes']]
         assert all(lattice+u < s for u,s in zip(box,slo))
@@ -178,9 +195,12 @@ def main():
                       'half_target':str(F(target)/2),'within_half_target':charge < F(target)/2,
                       'uniformization_rates':[r1['uniformization_rate'],r2['uniformization_rate']],
                       'tail_units_per_substep':[r1['tail_units_per_substep'],r2['tail_units_per_substep']]})
-    print(json.dumps({'scope':'Three exploratory benchmark configurations, ideal rational grid; conditional on the preceding boundary, B2 and expansion proofs. Circuit cost and total algorithm error are not established.',
-                      'fixed_point_denominator':Q,'substeps':SUBSTEPS,'last_poisson_term':TERMS,
-                      'cases':cases},indent=2))
+    result={'scope':'Three exploratory benchmark configurations, ideal rational grid; conditional on the preceding boundary, B2 and expansion proofs. Circuit cost and total algorithm error are not established.',
+            'fixed_point_denominator':Q,'substeps':SUBSTEPS,'last_poisson_term':TERMS,
+            'cases':cases}
+    if args.b2 != 875:
+        result['B2_upper_applied']=args.b2
+    print(json.dumps(result,indent=2))
 
 
 if __name__ == '__main__':

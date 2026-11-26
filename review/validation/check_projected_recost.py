@@ -1,4 +1,5 @@
 """Re-cost only three exploratory stencil grids using the projected bounds."""
+import argparse
 from fractions import Fraction
 import json
 from pathlib import Path
@@ -11,9 +12,13 @@ import step8_resources as resources  # noqa: E402
 
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--bounds',type=Path,default=ROOT/'review/validation/projected-box-bound.json')
+    parser.add_argument('--selection',type=Path,default=ROOT/'review/validation/b2-riccati-reselection.json')
+    args=parser.parse_args()
     assert (RHO, LAM, T) == (0.4, 1.0, 1.0)
-    bounds=json.loads((ROOT/'review/validation/projected-box-bound.json').read_text())['cases']
-    old=json.loads((ROOT/'review/validation/b2-riccati-reselection.json').read_text())['case']
+    bounds=json.loads(args.bounds.read_text())['cases']
+    old=json.loads(args.selection.read_text())['case']
     selected=[old['alternative']['0.05']['best'],old['alternative']['0.01']['best'],old['larger_box']['selection']['best']]
     rows=json.loads((ROOT/'simulation/results/step5.json').read_text())['grid']
     profiles=[r for r in json.loads((ROOT/'simulation/results/step7.json').read_text())['rows'] if r['safe_Lp']]
@@ -23,6 +28,10 @@ def main():
     result=[]
     for bound, previous in zip(bounds,selected):
         n=previous['n'];nu=previous['nu'];h=previous['h'];target=previous['target']
+        # A bound for a different stencil must never be applied to this grid.
+        assert (bound['n'],bound['h'],float(Fraction(bound['nu'])),float(bound['target'])) == (2**n,h,nu,target)
+        assert abs(float(Fraction(bound['dx']))-previous['dx']) < 1e-12
+        assert abs(previous['L']-bound['n']*float(Fraction(bound['dx']))/2) < 1e-12
         if bound['target']=='0.001':
             row=old['larger_box']['row']
         else:

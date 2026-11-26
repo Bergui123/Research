@@ -691,6 +691,59 @@ validate the remaining amplitude and circuit assumptions, extend or qualify
 the sweeps, and rerun the selection pipeline before claiming validated
 end-to-end resource counts.
 
+\paragraph{Sharper lattice majorant from the polynomial certificate.}
+The degree-$d$ coefficient bounds of the saved polynomial interpolants and
+their nonnegative error comparison polynomials give, uniformly for
+$0\le t\le1$,
+\[
+ \|p_{k,d}(t)\|_1\le C_{k,d}:=A_{k,d}+W_{k,d}(1).
+\]
+With $R=3/5$, let $\mathcal T$ send $C_d$ to $dC_d$ at degree $d-1$ and
+$RC_d$ at degree $d+1$. With $a=899/8000$, the rational Gaussian bound is
+$G_d=((360d/1957)/a)^{d/2}$ for even $d>0$ and $G_0=1$. Applying the
+ladder bound $m_k=8-2k$ times, summing both axes and integrating over
+$[0,1]$ gives
+\[
+ B_2\le\sum_{k=0}^2\frac4{m_k!}\sum_d(\mathcal T^{m_k}C_k)_dG_d<56,
+ \qquad\text{sum}\approx55.6434860534.
+\]
+See \path{review/validation/}, file \texttt{b2-polynomial-majorant.md}, for
+the exact value and hypotheses. The full exact polynomial and
+Riccati residual check reproduced the saved certificate; a separate SymPy
+generating-polynomial calculation agrees exactly, and 101 floating-point
+time samples corroborate the coefficient bounds. The latter are diagnostics,
+not all-time enclosures. The result depends on the benchmark-only comparison
+proofs and awaits independent review.
+
+With $B_2=56$ and the analytic boundary charge, a temporary-input numerical
+search selects $\nu=8$, $(N,\Delta,h)=(64,1/2,8)$ and $(128,1/4,16)$
+at 5\% and 1\%. It finds no 0.1\% candidate in the original grid family;
+the previously tested larger $(256,2/15,16)$ box gives a candidate. Rational
+expansion and projected-box checks give $E<S$ at all 12 stencil nodes and
+relative grid bounds
+\[
+ (0.022381564004643,\ 0.003253219793792,\ 0.000320128205863)
+ <(0.025,\ 0.005,\ 0.0005).
+\]
+A separate two-dimensional floating-point solve lies below all 12 projected
+box bounds, and the measured grid errors lie below the relative bounds.
+Re-costing these three fixed stencils with the larger rational grid charges
+and existing numerical amplitude and circuit inputs gives approximately
+$1.7588\times10^{13}$, $1.0440\times10^{15}$ and $1.0779\times10^{17}$ T
+gates, with 179, 203 and 231 qubits. Each met its target in 2000 of 2000
+emulated trials, giving a one-sided 99.9\% lower confidence bound of 0.99655;
+GQSP truncation and gate synthesis were not emulated. A repeat produced the
+same selections and identical sampled trial errors; two floating-point
+amplitude-error fields changed by at most $2.91\times10^{-14}$ (tolerances
+$10^{-10}$ relative and $10^{-12}$ absolute). The baseline and previous
+$B_2<875$ outputs are retained. The new search does not establish
+global optimality, and production tables and sweeps are unchanged. Source,
+commands and saved exact and numerical evidence are in
+\path{review/validation/}, file \texttt{b2-polynomial-majorant.md}. Exit
+criterion: independently review the comparison chain, validate the amplitude
+and circuit assumptions, and extend or qualify the parameter sweeps before
+claiming end-to-end resource bounds.
+
 \paragraph{Grid-bound sensitivity check.}
 The 1\% benchmark check in \path{review/validation} recomputed $B_2$ with
 33 and 65 time points at spatial mesh $0.08$, and
