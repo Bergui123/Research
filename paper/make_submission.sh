@@ -36,6 +36,11 @@ zip -q -r "$out/src/anc/research-sources.zip" simulation lean \
  review/validation/polynomial-residual-bound.md review/validation/test_polynomial_certificate.py \
  review/validation/check_polynomial_residual_symbolic.py review/validation/check_expansion_enclosures.py \
  review/validation/expansion-enclosures.json review/validation/check_expansion_against_float.py \
+ review/validation/check_projected_box_bound.py review/validation/projected-box-bound.json \
+ review/validation/projected-box-bound.md review/validation/test_projected_box_bound.py \
+ review/validation/check_projected_box_numerical.py review/validation/projected-box-numerical.json \
+ review/validation/check_projected_recost.py review/validation/projected-recost.json \
+ review/validation/check_projected_emulation.py review/validation/projected-emulation.json \
  -x '*/__pycache__/*' 'lean/.lake/*' 'simulation/figures/*'
 (cd "$out/src" && for i in 1 2 3; do pdflatex -interaction=nonstopmode -halt-on-error Paper.tex > /dev/null; done
 	if grep -E "undefined|Citation.*undefined" Paper.log; then exit 1; fi

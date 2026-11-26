@@ -620,6 +620,62 @@ and other components remain unenclosed. Exit criterion: obtain independent
 review and enclose the remaining numerical quantities before claiming an
 end-to-end validated grid bound.
 
+\paragraph{Projected box-response upper bounds.}
+For the three exploratory benchmark stencils above, let $a=\nu/\Delta^2$
+and write the Dirichlet box process as two independent nearest-neighbour
+walks with killing potential
+$V=(x_1^2+2\rho x_1x_2+x_2^2)/(4\nu)$. Completing the square gives
+$V\ge v_i=(1-\rho^2)x_i^2/(4\nu)$ for either coordinate. If $\tau$ is the
+first exit from the square and $\tau_i$ is the first exit of coordinate $i$,
+the finite-state Feynman--Kac formula and a union bound give
+\[
+ U(\x,T)\le g\,[w_1(x_1,T)+w_2(x_2,T)],\quad
+ w_i=\mathbb E_{x_i}\!\left[e^{-\int_0^{\tau_i}v_i(X_i(s))\,ds}
+ \mathbf1_{\{\tau_i\le T\}}\right].
+\]
+The all-time rational $g$ bounds both nonnegative boundary values whose
+difference drives the comparison. Each one-dimensional forced system is
+augmented by a constant coordinate; for $\Lambda\ge\max(2a+v_i)$ its matrix
+$B=I+G/\Lambda$ is nonnegative and substochastic. With $h_t=T/128$,
+$z=\Lambda h_t$, compute
+\[
+ e^{h_tG}=e^{-z}\sum_{j\ge0}\frac{z^j}{j!}B^j
+\]
+using 60 terms after $j=0$, upward-rounded integers over $10^{18}$, and a
+geometric bound on the positive Poisson tail. Intermediate coordinates may
+be capped at one. Combine the resulting box bounds with $B_2<875$, the
+rational $S$ intervals, and rational logarithm and square-root bounds for the
+reference and rate remainder. The calculation checks $E<S$ at all 12 nodes.
+The resulting relative grid upper values at targets 5\%, 1\%, and 0.1\% are
+\[
+ (0.007259339468832,\ 0.001690797330240,\ 0.000426924669709)
+ < (0.025,\ 0.005,\ 0.0005).
+\]
+The source, proof, assumptions, exact inputs and commands are in
+\path{review/validation/}, file \texttt{projected-box-bound.md}. An independent
+floating-point two-dimensional solve lies below all 12 bounds and the saved
+measured rate errors lie below the resulting bounds; three focused tests
+pass. These diagnostics do not independently prove the inequalities. Since
+the previous exploratory costs used smaller grid charges, I re-costed these
+three fixed grids with the larger charges using the existing floating-point
+amplitudes and circuit model. The best scanned auxiliary profiles give
+$7.0437\times10^{13}$, $7.9327\times10^{15}$ and $1.2582\times10^{17}$
+T gates, with 196, 223 and 231 logical qubits. No global grid optimum is
+claimed. The evidence and old/new charges are in
+\path{review/validation/projected-recost.json}. Each re-costed configuration
+met its target in 2000 of 2000 emulated trials, with one-sided 99.9\% lower
+confidence bound 0.99655; GQSP truncation and gate synthesis were not
+emulated (\path{review/validation/projected-emulation.json}). A second run
+reproduced the rational bounds, re-costing and emulations byte for byte; the
+floating-point box values matched within $10^{-10}$ relative tolerance. From
+\path{lean/}, \texttt{lake build} and \texttt{lake env lean
+scripts/AxiomCheck.lean} passed (323 declarations; standard axioms only); the
+new comparison is not formalized there. Production tables are not changed.
+Exit criterion: independently review the whole comparison chain,
+validate the remaining amplitude and circuit assumptions, extend or qualify
+the sweeps, and rerun the selection pipeline before claiming validated
+end-to-end resource counts.
+
 \paragraph{Grid-bound sensitivity check.}
 The 1\% benchmark check in \path{review/validation} recomputed $B_2$ with
 33 and 65 time points at spatial mesh $0.08$, and
