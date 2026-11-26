@@ -69,9 +69,10 @@ against the price risk of holding inventory. Almgren and Chriss
 \cite{ac} made this a variational problem; for several assets with linear
 impact, the value function solves a Hamilton--Jacobi--Bellman (HJB)
 equation whose quadratic solution follows from a matrix Riccati equation
-\cite{bdg}. Non-quadratic costs, constraints and signals break that
-structure, and grid methods then scale exponentially in the number of
-assets. This is the setting in which quantum algorithms for partial
+\cite{bdg}. Classical HJB methods also handle nonlinear impact; Forsyth
+\cite{forsyth} studies a semi-Lagrangian scheme for execution. Non-quadratic
+costs, constraints and signals can break the quadratic structure, and grid
+methods then scale exponentially in the number of assets. This is the setting in which quantum algorithms for partial
 differential equations are usually proposed.
 
 Such proposals are mostly stated as asymptotic query complexities. Here we
@@ -1381,6 +1382,7 @@ cross-review the manuscript. The author is responsible for the content.
 
 \begin{thebibliography}{99}\small
 \bibitem{ac} R.~Almgren and N.~Chriss, Optimal execution of portfolio transactions, \emph{J.~Risk} 3(2), 5--39 (2001).
+\bibitem{forsyth} P.~A.~Forsyth, A Hamilton--Jacobi--Bellman approach to optimal trade execution, \emph{Appl.~Numer.~Math.}~61(2), 241--265 (2011), doi:10.1016/j.apnum.2010.10.004.
 \bibitem{bdg} P.~Bergault, F.~Drissi and O.~Gu\'eant, Multi-asset optimal execution and statistical arbitrage strategies under Ornstein--Uhlenbeck dynamics, \emph{SIAM J.~Financial Math.}~13(1), 353--390 (2022), arXiv:2103.13773.
 \bibitem{jlyshort} S.~Jin, N.~Liu and Y.~Yu, Quantum simulation of partial differential equations via Schr\"odingerisation, \emph{Phys.~Rev.~Lett.}~133, 230602 (2024), arXiv:2212.13969.
 \bibitem{jly} S.~Jin, N.~Liu and Y.~Yu, Quantum simulation of partial differential equations: Applications and detailed analysis, \emph{Phys.~Rev.~A} 108, 032603 (2023); preprint titled Quantum simulation of partial differential equations via Schr\"odingerisation: technical details, arXiv:2212.14703.

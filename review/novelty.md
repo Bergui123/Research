@@ -102,3 +102,23 @@ non-arXiv publications were not exhaustively searched. The manuscript's
 contribution should remain its conditional logical resource estimate and its
 stated Gaussian/quadratic grid-error result, not a general claim to the first
 quantum treatment of HJB, Cole-Hopf or Schrödingerisation.
+
+## Classical execution-HJB source and targeted web pass, 26 November 2026
+
+A further web search combined “optimal execution” with quantum HJB,
+Cole–Hopf, Schrödingerisation and logical resource estimates. It did not
+surface an exact match in the returned results; this search is not exhaustive.
+It surfaced the primary classical paper by Peter A. Forsyth,
+[A Hamilton–Jacobi–Bellman approach to optimal trade execution](https://cs.uwaterloo.ca/~paforsyt/optimal_trade.pdf)
+([journal metadata and DOI](https://www.sciencedirect.com/science/article/pii/S0168927410001789)).
+Its mean–variance execution model leads to a nonlinear HJB, solved with a
+semi-Lagrangian scheme; the stated convergence requires a strong comparison
+property. It is classical background, not a quantum algorithm or evidence of
+priority for this manuscript. The paper now cites it.
+
+The same pass checked the primary abstracts of
+[Rosenberg et al.](https://arxiv.org/abs/1508.06182), which studies a discrete
+multi-period portfolio formulation on a quantum annealer, and
+[Wang, Hu and Zhang](https://arxiv.org/abs/2608.09675), which uses level-set
+lifting and Schrödingerisation for scalar conservation laws. Both are already
+cited. These checks do not replace a citation-chain review or prove novelty.

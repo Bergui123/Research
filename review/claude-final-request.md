@@ -29,4 +29,7 @@ Focus on:
 
 16. The ideal auxiliary Fourier-gate construction in `review/validation/fourier-circuit.md`: check bit ordering, both diagonal phase factors, global phases, inverse gate order, evolution sign, shifted window, antiperiodic wrap and the stated distinction between the analytic image bound and unvalidated interpolation aliasing.
 
+
+17. Check the added classical execution-HJB citation to Forsyth (2011), its description, and the updated novelty search record; assess the breadth of the remaining no-match claim.
+
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.
