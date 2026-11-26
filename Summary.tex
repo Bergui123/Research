@@ -253,7 +253,14 @@ general $H$, recentring for other running costs.
 (1-0.3\delta)(1-0.7\delta)\ge1-\delta,\quad
 (1+0.3\delta)(1+0.7\delta)\le(1-\delta)^{-1}.
 \]
-Status: four finite-budget regression checks pass; validate the individual error estimates and circuit costs next.
+\[
+e_{\rm pot}=\frac{b_m-b}{b},\qquad e_{\rm schr}=\frac{b_w-b_m}{b}.
+\]
+\[
+\max_{\rm nine\ cases}\frac{|e_{\rm pot}|}{0.1\delta}=0.666135,\qquad
+\max_{\rm nine\ cases}\frac{|e_{\rm schr}|}{0.1\delta}=0.964561.
+\]
+Status: separate floating-point node checks pass and are in the ancillary archive; validate numerical enclosures and circuit costs next.
 \[
 \text{candidate scope}=\text{continuous-time execution HJB}
  +\text{logical-qubit and T-gate estimate}.

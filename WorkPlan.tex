@@ -100,6 +100,37 @@ estimate is $\TATenth$ T, compared with $2.6\times10^{17}$ T. The nine selected
 readout-A benchmark and sweep configurations meet their allocated QAE and
 sampled-profile shares; this does not validate the numerical profile estimates.
 
+\paragraph{Separated deterministic amplitude checks, 26 November 2026.}
+The previous emulation checked rounding and Schr\"odingerisation together, so
+their effects could cancel. For each of the three benchmark targets and six
+one-percent sweep points, let $b$ be the unrounded semigroup amplitude,
+$b_m$ the corresponding amplitude with the rounded potential, and $b_w$ the
+window amplitude from the rounded Schr\"odingerised evolution. At each of
+the four nodes I computed
+\[
+ e_{\rm pot}=\frac{b_m-b}{b},\qquad
+ e_{\rm schr}=\frac{b_w-b_m}{b},\qquad
+ e_{\rm pot}+e_{\rm schr}=\frac{b_w-b}{b}.
+\]
+Both absolute errors were below their individual $0.1\delta$ shares in all
+nine configurations. The largest ratio to a share was $0.666135$ for rounding
+and $0.964561$ for Schr\"odingerisation. The latter occurs at the 5\%
+benchmark and leaves about 3.5\% of that share. At this $32^2$ point, a
+dense eigendecomposition agreed with the Chebyshev recovery in relative
+amplitude to $2.9\times10^{-15}$, and with the sparse semigroup in relative
+amplitude to $4.9\times10^{-15}$. Source: the saved Step~8 optima and
+\path{review/validation/check_amplitude_shares.py}; its output is
+\path{review/validation/amplitude-shares.json}. Reproduce with
+\begin{verbatim}
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 \
+ .venv/bin/python review/validation/check_amplitude_shares.py --all
+\end{verbatim}
+These floating-point checks do not enclose numerical error or test GQSP and
+gate synthesis. Counts and configuration selection were not changed. Exit
+criterion: validate the error estimates and the coherent circuit, or retain
+the conditional scope of the counts. The clean source package was rebuilt and
+includes the check and its saved output in the ancillary archive.
+
 \paragraph{Finite-budget regression checks, 24 November 2026.}
 The exact counterexample is $|\log(1-0.1)|=0.1053605>0.1$, so the earlier
 linear logarithm bound cannot be used for a negative relative perturbation.
@@ -182,7 +213,7 @@ has to be inspected after an author uploads the package. Final archive
 SHA-256 after this change:
 \texttt{ecdbc7f156b003f6bf430ec07245e71a823ba3725c72c6bbb178f2bc92ca61f3}.
 
-\paragraph{Final local builds and PDF inspection, 26 November 2026.}
+\paragraph{Earlier local builds and PDF inspection, 26 November 2026.}
 Following the commands in \path{README.md}, I ran each document build three
 times with:
 \begin{verbatim}

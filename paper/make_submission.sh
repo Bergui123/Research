@@ -8,7 +8,7 @@ cp paper/Paper.tex paper/generated.tex paper/grid_theorem.tex paper/grid_box.tex
 for f in $(grep -o 'includegraphics[^{]*{[^}]*}' paper/Paper.tex | sed 's/.*{//; s/}//'); do
 	cp "simulation/figures/$f" "$out/src/figures/"
 done
-zip -q -r "$out/src/anc/research-sources.zip" simulation lean -x '*/__pycache__/*' 'lean/.lake/*' 'simulation/figures/*'
+zip -q -r "$out/src/anc/research-sources.zip" simulation lean review/validation/check_amplitude_shares.py review/validation/amplitude-shares.json -x '*/__pycache__/*' 'lean/.lake/*' 'simulation/figures/*'
 (cd "$out/src" && for i in 1 2 3; do pdflatex -interaction=nonstopmode -halt-on-error Paper.tex > /dev/null; done
 	if grep -E "undefined|Citation.*undefined" Paper.log; then exit 1; fi
 	grep "Output written" Paper.log

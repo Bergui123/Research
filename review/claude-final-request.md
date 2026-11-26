@@ -11,5 +11,6 @@ Focus on:
 5. Whether the refreshed arXiv package and code-path references follow the current official source/ancillary-file guidance.
 6. The 26 November grid-estimate terminology correction: confirm no code, generated table, manuscript or plan now presents sampled floating-point maxima as certified enclosures, and check the baseline-equivalence evidence in `review/validation/check_grid_estimate_rename.py`.
 7. Whether the new abstract and limitations language correctly makes readout-A counts conditional on the sampled grid maxima covering the true spatial and temporal extrema, without qualifying unrelated results too broadly.
+8. The separated amplitude-share check in `review/validation/check_amplitude_shares.py`: verify the common reference, decomposition and interpretation, especially the 5% benchmark's 0.964561 fraction of the Schrödingerisation share. The saved values are in `review/validation/amplitude-shares.json`.
 
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.
