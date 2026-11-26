@@ -42,8 +42,18 @@ for the original SELECT and two larger multi-controlled reflections. The walk
 uses two `R_y` preparations; the model charges four synthesized rotations per
 step. This comparison does not show that unused allowance covers other parts
 of the GQSP or QAE construction. It also does not independently establish
-measurement-based feedforward, rotation synthesis, general-size workspace or
-the full controlled-state-preparation cost.
+measurement-based feedforward, rotation synthesis or the full
+controlled-state-preparation cost.
+
+`check_controlled_select_profiles.py` separately runs the static gate builder
+for the 18 saved benchmark and sweep configurations. For each, controlled
+SELECT has two more ANDs than the saved uncontrolled circuit and the same
+peak work-qubit count (with the external control counted as an input). The
+controlled SELECT plus one Qualtran-costed reflection is at least 56 T below
+the model's SELECT-plus-two-reflections allowance, before rotation costs.
+These are counts of fixed gate builders on one basis input, not an exhaustive
+correctness or phase-synthesis check at those sizes. The output is saved in
+`controlled-profiles.json`.
 
 Reproduce from the repository root:
 
@@ -51,4 +61,6 @@ Reproduce from the repository root:
 PYTHONPATH=simulation OPENBLAS_NUM_THREADS=1 .venv/bin/python -m unittest discover -s simulation/tests -p 'test_controlled_select.py' -v
 OPENBLAS_NUM_THREADS=1 .venv/bin/python review/validation/check_controlled_walk.py > /tmp/controlled-walk.json
 cmp /tmp/controlled-walk.json review/validation/controlled-walk.json
+OPENBLAS_NUM_THREADS=1 .venv/bin/python review/validation/check_controlled_select_profiles.py > /tmp/controlled-profiles.json
+cmp /tmp/controlled-profiles.json review/validation/controlled-profiles.json
 ```

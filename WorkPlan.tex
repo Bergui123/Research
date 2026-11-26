@@ -1303,15 +1303,19 @@ controlled $R$ and a controlled SELECT. A matrix comparison checks $W$,
 $W^\dagger$ and $W^\dagger W$; the maximum identity residual is
 $1.6\times10^{-15}$. The controlled SELECT and its reflection cost 1004 T
 under the logical-AND and Qualtran conventions, below the model's 1020 T
-for SELECT plus two larger reflections, excluding rotations. This one small
-walk uses two preparation rotations; the model charges four per step. The
+for SELECT plus two larger reflections, excluding rotations. Static gate-builder
+counts at all 18 saved benchmark and sweep configurations give the same two
+extra ANDs and no extra peak work qubits; the minimum corresponding T-count
+slack is 56 before rotations. Those counts are not an exhaustive functional
+check at those sizes. This one small walk uses two preparation rotations; the
+model charges four per step. The
 code and exact scope are in \path{review/validation/}, file
 \texttt{controlled-walk.md}. All 15 simulation unit tests pass, and six
 benchmark SELECT configurations reproduce their existing cost and workspace
 with every grid point and 20000 random states each. Caveat: rotations are
 ideal in the matrix check; GQSP phases, full controlled state preparation,
-QROM, QFT, measurement feedforward and general-size peak workspace are not
-compiled here. Exit criterion: audit those remaining components and their
+QROM, QFT, measurement feedforward and general-size functional behaviour are
+not compiled or exhaustively checked here. Exit criterion: audit those remaining components and their
 composition inside amplitude estimation before treating the total T count as
 an independently compiled circuit.
 

@@ -24,7 +24,7 @@ Focus on:
 14. The projected box comparison and re-costing in `review/validation/projected-box-bound.md`: verify the Feynman–Kac/union comparison, boundary-value factor, substochastic uniformization, fixed-point rounding and tail, rational log/square-root rate calculation, exact grid coordinates and re-costed amplitude budgets. Check whether the evidence supports the three stated grid bounds while preserving the circuit and sweep limitations.
 
 
-15. The optional controlled SELECT and small controlled-walk check in `review/validation/controlled-walk.md`: audit the control-zero behavior, signs, inverse, uncomputation, reflected-walk decomposition, control arity, Qualtran cost and what the matrix check does and does not establish. Do not infer that GQSP or the complete QAE state-preparation circuit is compiled.
+15. The optional controlled SELECT and small controlled-walk check in `review/validation/controlled-walk.md`: audit the control-zero behavior, signs, inverse, uncomputation, reflected-walk decomposition, control arity, Qualtran cost and what the matrix check does and does not establish. Check the 18 static controlled-SELECT counts in `controlled-profiles.json`, including whether workspace and allowance comparisons are like-for-like. Do not infer that GQSP or the complete QAE state-preparation circuit is compiled.
 
 
 16. The ideal auxiliary Fourier-gate construction in `review/validation/fourier-circuit.md`: check bit ordering, both diagonal phase factors, global phases, inverse gate order, evolution sign, shifted window, antiperiodic wrap and the stated distinction between the analytic image bound and unvalidated interpolation aliasing.

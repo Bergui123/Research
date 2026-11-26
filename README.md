@@ -6,7 +6,7 @@ We estimate the logical qubits and T gates needed to solve a reformulation of a 
 
 An [alternative boundary-bound search](review/validation/alternative-boundary-selection.json) records how a conservative all-time boundary bound changes the readout-A selections, including one larger-box candidate. The production counts remain conditional on the numerical grid estimates.
 For the normalized benchmark, a [rational Riccati residual calculation](review/validation/riccati-residual-bound.md) tightens an analytic lattice-remainder majorant. A separate [polynomial residual check](review/validation/polynomial-residual-bound.md) encloses the expansion at 12 exploratory stencil nodes; a [projected box comparison](review/validation/projected-box-bound.md) gives bounds below those stencils' half-target grid allocations. These arguments await independent review; the amplitude and circuit costs still need validation.
-A [small controlled-walk check](review/validation/controlled-walk.md) compares the compiled SELECT and a reflection with the current walk-cost allowance; the full GQSP and amplitude-estimation circuits remain open.
+A [small controlled-walk check](review/validation/controlled-walk.md) compares the compiled SELECT and a reflection with the current walk-cost allowance; static counts cover all 18 saved configurations. The full GQSP and amplitude-estimation circuits remain open.
 An [ideal Fourier-gate check](review/validation/fourier-circuit.md) verifies the half-integer phases and a boundary shift for small grids; finite-grid aliasing and gate synthesis remain open.
 
 - Step 1 is not needed. Step 2 starts from [Equation 16 of Bergault, Drissi and Guéant (2022)](https://arxiv.org/pdf/2103.13773v4#page=7), with R = 0.
