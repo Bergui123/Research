@@ -1,0 +1,25 @@
+{
+  "scope": "Floating-point illustration of the bound; no lower bound on actual error.",
+  "cases": [
+    {
+      "case": "original",
+      "B2_integer_upper": 920674,
+      "delta6": 6.194501290027735e-09,
+      "B2_delta6": 0.005703116280694994,
+      "minimum_S": 0.1809639045929263,
+      "maximum_ratio": 0.03151521455908022,
+      "one_term_in_relative_rate_bound": 0.03765765505244081,
+      "half_target": 0.0005
+    },
+    {
+      "case": "larger_box",
+      "B2_integer_upper": 920674,
+      "delta6": 1.0973936899862825e-08,
+      "B2_delta6": 0.010103418381344306,
+      "minimum_S": 0.16999523038561307,
+      "maximum_ratio": 0.05943354033184317,
+      "one_term_in_relative_rate_bound": 0.06550496186908941,
+      "half_target": 0.0005
+    }
+  ]
+}

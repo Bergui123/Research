@@ -1,0 +1,10 @@
+{
+  "sample_times": 101,
+  "min_P_eigenvalue": 0.9169048105154699,
+  "max_P_row_sum": 2.387689749131256,
+  "min_diagonal_dominance_margin": 0.7,
+  "max_polynomial_coefficient_ratio": 0.18824598040830923,
+  "max_ladder_coefficient_ratio": 0.09525986892242036,
+  "exact_majorant": "608469527952873377793049859602570313245647/660896107550319725526780100000000000",
+  "scope": "Floating-point sample checks; they do not establish the inequalities between times."
+}

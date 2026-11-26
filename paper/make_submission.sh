@@ -16,6 +16,11 @@ zip -q -r "$out/src/anc/research-sources.zip" simulation lean \
  review/validation/sweep-results.json review/validation/sweep-results-before-refresh.json \
  review/validation/check_alternative_boundary_search.py review/validation/alternative-boundary-selection.json \
  review/validation/check_alternative_boundary_emulation.py review/validation/alternative-boundary-emulation.json \
+ review/validation/b2_global_majorant.py review/validation/b2-global-majorant.json \
+ review/validation/check_b2_global_majorant.py review/validation/b2-global-majorant-check.json \
+ review/validation/check_b2_symbolic.py review/validation/b2-global-majorant-symbolic.json \
+ review/validation/check_b2_budget_impact.py review/validation/b2-budget-impact.json \
+ review/validation/b2-global-majorant.md \
  -x '*/__pycache__/*' 'lean/.lake/*' 'simulation/figures/*'
 (cd "$out/src" && for i in 1 2 3; do pdflatex -interaction=nonstopmode -halt-on-error Paper.tex > /dev/null; done
 	if grep -E "undefined|Citation.*undefined" Paper.log; then exit 1; fi
