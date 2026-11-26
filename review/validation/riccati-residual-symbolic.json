@@ -1,0 +1,13 @@
+{
+  "segments_checked": [
+    0,
+    1,
+    1000,
+    2000,
+    3000,
+    3998,
+    3999
+  ],
+  "matrices_per_segment": 3,
+  "scope": "Exact symbolic comparison on selected segments; the rational verifier covers all segments."
+}

@@ -519,6 +519,71 @@ uses the sampled $B_2$ and its counts remain conditional. Exit criterion:
 independently review this proof and replace the coarse majorant with a useful
 validated enclosure before relying on it for resource selection.
 
+\paragraph{Riccati residual enclosure and a tighter $B_2$ majorant.}
+For the same normalized benchmark, choose 4000 equal time intervals and a
+continuous piecewise-quadratic symmetric interpolant $\widehat P$ through
+rational endpoint and midpoint matrices with denominator $10^{15}$. The
+numerical solver only chooses these matrices; the following check uses the
+saved rational data and does not rely on its tolerance. Define
+\[
+ R=\widehat P'-(2C-\widehat P^2/2),\qquad E=P-\widehat P.
+\]
+On each interval every entry of $R$ is a rational polynomial of degree at
+most four. The exact verifier converts its power coefficients $a_j$ to
+Bernstein coefficients
+$b_k=\sum_{j\le k}a_j\binom{k}{j}/\binom{4}{j}$. Their largest absolute
+value bounds the residual entry on the entire interval. It also checks that
+every Bernstein coefficient matrix of $\widehat P-0.9I$ is positive
+definite, so $\widehat P\succ0.9I$. Since $P\succ0$ and
+$E'=-(PE+E\widehat P)/2-R$, the Frobenius norm obeys
+$d\|E\|_F/dt\le\|R\|_F$ almost everywhere. The common initial value gives
+\[
+ \sup_{0\le t\le1}\|E(t)\|_F\le\int_0^1\|R\|_F\,dt
+ \le\frac{603153375526238754063306787}
+ {48000000000000000000000000000000000}<1.3\times10^{-8}.
+\]
+The verifier bounds $\|R\|_F$ by the entrywise $\ell_1$ norm and performs
+the interval sum with rational arithmetic. It also bounds the interpolant's
+row sums; adding $2\|E\|_F$ proves $\|P\|_\infty<12/5$, while the matrix
+error gives $P\succ(899/1000)I$. The earlier entry-ordering proof still gives
+the drift contraction. In the coefficient recurrence above, use $R=3/5$
+and replace the Gaussian exponent by $899/8000$. The rational calculation
+then gives
+\[
+ B_2\le B_2^{\flat}<875,\qquad B_2^{\flat}\approx874.9656364.
+\]
+The scaling $\x=\sqrt\nu\,\boldsymbol\xi$ uses this normalized constant
+with $\delta=\Delta/\sqrt\nu$ for the same $C$, $\lambda$, $\Phi$ and $T$.
+The input nodes, verifier and derivation are in \path{review/validation/}.
+A separate SymPy
+implementation agrees on the $B_2$ recurrence and checks residual
+polynomials on seven intervals; three focused tests check interpolation,
+Bernstein conversion and rejection of damaged nodes. A 60-digit comparison
+at 201 times saw a maximum Frobenius difference $2.15\times10^{-13}$; that
+sample is corroboration, not the all-time proof. This derivation and its
+underlying hierarchy arguments await independent review and are not Lean
+formalized.
+
+Using $B_2=875$ and the analytic boundary charge, I repeated the benchmark
+search on temporary inputs. The original grid family gives numerical
+readout-A estimates of $7.04\times10^{13}$ T and 196 qubits at 5\%, and
+$7.93\times10^{15}$ T and 223 qubits at 1\%; it has no admissible 0.1\%
+candidate. Substituting the previously tested larger $256^2$ box gives a
+0.1\% candidate with $\nu=8$, $h=16$, numerical grid charge
+$3.38721\times10^{-4}$, $1.078\times10^{17}$ T and 231 qubits. The
+reselection and its limits are recorded in
+\path{review/validation/b2-riccati-reselection.json}. All three selected
+configurations met their targets in 2000 of 2000 actual-grid emulated trials;
+their one-sided 99.9\% lower confidence bound is $0.99655$. The script and
+saved values are \path{review/validation/check_b2_riccati_emulation.py} and
+\path{review/validation/b2-riccati-emulation.json}. The expansion, box
+evolution, amplitude estimates and circuit costs remain numerical or
+uncompiled; the emulations omit GQSP truncation and gate synthesis. The bound
+is for the benchmark and was not applied to the
+parameter sweeps. Production tables are unchanged. Exit criterion:
+independently review the all-time argument, enclose the remaining numerical
+quantities, and regenerate the full selected-resource pipeline.
+
 \paragraph{Grid-bound sensitivity check.}
 The 1\% benchmark check in \path{review/validation} recomputed $B_2$ with
 33 and 65 time points at spatial mesh $0.08$, and

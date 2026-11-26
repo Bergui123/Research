@@ -21,6 +21,16 @@ zip -q -r "$out/src/anc/research-sources.zip" simulation lean \
  review/validation/check_b2_symbolic.py review/validation/b2-global-majorant-symbolic.json \
  review/validation/check_b2_budget_impact.py review/validation/b2-budget-impact.json \
  review/validation/b2-global-majorant.md \
+ review/validation/generate_riccati_nodes.py review/validation/riccati-quad-nodes.json \
+ review/validation/verify_riccati_nodes.py review/validation/riccati-residual-bound.json \
+ review/validation/riccati-residual-bound.md review/validation/test_riccati_certificate.py \
+ review/validation/check_riccati_residual_symbolic.py review/validation/riccati-residual-symbolic.json \
+ review/validation/check_riccati_interpolation.py review/validation/riccati-interpolation-check.json \
+ review/validation/b2_riccati_majorant.py review/validation/b2-riccati-majorant.json \
+ review/validation/check_b2_riccati_symbolic.py review/validation/b2-riccati-symbolic.json \
+ review/validation/check_b2_riccati_majorant.py review/validation/b2-riccati-check.json \
+ review/validation/check_b2_riccati_reselection.py review/validation/b2-riccati-reselection.json \
+ review/validation/check_b2_riccati_emulation.py review/validation/b2-riccati-emulation.json \
  -x '*/__pycache__/*' 'lean/.lake/*' 'simulation/figures/*'
 (cd "$out/src" && for i in 1 2 3; do pdflatex -interaction=nonstopmode -halt-on-error Paper.tex > /dev/null; done
 	if grep -E "undefined|Citation.*undefined" Paper.log; then exit 1; fi

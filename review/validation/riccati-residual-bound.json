@@ -1,0 +1,12 @@
+{
+  "segments": 4000,
+  "node_denominator": 1000000000000000,
+  "residual_integral_upper_rational": "603153375526238754063306787/48000000000000000000000000000000000",
+  "residual_integral_upper": 1.2565695323463308e-08,
+  "residual_upper_max": 1.5573849275404563e-08,
+  "interpolant_max_row_sum": 2.387690152588124,
+  "interpolant_min_diagonal_margin": 0.7,
+  "implied_P_min_eigenvalue_lower": "899/1000",
+  "implied_P_row_sum_upper": "12/5",
+  "scope": "Exact rational residual check, conditional on the stated Riccati comparison proof."
+}

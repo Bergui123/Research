@@ -8,7 +8,7 @@
 \title{\textbf{Logical qubits and T gates for two-asset optimal execution}\\[0.3em]
 \large Short report on Steps 3--10}
 \author{Xavier Bergeron, Quantum ETS}
-\date{24 November 2026 (replaces the version of 22 November)}
+\date{26 November 2026 (replaces the version of 22 November)}
 \begin{document}
 \maketitle
 % Build from this directory. Numbers come from ../paper/generated.tex.
@@ -83,15 +83,10 @@ with the shifted window (\FacPlain{} without), and its runs grow by a factor \Gr
 The grid error has a complete expansion with uniform remainders, for any number of assets. Its leading
 part consists of a quartic and a quadratic term of strictly opposite signs, so the
 radial rate error vanishes at exactly one $\nu$ (Theorem 3 of the paper). An a-posteriori bound covers the truncation to
-a box. The Lean~4 development checks formal counterparts of the mathematical
-statements, with the scope qualifications in the paper (\path{lean/}). The constants
-in the numerical error-bound estimates are floating-point evaluations, not
-validated enclosures. Readout-A counts that use the sampled grid-error estimate
-are conditional on those samples covering the true spatial and temporal extrema.
-An alternative search with an analytic boundary bound is recorded in the
-research archive; its remaining grid quantities are still numerical estimates.
-A coarse analytic $B_2$ majorant is too loose to validate those counts and
-awaits independent review.
+a box. Lean~4 checks formal counterparts with the qualifications in the paper
+(\path{lean/}). The charged numerical bounds use sampled floating-point
+extrema, so readout-A counts are conditional. Analytic boundary and $B_2$
+bounds await review; the remaining grid quantities are numerical estimates.
 
 \section*{Evidence and limits}
 

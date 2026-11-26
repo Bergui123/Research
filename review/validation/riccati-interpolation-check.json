@@ -1,0 +1,7 @@
+{
+  "samples": 201,
+  "decimal_digits": 60,
+  "maximum_frobenius_difference": "2.14801725229664e-13",
+  "residual_bound": 1.2565695323463308e-08,
+  "scope": "Sampled high-precision cross-check, not a replacement for the residual proof."
+}

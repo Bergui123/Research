@@ -419,8 +419,19 @@ research archive.
 An analytic coefficient majorant for the normalized benchmark gives
 $B_2<920674$. It is much larger than the sampled value and is too loose to
 support the reported allocations. Its derivation and exact rational calculation
-are in the ancillary archive and await independent review; the tables use the
-sampled value.
+are in the ancillary archive. A rational residual bound for a piecewise-quadratic
+Riccati interpolant tightens the coefficient majorant to $B_2<875$ for this
+benchmark. Both arguments await independent review; the tables use the sampled
+value.
+
+An exploratory search using $B_2=875$ and the analytic boundary charge gives
+$7.04\times10^{13}$ and $7.93\times10^{15}$ T gates at 5\% and 1\%, with
+196 and 223 qubits respectively. The original grid family has no 0.1\%
+candidate under this charge. Substituting the larger box described below gives
+$1.08\times10^{17}$ T gates and 231 qubits. The expansion and box evolution
+remain floating-point evaluations, and the circuit costs remain estimates.
+Each of the three configurations met its target in 2000 emulated trials;
+GQSP truncation and gate synthesis were not emulated.
 
 \paragraph{Alternative boundary charge.}
 An exploratory reselection using this boundary bound and the same numerical
