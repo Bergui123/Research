@@ -5,7 +5,7 @@
 We estimate the logical qubits and T gates needed to solve a reformulation of a two-asset execution problem. The classical Riccati solution provides the reference answer.
 
 An [alternative boundary-bound search](review/validation/alternative-boundary-selection.json) records how a conservative all-time boundary bound changes the readout-A selections, including one larger-box candidate. The production counts remain conditional on the numerical grid estimates.
-For the normalized benchmark, a [rational Riccati residual calculation](review/validation/riccati-residual-bound.md) tightens an analytic lattice-remainder majorant. The remaining grid calculations and circuit costs still need validation.
+For the normalized benchmark, a [rational Riccati residual calculation](review/validation/riccati-residual-bound.md) tightens an analytic lattice-remainder majorant. A separate [polynomial residual check](review/validation/polynomial-residual-bound.md) encloses the expansion at 12 exploratory stencil nodes. Both await independent review; box propagation and circuit costs still need validation.
 
 - Step 1 is not needed. Step 2 starts from [Equation 16 of Bergault, Drissi and Guéant (2022)](https://arxiv.org/pdf/2103.13773v4#page=7), with R = 0.
 - Step 3 verifies the notation, terminal conditions, sales-only proof and numerical benchmark.

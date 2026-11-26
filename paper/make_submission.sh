@@ -31,6 +31,11 @@ zip -q -r "$out/src/anc/research-sources.zip" simulation lean \
  review/validation/check_b2_riccati_majorant.py review/validation/b2-riccati-check.json \
  review/validation/check_b2_riccati_reselection.py review/validation/b2-riccati-reselection.json \
  review/validation/check_b2_riccati_emulation.py review/validation/b2-riccati-emulation.json \
+ review/validation/generate_polynomial_nodes.py review/validation/polynomial-quad-nodes.json.gz \
+ review/validation/verify_polynomial_nodes.py review/validation/polynomial-residual-bound.json \
+ review/validation/polynomial-residual-bound.md review/validation/test_polynomial_certificate.py \
+ review/validation/check_polynomial_residual_symbolic.py review/validation/check_expansion_enclosures.py \
+ review/validation/expansion-enclosures.json review/validation/check_expansion_against_float.py \
  -x '*/__pycache__/*' 'lean/.lake/*' 'simulation/figures/*'
 (cd "$out/src" && for i in 1 2 3; do pdflatex -interaction=nonstopmode -halt-on-error Paper.tex > /dev/null; done
 	if grep -E "undefined|Citation.*undefined" Paper.log; then exit 1; fi

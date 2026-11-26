@@ -584,6 +584,42 @@ parameter sweeps. Production tables are unchanged. Exit criterion:
 independently review the all-time argument, enclose the remaining numerical
 quantities, and regenerate the full selected-resource pipeline.
 
+\paragraph{Expansion-polynomial residual enclosure.}
+For the same normalized benchmark, let $\widehat p_1,\widehat p_2$ be
+continuous quadratic interpolants through rational coefficients at the
+endpoints and midpoints of the 4000 time intervals. The numerical ODE solver
+chooses the data; an exact rational check bounds the residuals of their ODEs
+on each entire interval using Bernstein coefficients. Let $A_{k,d}$ bound
+the degree-$d$ coefficient $\ell_1$ norm of $\widehat p_k$, let $R_{k,d}$
+bound the corresponding residual, and set $e=13/10^9$. The Riccati ordering
+makes the true homogeneous drift contractive in coefficient $\ell_1$ norm.
+For a ladder operator, errors satisfy the degreewise recurrence
+\[
+ E'_{d-1}\mathrel{+}=dE_d,\qquad
+ E'_{d+1}\mathrel{+}=\tfrac35E_d+\tfrac e2 A_d.
+\]
+With the associated forcing bounds $F_{k,d}$, the comparison polynomials obey
+\[
+ W_{k,d}'=R_{k,d}+deA_{k,d}+F_{k,d}
+ +(d+2)(d+1)W_{k,d+2},\qquad W_{k,d}(0)=0.
+\]
+A triangular rational computation gives maximum coefficient errors at $t=1$
+below $2.511\times10^{-8}$ for $p_1$ and $2.708\times10^{-7}$ for $p_2$,
+separately by homogeneous degree. The bounds also cover earlier times. For
+the three exploratory stencils above, use the terminal coefficient bounds and
+$\sup\|P-\widehat P\|_F<e$ to enclose $S$ at all 12 nodes; integrate
+$(\log\det Y)'=\operatorname{tr}(P)/2$ and bound the exponential using
+rational Taylor sums with an outward tail. The largest interval width is
+$6.083\times10^{-9}$. Sources, assumptions, coefficients, commands and
+rational endpoints are in \path{review/validation/polynomial-residual-bound.md}.
+Four unit tests pass; an independent SymPy differentiation agrees on four
+intervals, and 12 floating-point evaluations lie in their intervals. These
+are diagnostics, not a replacement for independent proof review. The search
+itself used floating-point $S$, and its finite-box propagation, resource costs
+and other components remain unenclosed. Exit criterion: obtain independent
+review and enclose the remaining numerical quantities before claiming an
+end-to-end validated grid bound.
+
 \paragraph{Grid-bound sensitivity check.}
 The 1\% benchmark check in \path{review/validation} recomputed $B_2$ with
 33 and 65 time points at spatial mesh $0.08$, and
