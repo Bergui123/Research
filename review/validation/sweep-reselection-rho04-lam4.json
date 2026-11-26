@@ -1,0 +1,88 @@
+{
+  "scope": "One sweep point; rational B2 and analytic boundary bounds depend on the documented proofs. Box evolution, expansion, amplitude inputs and circuit costs remain numerical.",
+  "case": {
+    "rho": 0.4,
+    "lambda": 4.0,
+    "B2_sampled_charge": 0.05753206840294126,
+    "available_estimates": 42,
+    "grid_span_pairs": 92,
+    "baseline": {
+      "0.01": {
+        "n_p": 12,
+        "walk_steps_per_run": 5054,
+        "walk_steps_std_qsp": 10036,
+        "T_walk_step": 3660.747617098528,
+        "T_walk_parts": {
+          "select_kinetic": 44,
+          "potential_oracle": 3032,
+          "reflections": 168,
+          "rotations": 416.74761709852794
+        },
+        "T_prep": 68896,
+        "T_qft": 1152,
+        "T_run": 18574062.94251855,
+        "eps_rot": 5.5747519712676176e-11,
+        "alpha_H": 458.87346938775516,
+        "alpha_walk": 229.43673469387758,
+        "alpha_kin": 392.00000000000006,
+        "alpha_pot": 66.8734693877551,
+        "b": 9,
+        "m": 18,
+        "qubits_parts": {
+          "x": 12,
+          "p": 12,
+          "prep_lcu": 21,
+          "gqsp": 1,
+          "arith_work": 107,
+          "phase_grad": 35
+        },
+        "qubits_run": 188,
+        "target": 0.01,
+        "nu": 16.0,
+        "n": 6,
+        "L": 18.285714285714285,
+        "dx": 0.5714285714285714,
+        "h": 8,
+        "eps_grid": 0.004928909880118918,
+        "eps_grid_measured": 0.0022477607163348483,
+        "kind": "smooth_w1",
+        "eta_max": 19.9951171875,
+        "p_a": -1.9186563733441784,
+        "P_succ": 0.27164446374293777,
+        "amp_err_schr": 0.00016263694127882644,
+        "delta_tot": 0.0035726643461865435,
+        "b_amp": [
+          0.006316461271761749,
+          0.03740627199940573,
+          0.009782847574381729,
+          0.02445063465972825
+        ],
+        "AE_log2_iterations": [
+          18,
+          16,
+          17,
+          16
+        ],
+        "AE_iterations": [
+          262144,
+          65536,
+          131072,
+          65536
+        ],
+        "calls_per_estimate_set": 1048580,
+        "median_reps": 11,
+        "T_total": 214242699264815.12,
+        "T_total_no_boost": 19476609024074.1,
+        "logical_qubits": 189
+      }
+    },
+    "alternative": {
+      "0.01": {
+        "candidate_profiles": 0,
+        "costed_candidates": 0,
+        "best": null
+      }
+    },
+    "B2_applied": 27653
+  }
+}

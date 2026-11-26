@@ -1,0 +1,65 @@
+{
+  "scope": "Selected-interval diagnostics, not a proof of every interval.",
+  "cases": [
+    {
+      "case": "rho0-lam1",
+      "checked_segments": [
+        0,
+        256,
+        511
+      ],
+      "local_coordinate": "1/3",
+      "exact_residual_match": true
+    },
+    {
+      "case": "rho02-lam1",
+      "checked_segments": [
+        0,
+        256,
+        511
+      ],
+      "local_coordinate": "1/3",
+      "exact_residual_match": true
+    },
+    {
+      "case": "rho06-lam1",
+      "checked_segments": [
+        0,
+        256,
+        511
+      ],
+      "local_coordinate": "1/3",
+      "exact_residual_match": true
+    },
+    {
+      "case": "rho08-lam1",
+      "checked_segments": [
+        0,
+        256,
+        511
+      ],
+      "local_coordinate": "1/3",
+      "exact_residual_match": true
+    },
+    {
+      "case": "rho04-lam025",
+      "checked_segments": [
+        0,
+        256,
+        511
+      ],
+      "local_coordinate": "1/3",
+      "exact_residual_match": true
+    },
+    {
+      "case": "rho04-lam4",
+      "checked_segments": [
+        0,
+        256,
+        511
+      ],
+      "local_coordinate": "1/3",
+      "exact_residual_match": true
+    }
+  ]
+}

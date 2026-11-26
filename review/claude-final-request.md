@@ -35,4 +35,7 @@ Focus on:
 
 18. Review `review/validation/b2-polynomial-majorant.md`: check that the terminal nonnegative coefficient-error polynomials bound all earlier times, the Gaussian weights and both directional factors give the stated rational `B2<56`, and the new stencils match the rational box bounds and re-costed profiles. Check the search's numerical and global-optimality qualifications and whether the earlier `B2<875` evidence is preserved.
 
+
+19. Check `review/validation/sweep-riccati.md` and its six rational certificates: the parameterized Riccati entry ordering, Bernstein positivity/residual checks, generalized coefficient error propagation, Gaussian weights and scaling with nu. Verify the numerical re-selection scope, especially the absence of a lambda=4 candidate, and check that the production sweep claims remain conditional.
+
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.

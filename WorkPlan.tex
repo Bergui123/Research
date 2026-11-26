@@ -744,6 +744,50 @@ criterion: independently review the comparison chain, validate the amplitude
 and circuit assumptions, and extend or qualify the parameter sweeps before
 claiming end-to-end resource bounds.
 
+\paragraph{Rational lattice majorants for the six parameter sweeps.}
+For $0\le\rho<1$, $\lambda>0$ and the fixed terminal matrix, write
+$P=\bigl[\begin{smallmatrix}a&q\\q&b\end{smallmatrix}\bigr]$. The entry
+ordering $a\ge b\ge q\ge0$ extends to each sweep: $a-b$ satisfies a
+homogeneous scalar ODE, $q$ cannot cross zero from above, and
+\[
+ (b-q)'=2\lambda(1-\rho)-\tfrac12(a+b)(b-q)+\tfrac12\det P
+\]
+is nonnegative at $b=q$. With positive definite $P$, the homogeneous drift
+therefore contracts the coefficient $\ell_1$ norm as in the benchmark proof.
+For each sweep, choose rational quadratic Riccati and expansion-polynomial
+interpolants on 512 time intervals. The floating-point solver chooses the
+nodes; exact Bernstein residual and positivity checks give uniform Riccati
+and polynomial-error bounds. Use the resulting row and eigenvalue bounds in
+the ladder and Gaussian majorants above. In the order
+$(\rho,\lambda)=(0,1),(0.2,1),(0.6,1),(0.8,1),(0.4,0.25),(0.4,4)$,
+the strictly larger integer bounds are
+\[
+ B_2<(25,\ 35,\ 92,\ 148,\ 10,\ 27653).
+\]
+Every exact certificate reproduced from the saved rational nodes. Independent
+SymPy generating-polynomial calculations agree with the six exact majorant
+expressions; symbolic residual checks cover three intervals per sweep, and
+101 floating-point time samples per sweep corroborate the bounds. Three
+focused tests check a constant Riccati solution, invalid data and polynomial
+error propagation. The samples are not proofs between times, and the entire
+comparison chain awaits independent review. Source, exact expressions,
+inputs and commands: \path{review/validation/}, file
+\texttt{sweep-riccati.md}.
+
+A temporary-input 1\% readout-A search with these integer majorants and the
+analytic boundary charge gives numerical candidate estimates
+$5.27\times10^{14}$, $7.29\times10^{14}$, $8.00\times10^{14}$,
+$8.82\times10^{14}$ and $6.48\times10^{14}$ T gates for the first five
+settings, with 185, 204, 203, 205 and 202 qubits. For $\rho=0.4,\lambda=4$
+the original tested grid family has no candidate under this conservative
+bound. All six numerical searches reproduced their saved outputs exactly on a
+second run. This does not establish that the actual error misses its target; a
+sharper bound or different grid may be viable. Box evolution, expansion,
+amplitude inputs and circuit costs in these searches remain numerical or
+uncompiled. Production tables are unchanged. Exit criterion: enclose the
+remaining sweep grid quantities, investigate the high-$\lambda$ case and
+independently audit the full circuit and comparison proofs.
+
 \paragraph{Grid-bound sensitivity check.}
 The 1\% benchmark check in \path{review/validation} recomputed $B_2$ with
 33 and 65 time points at spatial mesh $0.08$, and

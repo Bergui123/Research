@@ -50,6 +50,13 @@ zip -q -r "$out/src/anc/research-sources.zip" simulation lean \
  review/validation/projected-box-numerical-56.json review/validation/projected-recost-56.json \
  review/validation/projected-emulation-56.json review/validation/test_b2_polynomial_extension.py \
  review/validation/compare_b2_polynomial_repeats.py review/validation/b2-polynomial-repeats.json \
+ review/validation/generate_sweep_nodes.py review/validation/sweep_riccati.py review/validation/sweep_polynomial.py \
+ review/validation/verify_sweep_case.py review/validation/test_sweep_riccati.py review/validation/test_sweep_polynomial.py \
+ review/validation/check_sweep_symbolic.py review/validation/check_sweep_diagnostic.py review/validation/check_sweep_residual_symbolic.py \
+ review/validation/check_sweep_reselection.py review/validation/compare_sweep_repeats.py review/validation/sweep-riccati.md \
+ review/validation/sweep-nodes-*.json.gz review/validation/sweep-cert-*.json review/validation/sweep-reselection-*.json \
+ review/validation/sweep-symbolic.json review/validation/sweep-diagnostic.json review/validation/sweep-residual-symbolic.json \
+ review/validation/sweep-repeats.json \
  review/validation/check_controlled_walk.py review/validation/controlled-walk.json review/validation/controlled-walk.md \
  review/validation/check_controlled_select_profiles.py review/validation/controlled-profiles.json \
  review/validation/check_fourier_circuit.py review/validation/fourier-circuit.json review/validation/fourier-circuit.md \

@@ -1,0 +1,62 @@
+[
+  {
+    "rho": "0",
+    "lambda": "1",
+    "sample_times": 101,
+    "observed_min_eigen": 0.9169048105154699,
+    "observed_max_row": 2.3,
+    "max_coefficient_ratio": 0.9999747208381969,
+    "max_ladder_ratio": 0.9999860870654058,
+    "scope": "Floating-point sampled corroboration only."
+  },
+  {
+    "rho": "1/5",
+    "lambda": "1",
+    "sample_times": 101,
+    "observed_min_eigen": 0.9169048105154699,
+    "observed_max_row": 2.3,
+    "max_coefficient_ratio": 0.9999791321378664,
+    "max_ladder_ratio": 0.9999860870654058,
+    "scope": "Floating-point sampled corroboration only."
+  },
+  {
+    "rho": "2/5",
+    "lambda": "1/4",
+    "sample_times": 101,
+    "observed_min_eigen": 0.8786875449401245,
+    "observed_max_row": 2.3,
+    "max_coefficient_ratio": 0.9998924055746331,
+    "max_ladder_ratio": 0.9999860870654058,
+    "scope": "Floating-point sampled corroboration only."
+  },
+  {
+    "rho": "2/5",
+    "lambda": "4",
+    "sample_times": 101,
+    "observed_min_eigen": 0.9169048105154699,
+    "observed_max_row": 4.715098519675944,
+    "max_coefficient_ratio": 0.9996538239969674,
+    "max_ladder_ratio": 0.9999499828145565,
+    "scope": "Floating-point sampled corroboration only."
+  },
+  {
+    "rho": "3/5",
+    "lambda": "1",
+    "sample_times": 101,
+    "observed_min_eigen": 0.9169048105154699,
+    "observed_max_row": 2.544438558983254,
+    "max_coefficient_ratio": 0.9999598686717768,
+    "max_ladder_ratio": 0.9999828929981592,
+    "scope": "Floating-point sampled corroboration only."
+  },
+  {
+    "rho": "4/5",
+    "lambda": "1",
+    "sample_times": 101,
+    "observed_min_eigen": 0.9169048105154699,
+    "observed_max_row": 2.695781089778629,
+    "max_coefficient_ratio": 0.9999422958749378,
+    "max_ladder_ratio": 0.9999794934635067,
+    "scope": "Floating-point sampled corroboration only."
+  }
+]

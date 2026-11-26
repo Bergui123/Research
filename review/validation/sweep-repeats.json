@@ -1,0 +1,10 @@
+{
+  "cases": 6,
+  "identifiers_and_decisions_match": true,
+  "numeric_fields_changed": 0,
+  "max_absolute_change": 0.0,
+  "tolerances": {
+    "relative": 1e-10,
+    "absolute": 1e-12
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "scope": "One sweep point; rational B2 and analytic boundary bounds depend on the documented proofs. Box evolution, expansion, amplitude inputs and circuit costs remain numerical.",
+  "case": {
+    "rho": 0.4,
+    "lambda": 0.25,
+    "B2_sampled_charge": 0.002080574806789135,
+    "available_estimates": 84,
+    "grid_span_pairs": 94,
+    "baseline": {
+      "0.01": {
+        "n_p": 11,
+        "walk_steps_per_run": 2391,
+        "walk_steps_std_qsp": 4716,
+        "T_walk_step": 3606.3652408965054,
+        "T_walk_parts": {
+          "select_kinetic": 44,
+          "potential_oracle": 3020,
+          "reflections": 144,
+          "rotations": 398.36524089650516
+        },
+        "T_prep": 52188,
+        "T_qft": 968,
+        "T_run": 8678254.299808476,
+        "eps_rot": 1.6119915792370243e-10,
+        "alpha_H": 204.3591836734694,
+        "alpha_walk": 102.1795918367347,
+        "alpha_kin": 196.00000000000003,
+        "alpha_pot": 8.359183673469387,
+        "b": 9,
+        "m": 15,
+        "qubits_parts": {
+          "x": 12,
+          "p": 11,
+          "prep_lcu": 18,
+          "gqsp": 1,
+          "arith_work": 107,
+          "phase_grad": 33
+        },
+        "qubits_run": 182,
+        "target": 0.01,
+        "nu": 8.0,
+        "n": 6,
+        "L": 18.285714285714285,
+        "dx": 0.5714285714285714,
+        "h": 8,
+        "eps_grid": 0.0033823542900772814,
+        "eps_grid_measured": 0.0017624368228384673,
+        "kind": "smooth_w1",
+        "eta_max": 19.990234375,
+        "p_a": -0.4796640933360446,
+        "P_succ": 0.3568424527644003,
+        "amp_err_schr": 0.00017298416289346363,
+        "delta_tot": 0.0028724633103225476,
+        "b_amp": [
+          0.010759093926829619,
+          0.033800736496502296,
+          0.016665969211913736,
+          0.026254337262502876
+        ],
+        "AE_log2_iterations": [
+          18,
+          16,
+          17,
+          16
+        ],
+        "AE_iterations": [
+          262144,
+          65536,
+          131072,
+          65536
+        ],
+        "calls_per_estimate_set": 1048580,
+        "median_reps": 11,
+        "T_total": 100100474354464.89,
+        "T_total_no_boost": 9100043123133.172,
+        "logical_qubits": 183
+      }
+    },
+    "alternative": {
+      "0.01": {
+        "candidate_profiles": 123,
+        "costed_candidates": 123,
+        "best": {
+          "n_p": 13,
+          "walk_steps_per_run": 8647,
+          "walk_steps_std_qsp": 17216,
+          "T_walk_step": 4305.18259749202,
+          "T_walk_parts": {
+            "select_kinetic": 52,
+            "potential_oracle": 3680,
+            "reflections": 144,
+            "rotations": 429.1825974920205
+          },
+          "T_prep": 200496,
+          "T_qft": 1352,
+          "T_run": 37431655.60739719,
+          "eps_rot": 2.7182143983970823e-11,
+          "alpha_H": 808.1919999999999,
+          "alpha_walk": 404.09599999999995,
+          "alpha_kin": 799.9999999999999,
+          "alpha_pot": 8.192000000000002,
+          "b": 10,
+          "m": 15,
+          "qubits_parts": {
+            "x": 14,
+            "p": 13,
+            "prep_lcu": 18,
+            "gqsp": 1,
+            "arith_work": 119,
+            "phase_grad": 36
+          },
+          "qubits_run": 201,
+          "target": 0.01,
+          "nu": 16.0,
+          "n": 7,
+          "L": 25.6,
+          "dx": 0.4,
+          "h": 16,
+          "eps_grid": 0.0012698254427319557,
+          "eps_grid_measured": 0.00046393729497179735,
+          "kind": "smooth_w1",
+          "eta_max": 19.990234375,
+          "p_a": -0.4796640933360446,
+          "P_succ": 0.3566420258556074,
+          "amp_err_schr": 0.00015175958689961355,
+          "delta_tot": 0.002652893002340382,
+          "b_amp": [
+            0.0070932580472044615,
+            0.01579055152804921,
+            0.009883890291427602,
+            0.013580474925215353
+          ],
+          "AE_log2_iterations": [
+            18,
+            17,
+            18,
+            17
+          ],
+          "AE_iterations": [
+            262144,
+            131072,
+            262144,
+            131072
+          ],
+          "calls_per_estimate_set": 1572868,
+          "median_reps": 11,
+          "T_total": 647629219526691.6,
+          "T_total_no_boost": 58875383593335.6,
+          "logical_qubits": 202
+        }
+      }
+    },
+    "B2_applied": 10
+  }
+}
