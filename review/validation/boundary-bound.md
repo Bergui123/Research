@@ -56,7 +56,11 @@ the former with the existing numerical `B2` and floating-point box evolution
 gives an alternative grid-error estimate of 0.000909983. This exceeds that
 configuration's 0.0005 grid allocation. It does not establish that the actual
 error exceeds the allocation, nor that another configuration cannot meet it.
-The resource pipeline has not yet been rerun with this conservative bound.
+The production resource pipeline still uses the sampled value. A separate
+temporary-file search with the conservative bound is recorded in
+`alternative-boundary-selection.json`; it also tests one larger box. Its
+remaining grid quantities are numerical estimates, and the production counts
+have not been replaced.
 
 Reproduce from the repository root:
 

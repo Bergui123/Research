@@ -1,0 +1,1491 @@
+{
+  "scope": "Alternative selection; the boundary bound is analytic but other grid quantities remain numerical.",
+  "cases": [
+    {
+      "rho": 0.4,
+      "lambda": 1.0,
+      "B2_sampled_charge": 0.005537744990483481,
+      "available_estimates": 87,
+      "grid_span_pairs": 93,
+      "baseline": {
+        "0.05": {
+          "n_p": 9,
+          "walk_steps_per_run": 641,
+          "walk_steps_std_qsp": 1228,
+          "T_walk_step": 2924.702664666965,
+          "T_walk_parts": {
+            "select_kinetic": 36,
+            "potential_oracle": 2420,
+            "reflections": 136,
+            "rotations": 332.70266466696523
+          },
+          "T_prep": 14416,
+          "T_qft": 648,
+          "T_run": 1891367.570042526,
+          "eps_rot": 7.154234785676714e-09,
+          "alpha_H": 89.6,
+          "alpha_walk": 44.8,
+          "alpha_kin": 64.0,
+          "alpha_pot": 25.6,
+          "b": 8,
+          "m": 14,
+          "qubits_parts": {
+            "x": 10,
+            "p": 9,
+            "prep_lcu": 17,
+            "gqsp": 1,
+            "arith_work": 95,
+            "phase_grad": 28
+          },
+          "qubits_run": 160,
+          "target": 0.05,
+          "nu": 8.0,
+          "n": 5,
+          "L": 16.0,
+          "dx": 1.0,
+          "h": 4,
+          "eps_grid": 0.014092218517267217,
+          "eps_grid_measured": 0.006927200954675638,
+          "kind": "smooth_w1",
+          "eta_max": 9.98046875,
+          "p_a": -0.9593281866720892,
+          "P_succ": 0.40511854808115655,
+          "amp_err_schr": 0.0021239439872638988,
+          "delta_tot": 0.022019810417542085,
+          "b_amp": [
+            0.016777832203224933,
+            0.08223522841223561,
+            0.026412275125533707,
+            0.05701716322992974
+          ],
+          "AE_log2_iterations": [
+            14,
+            12,
+            13,
+            12
+          ],
+          "AE_iterations": [
+            16384,
+            4096,
+            8192,
+            4096
+          ],
+          "calls_per_estimate_set": 65540,
+          "median_reps": 11,
+          "T_total": 1363682204682.4585,
+          "T_total_no_boost": 123971109516.58714,
+          "logical_qubits": 161
+        },
+        "0.01": {
+          "n_p": 12,
+          "walk_steps_per_run": 3512,
+          "walk_steps_std_qsp": 6952,
+          "T_walk_step": 3634.730924596925,
+          "T_walk_parts": {
+            "select_kinetic": 44,
+            "potential_oracle": 3028,
+            "reflections": 160,
+            "rotations": 402.73092459692486
+          },
+          "T_prep": 68704,
+          "T_qft": 1152,
+          "T_run": 12837543.392731983,
+          "eps_rot": 1.25269676727512e-10,
+          "alpha_H": 310.75555555555553,
+          "alpha_walk": 155.37777777777777,
+          "alpha_kin": 288.0,
+          "alpha_pot": 22.755555555555553,
+          "b": 9,
+          "m": 17,
+          "qubits_parts": {
+            "x": 12,
+            "p": 12,
+            "prep_lcu": 20,
+            "gqsp": 1,
+            "arith_work": 107,
+            "phase_grad": 33
+          },
+          "qubits_run": 185,
+          "target": 0.01,
+          "nu": 16.0,
+          "n": 6,
+          "L": 21.333333333333332,
+          "dx": 0.6666666666666666,
+          "h": 8,
+          "eps_grid": 0.0029223557624356066,
+          "eps_grid_measured": 0.001731529319033663,
+          "kind": "smooth_w1",
+          "eta_max": 19.9951171875,
+          "p_a": -0.9593281866720892,
+          "P_succ": 0.3498618636059616,
+          "amp_err_schr": 9.787344560252542e-05,
+          "delta_tot": 0.002921549786081867,
+          "b_amp": [
+            0.012067532782137926,
+            0.034636055560253655,
+            0.016477760808152962,
+            0.027441802973725584
+          ],
+          "AE_log2_iterations": [
+            17,
+            16,
+            17,
+            16
+          ],
+          "AE_iterations": [
+            131072,
+            65536,
+            131072,
+            65536
+          ],
+          "calls_per_estimate_set": 786436,
+          "median_reps": 11,
+          "T_total": 111056733785080.28,
+          "T_total_no_boost": 10096066707734.57,
+          "logical_qubits": 186
+        },
+        "0.001": {
+          "n_p": 15,
+          "walk_steps_per_run": 44907,
+          "walk_steps_std_qsp": 89724,
+          "T_walk_step": 5199.891807705405,
+          "T_walk_parts": {
+            "select_kinetic": 60,
+            "potential_oracle": 4428,
+            "reflections": 192,
+            "rotations": 519.891807705405
+          },
+          "T_prep": 791764,
+          "T_qft": 1800,
+          "T_run": 234309124.59718442,
+          "eps_rot": 1.4413438924634702e-13,
+          "alpha_H": 4380.0719926538095,
+          "alpha_walk": 2190.0359963269048,
+          "alpha_kin": 4355.999999999999,
+          "alpha_pot": 24.071992653810838,
+          "b": 11,
+          "m": 21,
+          "qubits_parts": {
+            "x": 16,
+            "p": 15,
+            "prep_lcu": 24,
+            "gqsp": 1,
+            "arith_work": 131,
+            "phase_grad": 43
+          },
+          "qubits_run": 230,
+          "target": 0.001,
+          "nu": 8.0,
+          "n": 8,
+          "L": 15.515151515151516,
+          "dx": 0.12121212121212122,
+          "h": 16,
+          "eps_grid": 0.0003817859276196954,
+          "eps_grid_measured": 0.00012408379304558996,
+          "kind": "smooth_w2",
+          "eta_max": 19.990234375,
+          "p_a": -0.9593281866720892,
+          "P_succ": 0.15677809485983868,
+          "amp_err_schr": 8.638047243714198e-06,
+          "delta_tot": 0.00018584700731858684,
+          "b_amp": [
+            0.002786689597732406,
+            0.005992163549601325,
+            0.0034310035129151563,
+            0.004968849532372845
+          ],
+          "AE_log2_iterations": [
+            24,
+            22,
+            23,
+            23
+          ],
+          "AE_iterations": [
+            16777216,
+            4194304,
+            8388608,
+            8388608
+          ],
+          "calls_per_estimate_set": 75497476,
+          "median_reps": 11,
+          "T_total": 1.945874335593631e+17,
+          "T_total_no_boost": 1.7689766687214828e+16,
+          "logical_qubits": 231
+        }
+      },
+      "alternative": {
+        "0.05": {
+          "candidate_profiles": 237,
+          "costed_candidates": 237,
+          "best": {
+            "n_p": 9,
+            "walk_steps_per_run": 641,
+            "walk_steps_std_qsp": 1228,
+            "T_walk_step": 2924.702664666965,
+            "T_walk_parts": {
+              "select_kinetic": 36,
+              "potential_oracle": 2420,
+              "reflections": 136,
+              "rotations": 332.70266466696523
+            },
+            "T_prep": 14416,
+            "T_qft": 648,
+            "T_run": 1891367.570042526,
+            "eps_rot": 7.154234785676714e-09,
+            "alpha_H": 89.6,
+            "alpha_walk": 44.8,
+            "alpha_kin": 64.0,
+            "alpha_pot": 25.6,
+            "b": 8,
+            "m": 14,
+            "qubits_parts": {
+              "x": 10,
+              "p": 9,
+              "prep_lcu": 17,
+              "gqsp": 1,
+              "arith_work": 95,
+              "phase_grad": 28
+            },
+            "qubits_run": 160,
+            "target": 0.05,
+            "nu": 8.0,
+            "n": 5,
+            "L": 16.0,
+            "dx": 1.0,
+            "h": 4,
+            "eps_grid": 0.014092218517267217,
+            "eps_grid_measured": 0.006927200954675638,
+            "kind": "smooth_w1",
+            "eta_max": 9.98046875,
+            "p_a": -0.9593281866720892,
+            "P_succ": 0.40511854808115655,
+            "amp_err_schr": 0.0021239439872638988,
+            "delta_tot": 0.022019810417542085,
+            "b_amp": [
+              0.016777832203224933,
+              0.08223522841223561,
+              0.026412275125533707,
+              0.05701716322992974
+            ],
+            "AE_log2_iterations": [
+              14,
+              12,
+              13,
+              12
+            ],
+            "AE_iterations": [
+              16384,
+              4096,
+              8192,
+              4096
+            ],
+            "calls_per_estimate_set": 65540,
+            "median_reps": 11,
+            "T_total": 1363682204682.4585,
+            "T_total_no_boost": 123971109516.58714,
+            "logical_qubits": 161
+          }
+        },
+        "0.01": {
+          "candidate_profiles": 141,
+          "costed_candidates": 141,
+          "best": {
+            "n_p": 11,
+            "walk_steps_per_run": 3193,
+            "walk_steps_std_qsp": 6320,
+            "T_walk_step": 3632.7507508043786,
+            "T_walk_parts": {
+              "select_kinetic": 44,
+              "potential_oracle": 3028,
+              "reflections": 160,
+              "rotations": 400.7507508043785
+            },
+            "T_prep": 52188,
+            "T_qft": 968,
+            "T_run": 11654821.276447807,
+            "eps_rot": 1.4044952206915965e-10,
+            "alpha_H": 281.6,
+            "alpha_walk": 140.8,
+            "alpha_kin": 256.0,
+            "alpha_pot": 25.6,
+            "b": 9,
+            "m": 17,
+            "qubits_parts": {
+              "x": 12,
+              "p": 11,
+              "prep_lcu": 20,
+              "gqsp": 1,
+              "arith_work": 107,
+              "phase_grad": 33
+            },
+            "qubits_run": 184,
+            "target": 0.01,
+            "nu": 8.0,
+            "n": 6,
+            "L": 16.0,
+            "dx": 0.5,
+            "h": 4,
+            "eps_grid": 0.0031047441360434014,
+            "eps_grid_measured": 0.002142043435433779,
+            "kind": "smooth_w1",
+            "eta_max": 19.990234375,
+            "p_a": -0.9593281866720892,
+            "P_succ": 0.3498627427322786,
+            "amp_err_schr": 0.00010011634725159979,
+            "delta_tot": 0.002135537751856747,
+            "b_amp": [
+              0.016828652959101294,
+              0.03712139357513739,
+              0.020869949601212596,
+              0.0306000311249802
+            ],
+            "AE_log2_iterations": [
+              17,
+              16,
+              17,
+              17
+            ],
+            "AE_iterations": [
+              131072,
+              65536,
+              131072,
+              131072
+            ],
+            "calls_per_estimate_set": 917508,
+            "median_reps": 11,
+            "T_total": 117629307680533.81,
+            "T_total_no_boost": 10693573425503.074,
+            "logical_qubits": 185
+          }
+        },
+        "0.001": {
+          "candidate_profiles": 0,
+          "costed_candidates": 0,
+          "best": null
+        }
+      },
+      "larger_box": {
+        "row": {
+          "nu": 8.0,
+          "n": 8,
+          "L": 17.066666666666666,
+          "dx": 0.13333333333333333,
+          "rel_err_v": 0.00016175954303498415,
+          "rel_err_V": 0.00017835079149416684,
+          "p_neighbours": [
+            0.00015386060411421944,
+            0.00017094138856766126,
+            0.00015811464281075723,
+            0.00016637485558513605
+          ],
+          "spans": [
+            {
+              "h": 1,
+              "rel_err_v": 0.00016175954303498415,
+              "p": [
+                0.00015386060411421944,
+                0.00017094138856766126,
+                0.00015811464281075723,
+                0.00016637485558513605
+              ]
+            },
+            {
+              "h": 2,
+              "rel_err_v": 0.00016162771001107195,
+              "p": [
+                0.0001454941530685671,
+                0.00017959122638151113,
+                0.0001536809279964665,
+                0.0001701575292212879
+              ]
+            },
+            {
+              "h": 4,
+              "rel_err_v": 0.0001611003766782735,
+              "p": [
+                0.00012925215694649912,
+                0.0001969322516842188,
+                0.00014432019864971677,
+                0.0001769251117969812
+              ]
+            },
+            {
+              "h": 8,
+              "rel_err_v": 0.0001589910172234865,
+              "p": [
+                9.936803455666593e-05,
+                0.00023067682599919398,
+                0.0001242759207186539,
+                0.0001867718642404045
+              ]
+            },
+            {
+              "h": 16,
+              "rel_err_v": 0.00015055272712539256,
+              "p": [
+                5.2888827977246395e-05,
+                0.0002850177164765619,
+                8.37702482733107e-05,
+                0.00018920676799017718
+              ]
+            }
+          ],
+          "norm_ratio": 0.13354181235496654,
+          "alpha_kin": 3600.0,
+          "alpha_pot": 36.40888888888889,
+          "alpha_H": 3636.4088888888887
+        },
+        "estimates": [
+          {
+            "nu": 8.0,
+            "n": 8,
+            "h": 1,
+            "delta": 0.04714045207910317,
+            "measured": 0.00016175954303498415,
+            "ghost": 0.10582519016200001,
+            "cancellation_free": 0.00021091808158525308,
+            "u_max": 2.60555974954364e-06,
+            "higher_order": 3.5246059786086484e-08,
+            "remainder_lattice": 9.878690491365498e-09,
+            "remainder": 0.00038847826685005983,
+            "numerical_error_estimate": 0.0005502952587654952
+          },
+          {
+            "nu": 8.0,
+            "n": 8,
+            "h": 2,
+            "delta": 0.04714045207910317,
+            "measured": 0.00016162771001107195,
+            "ghost": 0.10582519016200001,
+            "cancellation_free": 0.00021105015487490392,
+            "u_max": 2.8556272380520148e-06,
+            "higher_order": 3.515128511831864e-08,
+            "remainder_lattice": 4.950247246723146e-09,
+            "remainder": 0.00019701294290490933,
+            "numerical_error_estimate": 0.0003586985850067998
+          },
+          {
+            "nu": 8.0,
+            "n": 8,
+            "h": 4,
+            "delta": 0.04714045207910317,
+            "measured": 0.0001611003766782735,
+            "ghost": 0.10582519016200001,
+            "cancellation_free": 0.00021157845657561328,
+            "u_max": 3.439183541266548e-06,
+            "higher_order": 3.4773226941529884e-08,
+            "remainder_lattice": 2.4970497931936553e-09,
+            "remainder": 0.00010427410117951236,
+            "numerical_error_estimate": 0.0002654343695984135
+          },
+          {
+            "nu": 8.0,
+            "n": 8,
+            "h": 8,
+            "delta": 0.04714045207910317,
+            "measured": 0.0001589910172234865,
+            "ghost": 0.10582519016200001,
+            "cancellation_free": 0.00021369179827817068,
+            "u_max": 5.015595284413503e-06,
+            "higher_order": 3.3277500140205084e-08,
+            "remainder_lattice": 1.2933697118659344e-09,
+            "remainder": 6.541785527036267e-05,
+            "numerical_error_estimate": 0.00022447704473402936
+          },
+          {
+            "nu": 8.0,
+            "n": 8,
+            "h": 16,
+            "delta": 0.04714045207910317,
+            "measured": 0.00015055272712539256,
+            "ghost": 0.10582519016200001,
+            "cancellation_free": 0.00022214721567351124,
+            "u_max": 1.062214609437932e-05,
+            "higher_order": 2.7562056436047966e-08,
+            "remainder_lattice": 7.44821233922696e-10,
+            "remainder": 7.378919243691385e-05,
+            "numerical_error_estimate": 0.00022445118722617653
+          }
+        ],
+        "selection": {
+          "candidate_profiles": 12,
+          "costed_candidates": 12,
+          "best": {
+            "n_p": 16,
+            "walk_steps_per_run": 73890,
+            "walk_steps_std_qsp": 147684,
+            "T_walk_step": 5193.5545777134985,
+            "T_walk_parts": {
+              "select_kinetic": 60,
+              "potential_oracle": 4428,
+              "reflections": 192,
+              "rotations": 513.5545777134985
+            },
+            "T_prep": 1054080,
+            "T_qft": 2048,
+            "T_run": 384812112.1838721,
+            "eps_rot": 2.078463035809976e-13,
+            "alpha_H": 3629.127111111111,
+            "alpha_walk": 1814.5635555555555,
+            "alpha_kin": 3600.0,
+            "alpha_pot": 29.127111111111113,
+            "b": 11,
+            "m": 21,
+            "qubits_parts": {
+              "x": 16,
+              "p": 16,
+              "prep_lcu": 24,
+              "gqsp": 1,
+              "arith_work": 131,
+              "phase_grad": 43
+            },
+            "qubits_run": 231,
+            "target": 0.001,
+            "nu": 8.0,
+            "n": 8,
+            "L": 17.066666666666666,
+            "dx": 0.13333333333333333,
+            "h": 16,
+            "eps_grid": 0.00022445118722617653,
+            "eps_grid_measured": 0.00015055272712539256,
+            "kind": "smooth_w0.5",
+            "eta_max": 39.990234375,
+            "p_a": -0.9593281866720892,
+            "P_succ": 0.4340698918204517,
+            "amp_err_schr": 1.2889957768158489e-05,
+            "delta_tot": 0.00025645027776282123,
+            "b_amp": [
+              0.004791393099986039,
+              0.011122841784269583,
+              0.006030103034423902,
+              0.009062503037968787
+            ],
+            "AE_log2_iterations": [
+              22,
+              21,
+              22,
+              21
+            ],
+            "AE_iterations": [
+              4194304,
+              2097152,
+              4194304,
+              2097152
+            ],
+            "calls_per_estimate_set": 25165828,
+            "median_reps": 11,
+            "T_total": 1.0652534167715298e+17,
+            "T_total_no_boost": 9684121970650270.0,
+            "logical_qubits": 232
+          }
+        }
+      }
+    },
+    {
+      "rho": 0.0,
+      "lambda": 1.0,
+      "B2_sampled_charge": 0.005708364452014482,
+      "available_estimates": 88,
+      "grid_span_pairs": 93,
+      "baseline": {
+        "0.01": {
+          "n_p": 11,
+          "walk_steps_per_run": 3193,
+          "walk_steps_std_qsp": 6320,
+          "T_walk_step": 2573.538120867116,
+          "T_walk_parts": {
+            "select_kinetic": 44,
+            "potential_oracle": 1960,
+            "reflections": 168,
+            "rotations": 401.53812086711605
+          },
+          "T_prep": 52188,
+          "T_qft": 968,
+          "T_run": 8272759.679593471,
+          "eps_rot": 1.342049182382015e-10,
+          "alpha_H": 281.6,
+          "alpha_walk": 140.8,
+          "alpha_kin": 256.0,
+          "alpha_pot": 25.6,
+          "b": 9,
+          "m": 18,
+          "qubits_parts": {
+            "x": 12,
+            "p": 11,
+            "prep_lcu": 21,
+            "gqsp": 1,
+            "arith_work": 91,
+            "phase_grad": 33
+          },
+          "qubits_run": 169,
+          "target": 0.01,
+          "nu": 8.0,
+          "n": 6,
+          "L": 16.0,
+          "dx": 0.5,
+          "h": 4,
+          "eps_grid": 0.003136532699311597,
+          "eps_grid_measured": 0.0021481072454132316,
+          "kind": "smooth_w1",
+          "eta_max": 19.990234375,
+          "p_a": -0.98,
+          "P_succ": 0.34353424544370825,
+          "amp_err_schr": 7.558897273030052e-05,
+          "delta_tot": 0.0019266461006334317,
+          "b_amp": [
+            0.017823903656982342,
+            0.037993257764689224,
+            0.02323923775455186,
+            0.029778096503391676
+          ],
+          "AE_log2_iterations": [
+            17,
+            16,
+            17,
+            17
+          ],
+          "AE_iterations": [
+            131072,
+            65536,
+            131072,
+            131072
+          ],
+          "calls_per_estimate_set": 917508,
+          "median_reps": 11,
+          "T_total": 83495593763036.9,
+          "T_total_no_boost": 7590508523912.446,
+          "logical_qubits": 170
+        }
+      },
+      "alternative": {
+        "0.01": {
+          "candidate_profiles": 138,
+          "costed_candidates": 138,
+          "best": {
+            "n_p": 11,
+            "walk_steps_per_run": 3193,
+            "walk_steps_std_qsp": 6320,
+            "T_walk_step": 2573.538120867116,
+            "T_walk_parts": {
+              "select_kinetic": 44,
+              "potential_oracle": 1960,
+              "reflections": 168,
+              "rotations": 401.53812086711605
+            },
+            "T_prep": 52188,
+            "T_qft": 968,
+            "T_run": 8272759.679593471,
+            "eps_rot": 1.342049182382015e-10,
+            "alpha_H": 281.6,
+            "alpha_walk": 140.8,
+            "alpha_kin": 256.0,
+            "alpha_pot": 25.6,
+            "b": 9,
+            "m": 18,
+            "qubits_parts": {
+              "x": 12,
+              "p": 11,
+              "prep_lcu": 21,
+              "gqsp": 1,
+              "arith_work": 91,
+              "phase_grad": 33
+            },
+            "qubits_run": 169,
+            "target": 0.01,
+            "nu": 8.0,
+            "n": 6,
+            "L": 16.0,
+            "dx": 0.5,
+            "h": 4,
+            "eps_grid": 0.003136532699311597,
+            "eps_grid_measured": 0.0021481072454132316,
+            "kind": "smooth_w1",
+            "eta_max": 19.990234375,
+            "p_a": -0.98,
+            "P_succ": 0.34353424544370825,
+            "amp_err_schr": 7.558897273030052e-05,
+            "delta_tot": 0.0019266461006334317,
+            "b_amp": [
+              0.017823903656982342,
+              0.037993257764689224,
+              0.02323923775455186,
+              0.029778096503391676
+            ],
+            "AE_log2_iterations": [
+              17,
+              16,
+              17,
+              17
+            ],
+            "AE_iterations": [
+              131072,
+              65536,
+              131072,
+              131072
+            ],
+            "calls_per_estimate_set": 917508,
+            "median_reps": 11,
+            "T_total": 83495593763036.9,
+            "T_total_no_boost": 7590508523912.446,
+            "logical_qubits": 170
+          }
+        }
+      }
+    },
+    {
+      "rho": 0.2,
+      "lambda": 1.0,
+      "B2_sampled_charge": 0.005638751028747363,
+      "available_estimates": 87,
+      "grid_span_pairs": 93,
+      "baseline": {
+        "0.01": {
+          "n_p": 11,
+          "walk_steps_per_run": 2693,
+          "walk_steps_std_qsp": 5320,
+          "T_walk_step": 3641.959556319399,
+          "T_walk_parts": {
+            "select_kinetic": 44,
+            "potential_oracle": 3036,
+            "reflections": 160,
+            "rotations": 401.95955631939864
+          },
+          "T_prep": 52188,
+          "T_qft": 968,
+          "T_run": 9863251.8627279,
+          "eps_rot": 1.3097740221456368e-10,
+          "alpha_H": 232.76799999999997,
+          "alpha_walk": 116.38399999999999,
+          "alpha_kin": 199.99999999999997,
+          "alpha_pot": 32.76800000000001,
+          "b": 9,
+          "m": 17,
+          "qubits_parts": {
+            "x": 12,
+            "p": 11,
+            "prep_lcu": 20,
+            "gqsp": 1,
+            "arith_work": 107,
+            "phase_grad": 33
+          },
+          "qubits_run": 184,
+          "target": 0.01,
+          "nu": 16.0,
+          "n": 6,
+          "L": 25.6,
+          "dx": 0.8,
+          "h": 8,
+          "eps_grid": 0.004556625944559623,
+          "eps_grid_measured": 0.002186528488470453,
+          "kind": "smooth_w1",
+          "eta_max": 19.990234375,
+          "p_a": -0.9750374299450214,
+          "P_succ": 0.34701063264266196,
+          "amp_err_schr": 0.0001273968964562444,
+          "delta_tot": 0.002570086110211476,
+          "b_amp": [
+            0.01100173316284465,
+            0.038066463481612356,
+            0.016815196760501475,
+            0.027862997404215568
+          ],
+          "AE_log2_iterations": [
+            18,
+            16,
+            17,
+            16
+          ],
+          "AE_iterations": [
+            262144,
+            65536,
+            131072,
+            65536
+          ],
+          "calls_per_estimate_set": 1048580,
+          "median_reps": 11,
+          "T_total": 113768778818939.42,
+          "T_total_no_boost": 10342616256267.22,
+          "logical_qubits": 185
+        }
+      },
+      "alternative": {
+        "0.01": {
+          "candidate_profiles": 144,
+          "costed_candidates": 144,
+          "best": {
+            "n_p": 11,
+            "walk_steps_per_run": 2693,
+            "walk_steps_std_qsp": 5320,
+            "T_walk_step": 3641.959556319399,
+            "T_walk_parts": {
+              "select_kinetic": 44,
+              "potential_oracle": 3036,
+              "reflections": 160,
+              "rotations": 401.95955631939864
+            },
+            "T_prep": 52188,
+            "T_qft": 968,
+            "T_run": 9863251.8627279,
+            "eps_rot": 1.3097740221456368e-10,
+            "alpha_H": 232.76799999999997,
+            "alpha_walk": 116.38399999999999,
+            "alpha_kin": 199.99999999999997,
+            "alpha_pot": 32.76800000000001,
+            "b": 9,
+            "m": 17,
+            "qubits_parts": {
+              "x": 12,
+              "p": 11,
+              "prep_lcu": 20,
+              "gqsp": 1,
+              "arith_work": 107,
+              "phase_grad": 33
+            },
+            "qubits_run": 184,
+            "target": 0.01,
+            "nu": 16.0,
+            "n": 6,
+            "L": 25.6,
+            "dx": 0.8,
+            "h": 8,
+            "eps_grid": 0.004556625944559623,
+            "eps_grid_measured": 0.002186528488470453,
+            "kind": "smooth_w1",
+            "eta_max": 19.990234375,
+            "p_a": -0.9750374299450214,
+            "P_succ": 0.34701063264266196,
+            "amp_err_schr": 0.0001273968964562444,
+            "delta_tot": 0.002570086110211476,
+            "b_amp": [
+              0.01100173316284465,
+              0.038066463481612356,
+              0.016815196760501475,
+              0.027862997404215568
+            ],
+            "AE_log2_iterations": [
+              18,
+              16,
+              17,
+              16
+            ],
+            "AE_iterations": [
+              262144,
+              65536,
+              131072,
+              65536
+            ],
+            "calls_per_estimate_set": 1048580,
+            "median_reps": 11,
+            "T_total": 113768778818939.42,
+            "T_total_no_boost": 10342616256267.22,
+            "logical_qubits": 185
+          }
+        }
+      }
+    },
+    {
+      "rho": 0.6,
+      "lambda": 1.0,
+      "B2_sampled_charge": 0.0054100109839652355,
+      "available_estimates": 87,
+      "grid_span_pairs": 93,
+      "baseline": {
+        "0.01": {
+          "n_p": 10,
+          "walk_steps_per_run": 1788,
+          "walk_steps_std_qsp": 3516,
+          "T_walk_step": 3783.2692151056576,
+          "T_walk_parts": {
+            "select_kinetic": 44,
+            "potential_oracle": 3180,
+            "reflections": 160,
+            "rotations": 399.2692151056578
+          },
+          "T_prep": 43864,
+          "T_qft": 800,
+          "T_run": 6811225.702684444,
+          "eps_rot": 1.5299802432431576e-10,
+          "alpha_H": 296.1619834710744,
+          "alpha_walk": 148.0809917355372,
+          "alpha_kin": 242.0,
+          "alpha_pot": 54.16198347107438,
+          "b": 9,
+          "m": 17,
+          "qubits_parts": {
+            "x": 12,
+            "p": 10,
+            "prep_lcu": 20,
+            "gqsp": 1,
+            "arith_work": 107,
+            "phase_grad": 33
+          },
+          "qubits_run": 183,
+          "target": 0.01,
+          "nu": 4.0,
+          "n": 6,
+          "L": 11.636363636363637,
+          "dx": 0.36363636363636365,
+          "h": 8,
+          "eps_grid": 0.004071244589559124,
+          "eps_grid_measured": 0.0014470133274750148,
+          "kind": "smooth_w1",
+          "eta_max": 9.990234375,
+          "p_a": -0.9297096320895035,
+          "P_succ": 0.40425972138808014,
+          "amp_err_schr": 0.0004012530130029779,
+          "delta_tot": 0.005583619501922977,
+          "b_amp": [
+            0.00393043197186372,
+            0.04054623198904872,
+            0.006879624064861321,
+            0.025437192374095394
+          ],
+          "AE_log2_iterations": [
+            18,
+            15,
+            17,
+            15
+          ],
+          "AE_iterations": [
+            262144,
+            32768,
+            131072,
+            32768
+          ],
+          "calls_per_estimate_set": 917508,
+          "median_reps": 11,
+          "T_total": 68744832560652.59,
+          "T_total_no_boost": 6249530232786.6,
+          "logical_qubits": 184
+        }
+      },
+      "alternative": {
+        "0.01": {
+          "candidate_profiles": 132,
+          "costed_candidates": 132,
+          "best": {
+            "n_p": 10,
+            "walk_steps_per_run": 1788,
+            "walk_steps_std_qsp": 3516,
+            "T_walk_step": 3783.2692151056576,
+            "T_walk_parts": {
+              "select_kinetic": 44,
+              "potential_oracle": 3180,
+              "reflections": 160,
+              "rotations": 399.2692151056578
+            },
+            "T_prep": 43864,
+            "T_qft": 800,
+            "T_run": 6811225.702684444,
+            "eps_rot": 1.5299802432431576e-10,
+            "alpha_H": 296.1619834710744,
+            "alpha_walk": 148.0809917355372,
+            "alpha_kin": 242.0,
+            "alpha_pot": 54.16198347107438,
+            "b": 9,
+            "m": 17,
+            "qubits_parts": {
+              "x": 12,
+              "p": 10,
+              "prep_lcu": 20,
+              "gqsp": 1,
+              "arith_work": 107,
+              "phase_grad": 33
+            },
+            "qubits_run": 183,
+            "target": 0.01,
+            "nu": 4.0,
+            "n": 6,
+            "L": 11.636363636363637,
+            "dx": 0.36363636363636365,
+            "h": 8,
+            "eps_grid": 0.004071244589559124,
+            "eps_grid_measured": 0.0014470133274750148,
+            "kind": "smooth_w1",
+            "eta_max": 9.990234375,
+            "p_a": -0.9297096320895035,
+            "P_succ": 0.40425972138808014,
+            "amp_err_schr": 0.0004012530130029779,
+            "delta_tot": 0.005583619501922977,
+            "b_amp": [
+              0.00393043197186372,
+              0.04054623198904872,
+              0.006879624064861321,
+              0.025437192374095394
+            ],
+            "AE_log2_iterations": [
+              18,
+              15,
+              17,
+              15
+            ],
+            "AE_iterations": [
+              262144,
+              32768,
+              131072,
+              32768
+            ],
+            "calls_per_estimate_set": 917508,
+            "median_reps": 11,
+            "T_total": 68744832560652.59,
+            "T_total_no_boost": 6249530232786.6,
+            "logical_qubits": 184
+          }
+        }
+      }
+    },
+    {
+      "rho": 0.8,
+      "lambda": 1.0,
+      "B2_sampled_charge": 0.005262000689647445,
+      "available_estimates": 87,
+      "grid_span_pairs": 93,
+      "baseline": {
+        "0.01": {
+          "n_p": 12,
+          "walk_steps_per_run": 3476,
+          "walk_steps_std_qsp": 6880,
+          "T_walk_step": 3625.717259810068,
+          "T_walk_parts": {
+            "select_kinetic": 44,
+            "potential_oracle": 3020,
+            "reflections": 160,
+            "rotations": 401.71725981006796
+          },
+          "T_prep": 68704,
+          "T_qft": 1152,
+          "T_run": 12675355.498658655,
+          "eps_rot": 1.3282339667868583e-10,
+          "alpha_H": 307.2,
+          "alpha_walk": 153.6,
+          "alpha_kin": 256.0,
+          "alpha_pot": 51.2,
+          "b": 9,
+          "m": 17,
+          "qubits_parts": {
+            "x": 12,
+            "p": 12,
+            "prep_lcu": 20,
+            "gqsp": 1,
+            "arith_work": 107,
+            "phase_grad": 33
+          },
+          "qubits_run": 185,
+          "target": 0.01,
+          "nu": 8.0,
+          "n": 6,
+          "L": 16.0,
+          "dx": 0.5,
+          "h": 8,
+          "eps_grid": 0.0034035122279725133,
+          "eps_grid_measured": 0.0017427076051049937,
+          "kind": "smooth_w0.5",
+          "eta_max": 19.990234375,
+          "p_a": -0.8765386471799175,
+          "P_succ": 0.4676777194542377,
+          "amp_err_schr": 0.00031139702244686873,
+          "delta_tot": 0.004466230174056268,
+          "b_amp": [
+            0.008284231653294227,
+            0.04190338503660769,
+            0.011628480244385259,
+            0.03269883450867155
+          ],
+          "AE_log2_iterations": [
+            17,
+            15,
+            17,
+            15
+          ],
+          "AE_iterations": [
+            131072,
+            32768,
+            131072,
+            32768
+          ],
+          "calls_per_estimate_set": 655364,
+          "median_reps": 11,
+          "T_total": 91378159119092.23,
+          "T_total_no_boost": 8307105374462.931,
+          "logical_qubits": 186
+        }
+      },
+      "alternative": {
+        "0.01": {
+          "candidate_profiles": 132,
+          "costed_candidates": 132,
+          "best": {
+            "n_p": 12,
+            "walk_steps_per_run": 3476,
+            "walk_steps_std_qsp": 6880,
+            "T_walk_step": 3625.717259810068,
+            "T_walk_parts": {
+              "select_kinetic": 44,
+              "potential_oracle": 3020,
+              "reflections": 160,
+              "rotations": 401.71725981006796
+            },
+            "T_prep": 68704,
+            "T_qft": 1152,
+            "T_run": 12675355.498658655,
+            "eps_rot": 1.3282339667868583e-10,
+            "alpha_H": 307.2,
+            "alpha_walk": 153.6,
+            "alpha_kin": 256.0,
+            "alpha_pot": 51.2,
+            "b": 9,
+            "m": 17,
+            "qubits_parts": {
+              "x": 12,
+              "p": 12,
+              "prep_lcu": 20,
+              "gqsp": 1,
+              "arith_work": 107,
+              "phase_grad": 33
+            },
+            "qubits_run": 185,
+            "target": 0.01,
+            "nu": 8.0,
+            "n": 6,
+            "L": 16.0,
+            "dx": 0.5,
+            "h": 8,
+            "eps_grid": 0.0034035122279725133,
+            "eps_grid_measured": 0.0017427076051049937,
+            "kind": "smooth_w0.5",
+            "eta_max": 19.990234375,
+            "p_a": -0.8765386471799175,
+            "P_succ": 0.4676777194542377,
+            "amp_err_schr": 0.00031139702244686873,
+            "delta_tot": 0.004466230174056268,
+            "b_amp": [
+              0.008284231653294227,
+              0.04190338503660769,
+              0.011628480244385259,
+              0.03269883450867155
+            ],
+            "AE_log2_iterations": [
+              17,
+              15,
+              17,
+              15
+            ],
+            "AE_iterations": [
+              131072,
+              32768,
+              131072,
+              32768
+            ],
+            "calls_per_estimate_set": 655364,
+            "median_reps": 11,
+            "T_total": 91378159119092.23,
+            "T_total_no_boost": 8307105374462.931,
+            "logical_qubits": 186
+          }
+        }
+      }
+    },
+    {
+      "rho": 0.4,
+      "lambda": 0.25,
+      "B2_sampled_charge": 0.002080574806789135,
+      "available_estimates": 91,
+      "grid_span_pairs": 94,
+      "baseline": {
+        "0.01": {
+          "n_p": 11,
+          "walk_steps_per_run": 2391,
+          "walk_steps_std_qsp": 4716,
+          "T_walk_step": 3606.3652408965054,
+          "T_walk_parts": {
+            "select_kinetic": 44,
+            "potential_oracle": 3020,
+            "reflections": 144,
+            "rotations": 398.36524089650516
+          },
+          "T_prep": 52188,
+          "T_qft": 968,
+          "T_run": 8678254.299808476,
+          "eps_rot": 1.6119915792370243e-10,
+          "alpha_H": 204.3591836734694,
+          "alpha_walk": 102.1795918367347,
+          "alpha_kin": 196.00000000000003,
+          "alpha_pot": 8.359183673469387,
+          "b": 9,
+          "m": 15,
+          "qubits_parts": {
+            "x": 12,
+            "p": 11,
+            "prep_lcu": 18,
+            "gqsp": 1,
+            "arith_work": 107,
+            "phase_grad": 33
+          },
+          "qubits_run": 182,
+          "target": 0.01,
+          "nu": 8.0,
+          "n": 6,
+          "L": 18.285714285714285,
+          "dx": 0.5714285714285714,
+          "h": 8,
+          "eps_grid": 0.0033823542900772814,
+          "eps_grid_measured": 0.0017624368228384673,
+          "kind": "smooth_w1",
+          "eta_max": 19.990234375,
+          "p_a": -0.4796640933360446,
+          "P_succ": 0.3568424527644003,
+          "amp_err_schr": 0.00017298416289346363,
+          "delta_tot": 0.0028724633103225476,
+          "b_amp": [
+            0.010759093926829619,
+            0.033800736496502296,
+            0.016665969211913736,
+            0.026254337262502876
+          ],
+          "AE_log2_iterations": [
+            18,
+            16,
+            17,
+            16
+          ],
+          "AE_iterations": [
+            262144,
+            65536,
+            131072,
+            65536
+          ],
+          "calls_per_estimate_set": 1048580,
+          "median_reps": 11,
+          "T_total": 100100474354464.89,
+          "T_total_no_boost": 9100043123133.172,
+          "logical_qubits": 183
+        }
+      },
+      "alternative": {
+        "0.01": {
+          "candidate_profiles": 174,
+          "costed_candidates": 174,
+          "best": {
+            "n_p": 11,
+            "walk_steps_per_run": 2391,
+            "walk_steps_std_qsp": 4716,
+            "T_walk_step": 3606.3652408965054,
+            "T_walk_parts": {
+              "select_kinetic": 44,
+              "potential_oracle": 3020,
+              "reflections": 144,
+              "rotations": 398.36524089650516
+            },
+            "T_prep": 52188,
+            "T_qft": 968,
+            "T_run": 8678254.299808476,
+            "eps_rot": 1.6119915792370243e-10,
+            "alpha_H": 204.3591836734694,
+            "alpha_walk": 102.1795918367347,
+            "alpha_kin": 196.00000000000003,
+            "alpha_pot": 8.359183673469387,
+            "b": 9,
+            "m": 15,
+            "qubits_parts": {
+              "x": 12,
+              "p": 11,
+              "prep_lcu": 18,
+              "gqsp": 1,
+              "arith_work": 107,
+              "phase_grad": 33
+            },
+            "qubits_run": 182,
+            "target": 0.01,
+            "nu": 8.0,
+            "n": 6,
+            "L": 18.285714285714285,
+            "dx": 0.5714285714285714,
+            "h": 8,
+            "eps_grid": 0.0033823542900772814,
+            "eps_grid_measured": 0.0017624368228384673,
+            "kind": "smooth_w1",
+            "eta_max": 19.990234375,
+            "p_a": -0.4796640933360446,
+            "P_succ": 0.3568424527644003,
+            "amp_err_schr": 0.00017298416289346363,
+            "delta_tot": 0.0028724633103225476,
+            "b_amp": [
+              0.010759093926829619,
+              0.033800736496502296,
+              0.016665969211913736,
+              0.026254337262502876
+            ],
+            "AE_log2_iterations": [
+              18,
+              16,
+              17,
+              16
+            ],
+            "AE_iterations": [
+              262144,
+              65536,
+              131072,
+              65536
+            ],
+            "calls_per_estimate_set": 1048580,
+            "median_reps": 11,
+            "T_total": 100100474354464.89,
+            "T_total_no_boost": 9100043123133.172,
+            "logical_qubits": 183
+          }
+        }
+      }
+    },
+    {
+      "rho": 0.4,
+      "lambda": 4.0,
+      "B2_sampled_charge": 0.05753206840294126,
+      "available_estimates": 77,
+      "grid_span_pairs": 92,
+      "baseline": {
+        "0.01": {
+          "n_p": 12,
+          "walk_steps_per_run": 5054,
+          "walk_steps_std_qsp": 10036,
+          "T_walk_step": 3660.747617098528,
+          "T_walk_parts": {
+            "select_kinetic": 44,
+            "potential_oracle": 3032,
+            "reflections": 168,
+            "rotations": 416.74761709852794
+          },
+          "T_prep": 68896,
+          "T_qft": 1152,
+          "T_run": 18574062.94251855,
+          "eps_rot": 5.5747519712676176e-11,
+          "alpha_H": 458.87346938775516,
+          "alpha_walk": 229.43673469387758,
+          "alpha_kin": 392.00000000000006,
+          "alpha_pot": 66.8734693877551,
+          "b": 9,
+          "m": 18,
+          "qubits_parts": {
+            "x": 12,
+            "p": 12,
+            "prep_lcu": 21,
+            "gqsp": 1,
+            "arith_work": 107,
+            "phase_grad": 35
+          },
+          "qubits_run": 188,
+          "target": 0.01,
+          "nu": 16.0,
+          "n": 6,
+          "L": 18.285714285714285,
+          "dx": 0.5714285714285714,
+          "h": 8,
+          "eps_grid": 0.004928909880118918,
+          "eps_grid_measured": 0.0022477607163348483,
+          "kind": "smooth_w1",
+          "eta_max": 19.9951171875,
+          "p_a": -1.9186563733441784,
+          "P_succ": 0.27164446374293777,
+          "amp_err_schr": 0.00016263694127882644,
+          "delta_tot": 0.0035726643461865435,
+          "b_amp": [
+            0.006316461271761749,
+            0.03740627199940573,
+            0.009782847574381729,
+            0.02445063465972825
+          ],
+          "AE_log2_iterations": [
+            18,
+            16,
+            17,
+            16
+          ],
+          "AE_iterations": [
+            262144,
+            65536,
+            131072,
+            65536
+          ],
+          "calls_per_estimate_set": 1048580,
+          "median_reps": 11,
+          "T_total": 214242699264815.12,
+          "T_total_no_boost": 19476609024074.1,
+          "logical_qubits": 189
+        }
+      },
+      "alternative": {
+        "0.01": {
+          "candidate_profiles": 27,
+          "costed_candidates": 27,
+          "best": {
+            "n_p": 12,
+            "walk_steps_per_run": 5054,
+            "walk_steps_std_qsp": 10036,
+            "T_walk_step": 3660.747617098528,
+            "T_walk_parts": {
+              "select_kinetic": 44,
+              "potential_oracle": 3032,
+              "reflections": 168,
+              "rotations": 416.74761709852794
+            },
+            "T_prep": 68896,
+            "T_qft": 1152,
+            "T_run": 18574062.94251855,
+            "eps_rot": 5.5747519712676176e-11,
+            "alpha_H": 458.87346938775516,
+            "alpha_walk": 229.43673469387758,
+            "alpha_kin": 392.00000000000006,
+            "alpha_pot": 66.8734693877551,
+            "b": 9,
+            "m": 18,
+            "qubits_parts": {
+              "x": 12,
+              "p": 12,
+              "prep_lcu": 21,
+              "gqsp": 1,
+              "arith_work": 107,
+              "phase_grad": 35
+            },
+            "qubits_run": 188,
+            "target": 0.01,
+            "nu": 16.0,
+            "n": 6,
+            "L": 18.285714285714285,
+            "dx": 0.5714285714285714,
+            "h": 8,
+            "eps_grid": 0.004928909880118918,
+            "eps_grid_measured": 0.0022477607163348483,
+            "kind": "smooth_w1",
+            "eta_max": 19.9951171875,
+            "p_a": -1.9186563733441784,
+            "P_succ": 0.27164446374293777,
+            "amp_err_schr": 0.00016263694127882644,
+            "delta_tot": 0.0035726643461865435,
+            "b_amp": [
+              0.006316461271761749,
+              0.03740627199940573,
+              0.009782847574381729,
+              0.02445063465972825
+            ],
+            "AE_log2_iterations": [
+              18,
+              16,
+              17,
+              16
+            ],
+            "AE_iterations": [
+              262144,
+              65536,
+              131072,
+              65536
+            ],
+            "calls_per_estimate_set": 1048580,
+            "median_reps": 11,
+            "T_total": 214242699264815.12,
+            "T_total_no_boost": 19476609024074.1,
+            "logical_qubits": 189
+          }
+        }
+      }
+    }
+  ]
+}

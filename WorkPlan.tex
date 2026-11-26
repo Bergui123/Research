@@ -427,6 +427,47 @@ boundary value. Exit criterion: validate the remaining numerical quantities,
 incorporate an appropriate boundary bound into the selection, and rerun the
 affected resource and emulation calculations.
 
+\paragraph{Alternative resource search with the boundary bound.}
+Using the rational upper value for the boundary source, I recomputed the
+grid-error estimates from the existing Step~5 grids and retained the saved
+floating-point $B_2$. The box evolution and expansion remain floating point.
+I then ran the existing candidate and resource-cost functions on temporary
+copies, leaving the production results intact. For the benchmark, 87 of the
+93 grid-and-span pairs have a numerical estimate. No pair in this original
+family satisfies the 0.1\% half-target grid allocation. The 5\% selection
+and all six 1\% sweep selections are identical to the saved selections. At
+the 1\% benchmark the result changes from $1.11057\times10^{14}$ T and 186
+qubits to $1.17629\times10^{14}$ T and 185 qubits; the alternative uses
+$\nu=8$, $64^2$ points and $h=4$.
+
+After an exploratory box-size screen I also tested one larger $256^2$ box
+at $\nu=8$, $\Delta=2/15$, $L=256/15$ and $h=16$. Its conservative boundary
+value is $0.105825190162$ and its numerical grid-error estimate is
+$2.24451\times10^{-4}$, compared with the $5\times10^{-4}$ allocation.
+Within the original candidate family with this one grid substituted, the
+costed selection uses 232 qubits and $1.06525\times10^{17}$ T gates, with a
+median of 11. The saved original selection used 231 and
+$1.94587\times10^{17}$ T. These are estimates under different grid budgets;
+the one additional box does not establish an optimum over box sizes.
+
+For each of the changed 1\% and 0.1\% choices, the actual-grid emulation met
+the target in 2000 of 2000 trials; the one-sided 99.9\% lower confidence
+bound is $0.99655$. From the repository root, reproduce the saved outputs with
+\begin{verbatim}
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .venv/bin/python \
+ review/validation/check_alternative_boundary_search.py --all \
+ > review/validation/alternative-boundary-selection.json
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .venv/bin/python \
+ review/validation/check_alternative_boundary_emulation.py \
+ > review/validation/alternative-boundary-emulation.json
+\end{verbatim}
+These trials omit GQSP truncation and gate
+synthesis, and the grid error still depends on an unenclosed $B_2$ and
+floating-point box evolution. The production pipeline and manuscript tables
+retain the original conditional counts. Exit criterion: independently review
+the boundary bound, validate the remaining grid quantities, expand and rerun
+the search, and regenerate all dependent results before replacing the counts.
+
 \paragraph{Grid-bound sensitivity check.}
 The 1\% benchmark check in \path{review/validation} recomputed $B_2$ with
 33 and 65 time points at spatial mesh $0.08$, and
