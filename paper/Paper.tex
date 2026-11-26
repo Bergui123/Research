@@ -406,6 +406,14 @@ computed in floating point: $B_2$ on a spatial mesh of 0.04 and, like $g$, at 33
 They are maxima over samples and not interval enclosures. We therefore charge twice the
 sampled $B_2$ and $g$; doubling the number of times to 65 changes $B_2$ by less than
 $10^{-4}$ of its value, and for the 1\% benchmark 257 times give the same wrapped-edge maximum as 33.
+For the 0.1\% benchmark, a conservative all-time boundary bound from a
+periodised-exponential supersolution is $0.176101$, compared with the sampled
+charge $0.0574473$. Using it with the same floating-point $B_2$ and box
+evolution gives a grid-error estimate of $0.000910$, above the $0.0005$ grid
+allocation for that configuration. The existing counts use the sampled charge;
+the alternative is conservative and does not establish that the actual error
+exceeds its target. Its derivation and rational evaluation are in the ancillary
+research archive.
 
 \begin{table}[!htbp]\centering\small\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lcccccc@{}}

@@ -1,0 +1,65 @@
+{
+  "precision_decimal_digits": 80,
+  "periodic_grid_sizes": [
+    4,
+    8,
+    16
+  ],
+  "largest_periodic_residual": "2.10843958865e-81",
+  "cases": [
+    {
+      "rho": 0.4,
+      "lambda": 1.0,
+      "target": 0.05,
+      "upper_minus_formula": "2.3737687203e-13"
+    },
+    {
+      "rho": 0.4,
+      "lambda": 1.0,
+      "target": 0.01,
+      "upper_minus_formula": "8.11794109565e-14"
+    },
+    {
+      "rho": 0.4,
+      "lambda": 1.0,
+      "target": 0.001,
+      "upper_minus_formula": "9.09235026118e-13"
+    },
+    {
+      "rho": 0.0,
+      "lambda": 1.0,
+      "target": 0.01,
+      "upper_minus_formula": "5.20850491838e-13"
+    },
+    {
+      "rho": 0.2,
+      "lambda": 1.0,
+      "target": 0.01,
+      "upper_minus_formula": "1.20535925829e-12"
+    },
+    {
+      "rho": 0.6,
+      "lambda": 1.0,
+      "target": 0.01,
+      "upper_minus_formula": "5.76648119555e-13"
+    },
+    {
+      "rho": 0.8,
+      "lambda": 1.0,
+      "target": 0.01,
+      "upper_minus_formula": "5.20850491838e-13"
+    },
+    {
+      "rho": 0.4,
+      "lambda": 0.25,
+      "target": 0.01,
+      "upper_minus_formula": "1.34734373528e-12"
+    },
+    {
+      "rho": 0.4,
+      "lambda": 4.0,
+      "target": 0.01,
+      "upper_minus_formula": "4.89290156401e-13"
+    }
+  ]
+}
