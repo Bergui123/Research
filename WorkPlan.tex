@@ -1277,6 +1277,29 @@ circuit (\path{simulation/select_circuit.py}). Qualtran's block costs for the sa
 between $-\CompileMax\%$ and $+\CompileMin\%$: at $\rho=0$ they undercount, which an assertion in the sweeps exposed. Caveat: only
 SELECT is compiled; reflections are multi-controlled $Z$ with the standard count, and PREPARE is one rotation.
 
+\emph{Small controlled-walk check.} The optional external control of SELECT
+computes $c\wedge\neg t$ for the kinetic branch and $c\wedge t$ for the
+potential phase; the arithmetic is uncomputed in either case. This adds two
+logical ANDs. For $n=m=2$, exhaustive simulation of all 1024 controlled basis
+states checks both controls, signs, workspace cleanup and the inverse. With
+$A=\mathrm{PREPARE}$ and $R=2|0\rangle\langle0|-I$, construct controlled
+$W=A R A^\dagger\mathrm{SELECT}$ using unconditional $A,A^\dagger$ around
+controlled $R$ and a controlled SELECT. A matrix comparison checks $W$,
+$W^\dagger$ and $W^\dagger W$; the maximum identity residual is
+$1.6\times10^{-15}$. The controlled SELECT and its reflection cost 1004 T
+under the logical-AND and Qualtran conventions, below the model's 1020 T
+for SELECT plus two larger reflections, excluding rotations. This one small
+walk uses two preparation rotations; the model charges four per step. The
+code and exact scope are in \path{review/validation/}, file
+\texttt{controlled-walk.md}. All 15 simulation unit tests pass, and six
+benchmark SELECT configurations reproduce their existing cost and workspace
+with every grid point and 20000 random states each. Caveat: rotations are
+ideal in the matrix check; GQSP phases, full controlled state preparation,
+QROM, QFT, measurement feedforward and general-size peak workspace are not
+compiled here. Exit criterion: audit those remaining components and their
+composition inside amplitude estimation before treating the total T count as
+an independently compiled circuit.
+
 \emph{Time evolution.} With $u=\sum_jb_j2^j$ and
 $\eta=\Delta\eta(u-\tfrac{N_p-1}2)=\sum_j s_j2^{j-1}\Delta\eta$,
 $s_j=\pm1$, the evolution factorises:

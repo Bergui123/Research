@@ -144,13 +144,14 @@ class Circuit:
 				self.row(a[i], b, out[i:i + len(b) + 1], inverse)
 
 
-def select(c, n, frac, offsets, k_bits, m, regs, w10):
+def select(c, n, frac, offsets, k_bits, m, regs, w10, control=None):
 	"""SELECT of the two-asset Hamiltonian. `offsets` are the classical constants of the coordinates
-	2^frac x_a / dx = 2^frac j_a + offset_a; q is the top m bits of the integer 4^frac 5 x^T C x / dx^2."""
+	2^frac x_a / dx = 2^frac j_a + offset_a; q is the top m bits of the integer 4^frac 5 x^T C x / dx^2.
+	If `control` is supplied, apply SELECT only when that qubit is one."""
 	j1, j2, t, k1, k0, r = regs
 	# Kinetic part: -S_a^{+-1} and a flip of the direction bit, controlled on t = 0.
 	c.x(t)
-	on = t
+	on = t if control is None else c.and_(t, control)
 	ax1 = c.and_(on, k1)
 	(ax0,) = c.alloc()
 	c.cnot(on, ax0), c.cnot(ax1, ax0)
@@ -165,6 +166,8 @@ def select(c, n, frac, offsets, k_bits, m, regs, w10):
 	c.cnot(on, ax0), c.cnot(ax1, ax0)
 	c.release([ax0])
 	c.unand(on, k1, ax1)
+	if control is not None:
+		c.unand(t, control, on)
 	c.x(t)
 	kinetic = c.ands
 
@@ -219,8 +222,11 @@ def select(c, n, frac, offsets, k_bits, m, regs, w10):
 			c.cnot(carry, new)
 		chain.append((rq, qq, carry, new))
 		carry = new
-	c.z(t)
-	c.cz(t, carry)  # -(-1)^{[r < q]} on t = 1
+	potential_on = t if control is None else c.and_(t, control)
+	c.z(potential_on)
+	c.cz(potential_on, carry)  # -(-1)^{[r < q]} on the enabled potential branch
+	if control is not None:
+		c.unand(t, control, potential_on)
 	for rq, qq, cin, new in chain[::-1]:
 		if cin is not None:
 			c.cnot(cin, new)

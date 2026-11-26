@@ -705,6 +705,14 @@ states, and returns all work qubits to zero. We charge the AND count and the wor
 cross-check, Qualtran's block costs \cite{qualtran} for the same layout differ from it by between $-\CompileMax\%$ and
 $+\CompileMin\%$; the largest shortfall of the block costs is at $\rho=0$, where their in-place squarer is cheaper than
 the one that we could verify.
+For $n=m=2$, an additional exhaustive check covers controlled SELECT and
+its inverse on all 1024 basis states. With ideal PREPARE rotations, an
+explicit controlled-walk matrix and its inverse agree with the ideal walk;
+$\|W^\dagger W-I\|_{\max}<1.6\times10^{-15}$. The controlled SELECT plus
+one reflection costs 1004 T under the same logical-AND and Qualtran
+conventions, below the 1020 T charged for SELECT and two larger reflections,
+excluding rotations. This check does not compile the full GQSP or
+amplitude-estimation circuit.
 
 \subsection{Evolution}
 

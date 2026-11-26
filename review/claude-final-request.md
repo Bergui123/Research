@@ -23,4 +23,7 @@ Focus on:
 
 14. The projected box comparison and re-costing in `review/validation/projected-box-bound.md`: verify the Feynman–Kac/union comparison, boundary-value factor, substochastic uniformization, fixed-point rounding and tail, rational log/square-root rate calculation, exact grid coordinates and re-costed amplitude budgets. Check whether the evidence supports the three stated grid bounds while preserving the circuit and sweep limitations.
 
+
+15. The optional controlled SELECT and small controlled-walk check in `review/validation/controlled-walk.md`: audit the control-zero behavior, signs, inverse, uncomputation, reflected-walk decomposition, control arity, Qualtran cost and what the matrix check does and does not establish. Do not infer that GQSP or the complete QAE state-preparation circuit is compiled.
+
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.

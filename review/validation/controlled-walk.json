@@ -1,0 +1,32 @@
+{
+  "n": 2,
+  "m": 2,
+  "block_dimension": 512,
+  "control_values": [
+    {
+      "control": 0,
+      "select_max_error": 0.0,
+      "walk_max_error": 0.0,
+      "inverse_max_error": 0.0,
+      "inverse_times_walk_max_error": 0.0,
+      "select_AND_count": 247,
+      "peak_select_work": 59
+    },
+    {
+      "control": 1,
+      "select_max_error": 0.0,
+      "walk_max_error": 0.0,
+      "inverse_max_error": 0.0,
+      "inverse_times_walk_max_error": 1.5543122344752192e-15,
+      "select_AND_count": 247,
+      "peak_select_work": 59
+    }
+  ],
+  "uncontrolled_select_ANDs": 245,
+  "controlled_select_T": 988,
+  "controlled_reflection_T": 16,
+  "model_select_plus_two_reflections_T": 1020,
+  "actual_PREP_rotations_per_walk": 2,
+  "model_rotations_per_walk": 4,
+  "scope": "Small controlled walk component, with ideal rotations and standard AND uncomputation; not the full GQSP/QAE circuit."
+}
