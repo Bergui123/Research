@@ -111,22 +111,22 @@ rows("TableT", [line(f"{r['delta']:g}", [f"${sci(x)}$ (${sci(b)}$)" for x, b in 
 o = gt["orders"]
 rate = lambda k: math.log(o[-2]["res"][k] / o[-1]["res"][k]) / math.log(o[-2]["delta"] / o[-1]["delta"])
 macro("OrderT", ", ".join(f"{rate(k):.2f}" for k in range(3)))
-cert = load("certified")["rows"]
-find = lambda a: next(c for c in cert if (c["nu"], c["n"], c["h"]) == (a["nu"], a["n"], a["h"]))
+grid_estimates = load("grid_estimates")["rows"]
+find = lambda a: next(c for c in grid_estimates if (c["nu"], c["n"], c["h"]) == (a["nu"], a["n"], a["h"]))
 rows("TableD", [line(f"{100 * e:g}\\%", [f"{a['nu']:g}; ${2**a['n']}^2$; {a['h']}"] + [f"${sci(x)}$" for x in (c["measured"], c["cancellation_free"],
-	c["remainder_lattice"], c["u_max"], c["certified_error"])]) for e, a in zip(EPS, A) for c in [find(a)]])
+	c["remainder_lattice"], c["u_max"], c["numerical_error_estimate"])]) for e, a in zip(EPS, A) for c in [find(a)]])
 for a in A:
-	assert a["eps_grid"] >= find(a)["certified_error"] and a["eps_grid"] >= find(a)["cancellation_free"]
-ok = [c for c in cert if c["certified_error"] is not None]
-macro("CertCount", len(ok)); macro("CertTotal", len(cert))
-macro("CertMedian", f"{sorted(c['certified_error'] / c['measured'] for c in ok)[len(ok) // 2]:.1f}")
+	assert a["eps_grid"] >= find(a)["numerical_error_estimate"] and a["eps_grid"] >= find(a)["cancellation_free"]
+available_estimates = [c for c in grid_estimates if c["numerical_error_estimate"] is not None]
+macro("GridEstimateCount", len(available_estimates)); macro("GridEstimateTotal", len(grid_estimates))
+macro("GridEstimateMedian", f"{sorted(c['numerical_error_estimate'] / c['measured'] for c in available_estimates)[len(available_estimates) // 2]:.1f}")
 pts = [("0", "1"), ("0.2", "1"), ("0.4", "1"), ("0.6", "1"), ("0.8", "1"), ("0.4", "0.25"), ("0.4", "4")]
 swp = []
 for rho, lam in pts:
 	d = R if (rho, lam) == ("0.4", "1") else R / f"rho{rho}_lam{lam}"
 	a, b = at(load("step8", d)["best"], 0.01), at(load("step9_sampling", d)["best"], 0.01)
-	c = next(c for c in load("certified", d)["rows"] if (c["nu"], c["n"], c["h"]) == (a["nu"], a["n"], a["h"]))
-	assert a["eps_grid"] >= c["certified_error"]  # every costed sweep point charges a certified error
+	c = next(c for c in load("grid_estimates", d)["rows"] if (c["nu"], c["n"], c["h"]) == (a["nu"], a["n"], a["h"]))
+	assert a["eps_grid"] >= c["numerical_error_estimate"]  # sampled estimates are charged conditionally
 	swp.append((a["T_total"], b["T_total"]))
 	swp_line = line(f"{rho}; {lam}", [f"${sci(a['T_total'])}$", a["logical_qubits"], f"{a['nu']:g}; ${2**a['n']}^2$", f"${sci(b['T_total'])}$",
 		b["logical_qubits"], f"{b['P_succ']:.2f}", f"{100 * b['validation']['frac_uniform_within']:.1f}"])

@@ -1,0 +1,56 @@
+{
+  "baseline_commit": "8e8ea0a",
+  "datasets": {
+    "benchmark": {
+      "rows": 93,
+      "available_estimates": 91,
+      "B2": 0.005537744990483481,
+      "grid_values_unchanged": true,
+      "step8_unchanged": true
+    },
+    "rho0_lam1": {
+      "rows": 93,
+      "available_estimates": 91,
+      "B2": 0.005708364452014482,
+      "grid_values_unchanged": true,
+      "step8_unchanged": true
+    },
+    "rho0.2_lam1": {
+      "rows": 93,
+      "available_estimates": 91,
+      "B2": 0.005638751028747363,
+      "grid_values_unchanged": true,
+      "step8_unchanged": true
+    },
+    "rho0.4_lam0.25": {
+      "rows": 94,
+      "available_estimates": 92,
+      "B2": 0.002080574806789135,
+      "grid_values_unchanged": true,
+      "step8_unchanged": true
+    },
+    "rho0.4_lam4": {
+      "rows": 92,
+      "available_estimates": 79,
+      "B2": 0.05753206840294126,
+      "grid_values_unchanged": true,
+      "step8_unchanged": true
+    },
+    "rho0.6_lam1": {
+      "rows": 93,
+      "available_estimates": 91,
+      "B2": 0.0054100109839652355,
+      "grid_values_unchanged": true,
+      "step8_unchanged": true
+    },
+    "rho0.8_lam1": {
+      "rows": 93,
+      "available_estimates": 91,
+      "B2": 0.005262000689647445,
+      "grid_values_unchanged": true,
+      "step8_unchanged": true
+    }
+  },
+  "generated_numbers_unchanged": true,
+  "scope": "Terminology and schema only; numerical estimates are not validated enclosures."
+}

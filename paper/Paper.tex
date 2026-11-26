@@ -28,7 +28,7 @@ pdfauthor={Xavier Bergeron}}
 \title{\textbf{Logical resource estimates for optimal execution\\[0.2em]
 by Cole--Hopf linearisation and Schr\"odingerisation}}
 \author{Xavier Bergeron\\[0.2em]\normalsize Quantum ETS}
-\date{24 November 2026}
+\date{26 November 2026}
 
 \begin{document}
 \maketitle
@@ -41,7 +41,10 @@ Hamilton--Jacobi--Bellman equation, Cole--Hopf heat equation,
 Schr\"odingerisation, qubitised simulation, readout. The benchmark is
 linear-quadratic: its Riccati solution checks every stage, and no quantum
 advantage is claimed. At 1\% error, amplitude estimation needs \QAOne{} qubits and $\TAOne$ T gates;
-sampling the output register, for quadratic models only, needs \QBOne{} and $\TBOne$. Three results explain
+sampling the output register, for quadratic models only, needs \QBOne{} and $\TBOne$.
+These counts are conditional on the stated error budgets and gate-cost assumptions;
+the grid constants are sampled floating-point maxima, not validated enclosures.
+Three results explain
 the numbers. (i)~The grid error has an expansion to every order, uniform on the lattice. Its leading part in the
 control is a quartic plus a quadratic term of strictly opposite signs, so grids selected at
 a known solution can exploit an accidental cancellation. (ii)~The low cost is special to quadratic data,
@@ -147,8 +150,8 @@ resource estimates exist for derivative pricing \cite{chakrabarti,stamatopoulos}
 and asymptotic end-to-end bounds for multi-asset pricing equations
 \cite{guseynov}. Explicit constants for linear
 differential equations are given in \cite{jennings,pocrnic}, and a resource
-estimate for a nonlinear fluid problem in \cite{penuel}. In a search of
-arXiv and the web up to 24 November 2026 we found no logical-gate
+estimate for a nonlinear fluid problem in \cite{penuel}. In targeted
+arXiv and web searches through 26 November 2026 we found no logical-gate
 count for optimal execution, and none for a Hamilton--Jacobi--Bellman equation
 solved by Schr\"odingerisation.
 
@@ -393,10 +396,10 @@ nodes. If $E<S$ there, then
  \log\Bigl(1-\frac ES\Bigr)\Big|_{\X\pm d\,\mathbf e_a},
  \label{eq:cert}
 \end{equation}
-where $v_a[S]$ is Eq.~\eqref{eq:readout} applied to $S$. We evaluated this bound
-for the \CertTotal{} benchmark grids and spans with $\nu\ge1$. It exists ($E<S$) for
-\CertCount{} of them, always exceeds the measured error, and its median ratio to it
-is \CertMedian. \emph{Every readout-A budget charges the larger of the
+where $v_a[S]$ is Eq.~\eqref{eq:readout} applied to $S$. The floating-point evaluation
+covered \GridEstimateTotal{} benchmark grids and spans with $\nu\ge1$. It gave $E<S$ for
+\GridEstimateCount{} of them; the resulting numerical estimate exceeded the measured error,
+with median ratio \GridEstimateMedian. \emph{Every readout-A budget charges the larger of the
 cancellation-free estimate and the numerical error-bound estimate}, also in the sweeps.
 Table~\ref{tab:cert} lists the configurations of Table~\ref{tab:a}. The constants are
 computed in floating point: $B_2$ on a spatial mesh of 0.04 and, like $g$, at 33 times.
@@ -1172,8 +1175,10 @@ distillation and measurement latency are not included.
 readout A, and through the measured error for readout B and for the recentred readout. An
 application would need a-priori bounds.
 \item Theorem~\ref{thm:grid} covers $H=I$ and central differences on a
-uniform lattice. The constants of the numerical error-bound estimate are floating-point
-evaluations, charged at twice their sampled value.
+uniform lattice. The constants of the numerical grid-error estimate are sampled
+floating-point values, charged at twice their sampled value, not validated
+enclosures. Readout-A counts that use this estimate are conditional on the
+sampled maxima upper-bounding the true spatial and temporal extrema.
 \item The circuit is specialised to $H=I$ and integer $10\rho$. General
 impact matrices and correlations need weighted LCU terms and constant
 multiplications.

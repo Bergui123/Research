@@ -31,8 +31,9 @@ The two-asset execution problem has a classical Riccati solution, which
 provides the reference answer. The contribution is a resource estimate;
 no quantum speedup is claimed.
 
-\textbf{All steps executed; the following numbers were corrected on 24 November 2026
-but remain provisional pending the independent review below.
+\textbf{The numerical pipeline has run, but manuscript review and technical
+validation remain open. The following numbers were corrected on 24 November 2026
+and remain provisional pending the checks below.
 For 1\% error in the initial optimal rate: readout A (pointwise amplitude
 estimation) needs \QAOne{} logical qubits and $\TAOne$ T gates; readout B
 (sampling, quadratic models only) needs \QBOne{} and $\TBOne$ (targeting 95\%
@@ -181,6 +182,27 @@ has to be inspected after an author uploads the package. Final archive
 SHA-256 after this change:
 \texttt{ecdbc7f156b003f6bf430ec07245e71a823ba3725c72c6bbb178f2bc92ca61f3}.
 
+\paragraph{Final local builds and PDF inspection, 26 November 2026.}
+Following the commands in \path{README.md}, I ran each document build three
+times with:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error
+\end{verbatim}
+for \texttt{Paper.tex}, \texttt{WorkPlan.tex}, \texttt{Summary.tex} and
+\texttt{Report.tex} in their respective directories. All completed without
+unresolved references, undefined citations or overfull boxes. The PDFs have
+26, 38, 5 and 2 pages respectively. The paper has two underfull bibliography
+boxes; this plan has one underfull module-list box. I inspected a contact sheet
+of every paper page and rendered the first page plus pages 1 and 3 of this
+plan; no clipped or blank pages appeared. The clean arXiv package was rebuilt
+with \path{cd paper && ./make_submission.sh}; its PDF compiled, and
+\path{unzip -t paper/arxiv-submission.zip} passed. Its SHA-256 is:
+\begin{verbatim}
+03cbe32c6b3ddebb56c42614d3efbc8d9a0c5ff5e469ecfe06640000ae57e703
+\end{verbatim}
+This local check does not inspect arXiv's processed preview; that still
+requires an author upload.
+
 \paragraph{Claude review handoff, 24 November 2026.}
 The Markdown handoff is saved in the review folder. I attempted to pass it to
 Claude Code in print mode with only read/search/web tools enabled. The process
@@ -202,6 +224,23 @@ material and was discarded. Evidence: Gurevich,
 \url{https://arxiv.org/abs/1504.02673}, and Chen--Li,
 \url{https://arxiv.org/abs/2602.16339}. This focused search adds no
 priority evidence and is not exhaustive.
+
+\paragraph{Fresh arXiv novelty search, 26 November 2026.}
+I reran four official arXiv searches sorted by latest submission; the exact
+queries, result pages and checked records are in \path{review/novelty.md}.
+They returned 8, 15, 15 and 3 results. The closest relevant sources were
+Jin--Liu on general HJ solution and gradient readout; Jin--Liu--Yu on using
+Cole--Hopf and Schr\"odingerisation for regularized Wasserstein proximal
+operators; and Wang--Hu--Zhang on gate-level methods for scalar conservation
+laws. Their stated problems and outputs differ from the execution
+HJB and its feedback observable. These targeted queries found no
+execution-specific HJB logical resource estimate or matching small-mesh
+rate-error-sign theorem. This is a dated search observation, not proof of
+priority: the search did not exhaust full-text citations, theses, patents,
+non-English sources or the non-arXiv literature. The checked primary arXiv
+records and their abstracts are recorded in \path{review/novelty.md}.
+Exit criterion: keep novelty claims narrowly qualified and obtain a
+reviewer citation-chain audit before asserting priority.
 
 \paragraph{Hypotheses checked against the Lean statements.}
 The grid-rate expansion uses an integer stencil span $h\ge1$, so $d=h\Delta$
@@ -390,7 +429,7 @@ and emulation calculations, and update their derived tables and figures.
   The paper and allocation now use the finite bound above. Validate the
   assumptions on all error sources and regenerate the costs. The old
   expression was a first-order approximation.
-\item \emph{Numerical certificate.} The bound in the grid theorem requires
+\item \emph{Numerical error estimate.} The bound in the grid theorem requires
   true spatial suprema and an integral in time; box truncation requires a
   bound for \emph{every} time. \path{simulation/certify_grid.py} samples 33
   times and estimates the constants in floating point on a spatial mesh.
@@ -581,9 +620,9 @@ $\delta$ & $K=0$ & $K=1$ & $K=2$\\
 \bottomrule
 \end{tabular}
 \end{center}
-Numerical error-bound estimates (\path{simulation/certify_grid.py}): \CertCount{} of the \CertTotal{}
-benchmark grids and spans with $\nu\ge1$ have one; it always exceeds the measured error, with median
-ratio \CertMedian. For the costed configurations ($\nu$; grid; $h$, measured, cancellation-free,
+Numerical error-bound estimates (\path{simulation/certify_grid.py}): \GridEstimateCount{} of the \GridEstimateTotal{}
+benchmark grids and spans with $\nu\ge1$ have an estimate; the sampled estimates exceed the measured errors, with median
+ratio \GridEstimateMedian. This is a numerical consistency check, not an enclosure. For the costed configurations ($\nu$; grid; $h$, measured, cancellation-free,
 lattice remainder, $\max U$, estimated bound):
 \begin{center}\small
 \begin{tabular}{@{}lcccccc@{}}
@@ -598,6 +637,27 @@ $1.8\times10^{-4}$ while its numerical error-bound estimate was $2.5\times10^{-4
 charges the latter; the estimate at that stage changed from $2.6\times10^{17}$ T
 and 235 qubits to $2.6\times10^{17}$ T and 236 qubits. The present counts also
 include the later finite-budget correction.
+
+\paragraph{Grid-estimate terminology audit, 26 November 2026.}
+The stored field and output file were formerly named \texttt{certified\_error} and
+\texttt{certified.json}, and the script printed that sampled pairs were
+``certified.'' Those labels overstated what the calculation establishes: the
+spatial and temporal maxima are ordinary floating-point samples. The output is
+now \texttt{numerical\_error\_estimate} in \texttt{grid\_estimates.json}; the
+script says estimates are available, and its assertion is explicitly described
+as a sampled regression check. The finite-grid inequality remains conditional
+on the sampled $B_2$ and ghost values enclosing the true spatial and temporal
+extrema. The pointwise formula in Eq.~\eqref{eq:cert} is a valid implication
+under that premise; this terminology change does not validate the premise.
+The paper abstract and limitations, and the short report, now state that
+readout-A counts using this numerical grid estimate are conditional on the
+sampled maxima upper-bounding the true spatial and temporal extrema. The
+factor-of-two margin is an empirical choice, not an enclosure.
+Verification: regenerate the benchmark and six sweep estimate files, rerun
+Step 8 and the generated tables, then compare all numerical fields and resource
+counts with the prior committed outputs after translating the old field name.
+Exit criterion: retain the numerical-estimate labels until interval or otherwise
+validated enclosures are supplied.
 
 \subsection*{Machine check (Lean 4, \path{lean/})}
 

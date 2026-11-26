@@ -5,12 +5,12 @@
 \hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
 \title{\textbf{Work plan summary}}
 \author{Equations and status; full derivations in WorkPlan.tex}
-\date{24 November 2026}
+\date{26 November 2026}
 \input{paper/generated} % numbers from simulation/results
 \begin{document}
 \maketitle
 
-\textbf{The numerical pipeline has run. Codex reviewed the current draft; Claude Code reviewed an earlier snapshot. The latest Claude response and arXiv processed preview remain open. For 1\% error in
+\textbf{The numerical pipeline has run, but technical validation remains open. Codex reviewed the current draft; Claude Code reviewed an earlier snapshot. The latest Claude response and arXiv processed preview remain open. For 1\% error in
 $\mathbf v^*(\mathbf X,0)$, targeting 95\% confidence: amplitude readout \QAOne{} qubits,
 $\TAOne$ T; sampling readout (quadratic models only) \QBOne{} qubits,
 $\TBOne$ T.}
@@ -108,8 +108,11 @@ $7.0\times10^{-3}$ at $\Delta x=0.0625$, second order).
  |\psi_\square-\psi_\Delta|\le U,\qquad
  |v_a-v_a^*|\le|v_a[S]-v_a^*|-\frac\nu d\sum_\pm\log\Bigl(1-\frac{B_2\Delta^6+U}{S}\Bigr).
 \]
-Status: proved and machine-checked in Lean (\texttt{lean/}); budgets charge the
-larger of the cancellation-free estimate and the numerical error-bound estimate; next, validate both.
+\[
+ E_{\rm grid}=B_2\Delta^6+U,\qquad
+ \texttt{numerical\_error\_estimate}\ne\text{validated enclosure}.
+\]
+Status: readout-A counts using sampled estimates are conditional on their covering the true extrema; validated grid enclosures remain open.
 
 \section*{Step 6: discretisation}
 \[
@@ -298,15 +301,15 @@ verification and the block-exponential identification are not formalized.
 \]
 Status: scaled GQSP estimates are regenerated; phase synthesis, numerical enclosures, Claude's final response and arXiv preview remain open.
 
-\section*{Novelty check, 24 November 2026}
+\section*{Novelty check, 26 November 2026}
 \[
  \begin{aligned}
- &\text{Wang et al. (2026): explicit circuits for scalar conservation laws;}\\
- &\text{execution HJB: no exact match in the targeted search;}\\
- &\text{grid error-sign result: no exact match in the focused search.}
+ &\text{closest prior work: HJ readout (2512.07919), Wasserstein (2606.28752),}\\
+ &\text{scalar conservation-law circuits (2608.09675); no exact execution-HJB match.}\\
+ &\text{query result counts: }8,\;15,\;15,\;3.
  \end{aligned}
 \]
-Status: clean source archive rebuilt; Claude review awaits re-authentication; processed preview and priority review remain open.
+Status: four targeted search records and closest papers are in \texttt{review/novelty.md}; this does not prove priority. All PDFs built; manuscript pages and selected plan pages inspected. Source archive passed \texttt{unzip -t}; its SHA-256 is in WorkPlan. Claude review and arXiv preview remain open.
 
 \begin{thebibliography}{1}
 \bibitem{bdg} P.~Bergault, F.~Drissi and O.~Gu\'eant (2022),

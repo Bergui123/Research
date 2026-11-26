@@ -13,19 +13,19 @@
    "higher_order": 0.0008969559593293753,
    "remainder_lattice": 0.1760526655256667,
    "remainder": 0.21730001842858565,
-   "certified_error": 0.23590497948510641
+   "numerical_error_estimate": 0.23590497948510641
   },
   {
    "nu": 1.0,
    "n": 5,
    "h": 2,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 1.0,
    "n": 5,
    "h": 4,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 1.0,
@@ -39,7 +39,7 @@
    "higher_order": 4.487817228053059e-05,
    "remainder_lattice": 0.003085989228509635,
    "remainder": 0.059129353281559494,
-   "certified_error": 0.06350582952214807
+   "numerical_error_estimate": 0.06350582952214807
   },
   {
    "nu": 1.0,
@@ -53,19 +53,19 @@
    "higher_order": 4.83853396573544e-05,
    "remainder_lattice": 0.001996288584258388,
    "remainder": 0.06955856774144177,
-   "certified_error": 0.07399481140088428
+   "numerical_error_estimate": 0.07399481140088428
   },
   {
    "nu": 1.0,
    "n": 6,
    "h": 4,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 1.0,
    "n": 6,
    "h": 8,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 1.0,
@@ -79,7 +79,7 @@
    "higher_order": 2.54948328540159e-06,
    "remainder_lattice": 8.183272422425194e-05,
    "remainder": 0.10626213715162343,
-   "certified_error": 0.10731806566075815
+   "numerical_error_estimate": 0.10731806566075815
   },
   {
    "nu": 1.0,
@@ -93,7 +93,7 @@
    "higher_order": 2.5990722469897154e-06,
    "remainder_lattice": 4.363850463810282e-05,
    "remainder": 0.06610354249287802,
-   "certified_error": 0.06716307292525028
+   "numerical_error_estimate": 0.06716307292525028
   },
   {
    "nu": 1.0,
@@ -107,19 +107,19 @@
    "higher_order": 2.7984516730794922e-06,
    "remainder_lattice": 2.799851149194462e-05,
    "remainder": 0.07880712587633494,
-   "certified_error": 0.0798810843415656
+   "numerical_error_estimate": 0.0798810843415656
   },
   {
    "nu": 1.0,
    "n": 7,
    "h": 8,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 1.0,
    "n": 7,
    "h": 16,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 1.0,
@@ -133,7 +133,7 @@
    "higher_order": 1.58702527088066e-07,
    "remainder_lattice": 2.5177834051828576e-06,
    "remainder": 0.18506545679028893,
-   "certified_error": 0.1853296838036573
+   "numerical_error_estimate": 0.1853296838036573
   },
   {
    "nu": 1.0,
@@ -147,7 +147,7 @@
    "higher_order": 1.5948062276991986e-07,
    "remainder_lattice": 1.2795065047426917e-06,
    "remainder": 0.09746230697114598,
-   "certified_error": 0.09772676140181348
+   "numerical_error_estimate": 0.09772676140181348
   },
   {
    "nu": 1.0,
@@ -161,7 +161,7 @@
    "higher_order": 1.625972891807179e-07,
    "remainder_lattice": 6.823861476017007e-07,
    "remainder": 0.060633883354430325,
-   "certified_error": 0.06089924778502838
+   "numerical_error_estimate": 0.06089924778502838
   },
   {
    "nu": 1.0,
@@ -175,13 +175,13 @@
    "higher_order": 1.751305213965021e-07,
    "remainder_lattice": 4.380064214805204e-07,
    "remainder": 0.07213830682364283,
-   "certified_error": 0.07240731645066763
+   "numerical_error_estimate": 0.07240731645066763
   },
   {
    "nu": 1.0,
    "n": 8,
    "h": 16,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 2.0,
@@ -195,7 +195,7 @@
    "higher_order": 0.00018465327672099433,
    "remainder_lattice": 0.009386042414126836,
    "remainder": 0.011298124032293648,
-   "certified_error": 0.01528152593556514
+   "numerical_error_estimate": 0.01528152593556514
   },
   {
    "nu": 2.0,
@@ -209,7 +209,7 @@
    "higher_order": 0.00011505536346459959,
    "remainder_lattice": 0.008121290203239675,
    "remainder": 0.01216385563712191,
-   "certified_error": 0.01615064232742889
+   "numerical_error_estimate": 0.01615064232742889
   },
   {
    "nu": 2.0,
@@ -223,7 +223,7 @@
    "higher_order": 0.0002062796083740329,
    "remainder_lattice": 0.024602380384194603,
    "remainder": 0.20128119823301882,
-   "certified_error": 0.2071230142134118
+   "numerical_error_estimate": 0.2071230142134118
   },
   {
    "nu": 2.0,
@@ -237,7 +237,7 @@
    "higher_order": 1.0119005976190865e-05,
    "remainder_lattice": 0.0001908252240987017,
    "remainder": 0.004475285202566661,
-   "certified_error": 0.005365361721546386
+   "numerical_error_estimate": 0.005365361721546386
   },
   {
    "nu": 2.0,
@@ -251,7 +251,7 @@
    "higher_order": 9.369509023138282e-06,
    "remainder_lattice": 0.00010878190199271305,
    "remainder": 0.0032342165105378783,
-   "certified_error": 0.004116545422407073
+   "numerical_error_estimate": 0.004116545422407073
   },
   {
    "nu": 2.0,
@@ -265,7 +265,7 @@
    "higher_order": 6.271280487999451e-06,
    "remainder_lattice": 8.93322462517487e-05,
    "remainder": 0.006258208322705258,
-   "certified_error": 0.007138477875035363
+   "numerical_error_estimate": 0.007138477875035363
   },
   {
    "nu": 2.0,
@@ -279,13 +279,13 @@
    "higher_order": 8.231939929730129e-06,
    "remainder_lattice": 0.00022729867152304655,
    "remainder": 0.19136048808629366,
-   "certified_error": 0.19261609424367648
+   "numerical_error_estimate": 0.19261609424367648
   },
   {
    "nu": 2.0,
    "n": 6,
    "h": 16,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 2.0,
@@ -299,7 +299,7 @@
    "higher_order": 5.799127431737214e-07,
    "remainder_lattice": 5.056195832006456e-06,
    "remainder": 0.014359850562403718,
-   "certified_error": 0.014571101406817574
+   "numerical_error_estimate": 0.014571101406817574
   },
   {
    "nu": 2.0,
@@ -313,7 +313,7 @@
    "higher_order": 5.700224299392796e-07,
    "remainder_lattice": 2.60905898275221e-06,
    "remainder": 0.00781819034192861,
-   "certified_error": 0.008028895857098034
+   "numerical_error_estimate": 0.008028895857098034
   },
   {
    "nu": 2.0,
@@ -327,7 +327,7 @@
    "higher_order": 5.301179453140587e-07,
    "remainder_lattice": 1.4777804354083257e-06,
    "remainder": 0.00562317133736395,
-   "certified_error": 0.005832078603405937
+   "numerical_error_estimate": 0.005832078603405937
   },
   {
    "nu": 2.0,
@@ -341,13 +341,13 @@
    "higher_order": 3.65198473570922e-07,
    "remainder_lattice": 1.1865038970260988e-06,
    "remainder": 0.010678706884429132,
-   "certified_error": 0.01088673753959714
+   "numerical_error_estimate": 0.01088673753959714
   },
   {
    "nu": 2.0,
    "n": 7,
    "h": 16,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 2.0,
@@ -361,7 +361,7 @@
    "higher_order": 3.458105907611861e-08,
    "remainder_lattice": 1.4703177225314446e-07,
    "remainder": 0.03862247724166572,
-   "certified_error": 0.038673963923527156
+   "numerical_error_estimate": 0.038673963923527156
   },
   {
    "nu": 2.0,
@@ -375,7 +375,7 @@
    "higher_order": 3.443833745216341e-08,
    "remainder_lattice": 7.408436679170775e-08,
    "remainder": 0.019704839546527228,
-   "certified_error": 0.01975629229565145
+   "numerical_error_estimate": 0.01975629229565145
   },
   {
    "nu": 2.0,
@@ -389,7 +389,7 @@
    "higher_order": 3.386629023457844e-08,
    "remainder_lattice": 3.819839980574036e-08,
    "remainder": 0.010709632735178151,
-   "certified_error": 0.010760955252560357
+   "numerical_error_estimate": 0.010760955252560357
   },
   {
    "nu": 2.0,
@@ -403,7 +403,7 @@
    "higher_order": 3.155857128284884e-08,
    "remainder_lattice": 2.156948561295213e-08,
    "remainder": 0.007647086929301928,
-   "certified_error": 0.007697977612427385
+   "numerical_error_estimate": 0.007697977612427385
   },
   {
    "nu": 2.0,
@@ -417,7 +417,7 @@
    "higher_order": 2.2025398648338038e-08,
    "remainder_lattice": 1.7130297012424068e-08,
    "remainder": 0.01425676664192897,
-   "certified_error": 0.014307399450968704
+   "numerical_error_estimate": 0.014307399450968704
   },
   {
    "nu": 4.0,
@@ -431,7 +431,7 @@
    "higher_order": 7.363021306076341e-05,
    "remainder_lattice": 0.001902107165109677,
    "remainder": 0.003639667596688713,
-   "certified_error": 0.011198770774964352
+   "numerical_error_estimate": 0.011198770774964352
   },
   {
    "nu": 4.0,
@@ -445,7 +445,7 @@
    "higher_order": 6.494261479841113e-05,
    "remainder_lattice": 0.0012824641349843664,
    "remainder": 0.0031106955788870153,
-   "certified_error": 0.009996056770055701
+   "numerical_error_estimate": 0.009996056770055701
   },
   {
    "nu": 4.0,
@@ -459,13 +459,13 @@
    "higher_order": 3.3097859001916986e-05,
    "remainder_lattice": 0.0019179948911690464,
    "remainder": 0.013877404063875436,
-   "certified_error": 0.018189314744905632
+   "numerical_error_estimate": 0.018189314744905632
   },
   {
    "nu": 4.0,
    "n": 5,
    "h": 8,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 4.0,
@@ -479,7 +479,7 @@
    "higher_order": 3.598650322576653e-06,
    "remainder_lattice": 3.8810988817271454e-05,
    "remainder": 0.010825981627590076,
-   "certified_error": 0.01250878988161071
+   "numerical_error_estimate": 0.01250878988161071
   },
   {
    "nu": 4.0,
@@ -493,7 +493,7 @@
    "higher_order": 3.5009436573671927e-06,
    "remainder_lattice": 2.073067185886755e-05,
    "remainder": 0.006353926114673474,
-   "certified_error": 0.00800495484978675
+   "numerical_error_estimate": 0.00800495484978675
   },
   {
    "nu": 4.0,
@@ -507,7 +507,7 @@
    "higher_order": 3.1363258264721665e-06,
    "remainder_lattice": 1.344314987245585e-05,
    "remainder": 0.006305888788022719,
-   "certified_error": 0.007830412761689705
+   "numerical_error_estimate": 0.007830412761689705
   },
   {
    "nu": 4.0,
@@ -521,13 +521,13 @@
    "higher_order": 1.8317522062326038e-06,
    "remainder_lattice": 1.7686723722529276e-05,
    "remainder": 0.034040890891833556,
-   "certified_error": 0.03507484915454431
+   "numerical_error_estimate": 0.03507484915454431
   },
   {
    "nu": 4.0,
    "n": 6,
    "h": 16,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 4.0,
@@ -541,7 +541,7 @@
    "higher_order": 2.263560911671638e-07,
    "remainder_lattice": 1.1926026198005555e-06,
    "remainder": 0.018324514921527726,
-   "certified_error": 0.018747109073463105
+   "numerical_error_estimate": 0.018747109073463105
   },
   {
    "nu": 4.0,
@@ -555,7 +555,7 @@
    "higher_order": 2.2479789755075959e-07,
    "remainder_lattice": 6.062522726145105e-07,
    "remainder": 0.009517595663957611,
-   "certified_error": 0.009938206881328722
+   "numerical_error_estimate": 0.009938206881328722
   },
   {
    "nu": 4.0,
@@ -569,7 +569,7 @@
    "higher_order": 2.1868470690678325e-07,
    "remainder_lattice": 3.2379759522316516e-07,
    "remainder": 0.005586516927473001,
-   "certified_error": 0.005999204505529553
+   "numerical_error_estimate": 0.005999204505529553
   },
   {
    "nu": 4.0,
@@ -583,7 +583,7 @@
    "higher_order": 1.9587516868073552e-07,
    "remainder_lattice": 2.0991874554728693e-07,
    "remainder": 0.0055469535798497015,
-   "certified_error": 0.005928089890994792
+   "numerical_error_estimate": 0.005928089890994792
   },
   {
    "nu": 4.0,
@@ -597,7 +597,7 @@
    "higher_order": 1.1440984272279631e-07,
    "remainder_lattice": 2.7623055978693987e-07,
    "remainder": 0.029902010749902966,
-   "certified_error": 0.030160657759823274
+   "numerical_error_estimate": 0.030160657759823274
   },
   {
    "nu": 4.0,
@@ -611,7 +611,7 @@
    "higher_order": 1.4169936174295301e-08,
    "remainder_lattice": 3.7112567709801533e-08,
    "remainder": 0.03798465488385612,
-   "certified_error": 0.03809042142355256
+   "numerical_error_estimate": 0.03809042142355256
   },
   {
    "nu": 4.0,
@@ -625,7 +625,7 @@
    "higher_order": 1.4145464413570146e-08,
    "remainder_lattice": 1.863325630263277e-08,
    "remainder": 0.019172000244182124,
-   "certified_error": 0.019277642905024157
+   "numerical_error_estimate": 0.019277642905024157
   },
   {
    "nu": 4.0,
@@ -639,7 +639,7 @@
    "higher_order": 1.4048050616666393e-08,
    "remainder_lattice": 9.472046063698615e-09,
    "remainder": 0.009960435254381079,
-   "certified_error": 0.010065582520881534
+   "numerical_error_estimate": 0.010065582520881534
   },
   {
    "nu": 4.0,
@@ -653,7 +653,7 @@
    "higher_order": 1.3665872178783374e-08,
    "remainder_lattice": 5.058880918203054e-09,
    "remainder": 0.005854615437412473,
-   "certified_error": 0.005957783111994251
+   "numerical_error_estimate": 0.005957783111994251
   },
   {
    "nu": 4.0,
@@ -667,7 +667,7 @@
    "higher_order": 1.2239944018728239e-08,
    "remainder_lattice": 3.2794773731119577e-09,
    "remainder": 0.005850084289580831,
-   "certified_error": 0.0059453687974831085
+   "numerical_error_estimate": 0.0059453687974831085
   },
   {
    "nu": 8.0,
@@ -681,7 +681,7 @@
    "higher_order": 0.00013977047941476315,
    "remainder_lattice": 0.0012438810655190592,
    "remainder": 0.0026335527397747718,
-   "certified_error": 0.01332597328847306
+   "numerical_error_estimate": 0.01332597328847306
   },
   {
    "nu": 8.0,
@@ -695,7 +695,7 @@
    "higher_order": 0.00011365638970200692,
    "remainder_lattice": 0.0007652363974491878,
    "remainder": 0.0019136224686968609,
-   "certified_error": 0.011919390335846405
+   "numerical_error_estimate": 0.011919390335846405
   },
   {
    "nu": 8.0,
@@ -709,13 +709,13 @@
    "higher_order": 3.6125035896778596e-05,
    "remainder_lattice": 0.0008540751539875851,
    "remainder": 0.004851099050217648,
-   "certified_error": 0.012148434923125069
+   "numerical_error_estimate": 0.012148434923125069
   },
   {
    "nu": 8.0,
    "n": 5,
    "h": 8,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 8.0,
@@ -729,7 +729,7 @@
    "higher_order": 9.16783056469753e-06,
    "remainder_lattice": 3.700689654539459e-05,
    "remainder": 0.0016534677603256827,
-   "certified_error": 0.004342965870982759
+   "numerical_error_estimate": 0.004342965870982759
   },
   {
    "nu": 8.0,
@@ -743,7 +743,7 @@
    "higher_order": 8.735276216148268e-06,
    "remainder_lattice": 1.9485434623302233e-05,
    "remainder": 0.0009319866183824264,
-   "certified_error": 0.0035797577745057515
+   "numerical_error_estimate": 0.0035797577745057515
   },
   {
    "nu": 8.0,
@@ -757,7 +757,7 @@
    "higher_order": 7.101511172421372e-06,
    "remainder_lattice": 1.1966295291404352e-05,
    "remainder": 0.0007792439430659952,
-   "certified_error": 0.003260354064160918
+   "numerical_error_estimate": 0.003260354064160918
   },
   {
    "nu": 8.0,
@@ -771,13 +771,13 @@
    "higher_order": 2.241434389869103e-06,
    "remainder_lattice": 1.3305154299434846e-05,
    "remainder": 0.0027096434871527104,
-   "certified_error": 0.004529230685775947
+   "numerical_error_estimate": 0.004529230685775947
   },
   {
    "nu": 8.0,
    "n": 6,
    "h": 16,
-   "certified_error": null
+   "numerical_error_estimate": null
   },
   {
    "nu": 8.0,
@@ -791,7 +791,7 @@
    "higher_order": 4.772199400651905e-07,
    "remainder_lattice": 8.948863273138335e-07,
    "remainder": 0.007975696536601086,
-   "certified_error": 0.008586422779835592
+   "numerical_error_estimate": 0.008586422779835592
   },
   {
    "nu": 8.0,
@@ -805,7 +805,7 @@
    "higher_order": 4.721032580381297e-07,
    "remainder_lattice": 4.5271513819571076e-07,
    "remainder": 0.004091647120713999,
-   "certified_error": 0.004700244729607043
+   "numerical_error_estimate": 0.004700244729607043
   },
   {
    "nu": 8.0,
@@ -819,7 +819,7 @@
    "higher_order": 4.5188975209594496e-07,
    "remainder_lattice": 2.3720231195232912e-07,
    "remainder": 0.0022742869858084977,
-   "certified_error": 0.002874371954619145
+   "numerical_error_estimate": 0.002874371954619145
   },
   {
    "nu": 8.0,
@@ -833,7 +833,7 @@
    "higher_order": 3.7511251428527634e-07,
    "remainder_lattice": 1.4287547253224324e-07,
    "remainder": 0.0017875196814673188,
-   "certified_error": 0.002353586528512086
+   "numerical_error_estimate": 0.002353586528512086
   },
   {
    "nu": 8.0,
@@ -847,7 +847,7 @@
    "higher_order": 1.373915248642815e-07,
    "remainder_lattice": 1.4774890933129023e-07,
    "remainder": 0.005221667506359867,
-   "certified_error": 0.005652369416654148
+   "numerical_error_estimate": 0.005652369416654148
   },
   {
    "nu": 8.0,
@@ -861,7 +861,7 @@
    "higher_order": 2.722123866113608e-08,
    "remainder_lattice": 2.479226132144047e-08,
    "remainder": 0.02502931357746385,
-   "certified_error": 0.025175020905170004
+   "numerical_error_estimate": 0.025175020905170004
   },
   {
    "nu": 8.0,
@@ -875,7 +875,7 @@
    "higher_order": 2.7151596895495362e-08,
    "remainder_lattice": 1.2430802106307388e-08,
    "remainder": 0.01258945407340623,
-   "certified_error": 0.012735040530833273
+   "numerical_error_estimate": 0.012735040530833273
   },
   {
    "nu": 8.0,
@@ -889,7 +889,7 @@
    "higher_order": 2.6873838534687117e-08,
    "remainder_lattice": 6.2852106184744485e-09,
    "remainder": 0.006447709044294095,
-   "certified_error": 0.006592812043399933
+   "numerical_error_estimate": 0.006592812043399933
   },
   {
    "nu": 8.0,
@@ -903,7 +903,7 @@
    "higher_order": 2.577593357633653e-08,
    "remainder_lattice": 3.2860216390421667e-09,
    "remainder": 0.0035579510887466387,
-   "certified_error": 0.0037011206257249792
+   "numerical_error_estimate": 0.0037011206257249792
   },
   {
    "nu": 8.0,
@@ -917,7 +917,7 @@
    "higher_order": 2.1595304138555684e-08,
    "remainder_lattice": 1.9623672253198638e-09,
    "remainder": 0.0027080578331987186,
-   "certified_error": 0.0028434998893601448
+   "numerical_error_estimate": 0.0028434998893601448
   },
   {
    "nu": 16.0,
@@ -931,7 +931,7 @@
    "higher_order": 0.00042283152021513185,
    "remainder_lattice": 0.0028406336150486582,
    "remainder": 0.0028508324274522023,
-   "certified_error": 0.020068369448100795
+   "numerical_error_estimate": 0.020068369448100795
   },
   {
    "nu": 16.0,
@@ -945,7 +945,7 @@
    "higher_order": 0.0003318600099948984,
    "remainder_lattice": 0.0017815674041951105,
    "remainder": 0.001789993237789391,
-   "certified_error": 0.01763556584666515
+   "numerical_error_estimate": 0.01763556584666515
   },
   {
    "nu": 16.0,
@@ -959,7 +959,7 @@
    "higher_order": 6.603503121126861e-05,
    "remainder_lattice": 0.0021704786550470452,
    "remainder": 0.0021990135489673183,
-   "certified_error": 0.012661492124972352
+   "numerical_error_estimate": 0.012661492124972352
   },
   {
    "nu": 16.0,
@@ -973,7 +973,7 @@
    "higher_order": 0.00031220245676063537,
    "remainder_lattice": 0.03198148955270247,
    "remainder": 0.047024919003298894,
-   "certified_error": 0.057236753561473765
+   "numerical_error_estimate": 0.057236753561473765
   },
   {
    "nu": 16.0,
@@ -987,7 +987,7 @@
    "higher_order": 1.531285769033799e-05,
    "remainder_lattice": 3.8957139048748806e-05,
    "remainder": 0.0008351785684420326,
-   "certified_error": 0.0039995264663127295
+   "numerical_error_estimate": 0.0039995264663127295
   },
   {
    "nu": 16.0,
@@ -1001,7 +1001,7 @@
    "higher_order": 1.47010409160913e-05,
    "remainder_lattice": 2.0296637134474045e-05,
    "remainder": 0.00045725769600285315,
-   "certified_error": 0.003577771178199334
+   "numerical_error_estimate": 0.003577771178199334
   },
   {
    "nu": 16.0,
@@ -1015,7 +1015,7 @@
    "higher_order": 1.2355752170340152e-05,
    "remainder_lattice": 1.1959854396598776e-05,
    "remainder": 0.00033103854529460116,
-   "certified_error": 0.003276387949907499
+   "numerical_error_estimate": 0.003276387949907499
   },
   {
    "nu": 16.0,
@@ -1029,7 +1029,7 @@
    "higher_order": 4.6808042108619746e-06,
    "remainder_lattice": 1.1469595019938882e-05,
    "remainder": 0.0007236103526539278,
-   "certified_error": 0.0029715692715266426
+   "numerical_error_estimate": 0.0029715692715266426
   },
   {
    "nu": 16.0,
@@ -1043,7 +1043,7 @@
    "higher_order": 1.9491303009612493e-06,
    "remainder_lattice": 7.042170128932054e-05,
    "remainder": 0.08598164137459069,
-   "certified_error": 0.08663830932810912
+   "numerical_error_estimate": 0.08663830932810912
   },
   {
    "nu": 16.0,
@@ -1057,7 +1057,7 @@
    "higher_order": 7.353014263109779e-07,
    "remainder_lattice": 8.544570151569158e-07,
    "remainder": 0.007865559649032986,
-   "certified_error": 0.008554548686378529
+   "numerical_error_estimate": 0.008554548686378529
   },
   {
    "nu": 16.0,
@@ -1071,7 +1071,7 @@
    "higher_order": 7.288896209568499e-07,
    "remainder_lattice": 4.3106453390249976e-07,
    "remainder": 0.004009827283297227,
-   "certified_error": 0.004696759890823429
+   "numerical_error_estimate": 0.004696759890823429
   },
   {
    "nu": 16.0,
@@ -1085,7 +1085,7 @@
    "higher_order": 7.03473590236703e-07,
    "remainder_lattice": 2.2337527453581135e-07,
    "remainder": 0.0021681204607833723,
-   "certified_error": 0.002846828283371361
+   "numerical_error_estimate": 0.002846828283371361
   },
   {
    "nu": 16.0,
@@ -1099,7 +1099,7 @@
    "higher_order": 6.055219772348072e-07,
    "remainder_lattice": 1.2882623268170584e-07,
    "remainder": 0.00149372314790055,
-   "certified_error": 0.0021395475372110243
+   "numerical_error_estimate": 0.0021395475372110243
   },
   {
    "nu": 16.0,
@@ -1113,7 +1113,7 @@
    "higher_order": 2.748701398671654e-07,
    "remainder_lattice": 1.1357622796832731e-07,
    "remainder": 0.002740539470806608,
-   "certified_error": 0.0032551461883709855
+   "numerical_error_estimate": 0.0032551461883709855
   },
   {
    "nu": 16.0,
@@ -1127,7 +1127,7 @@
    "higher_order": 4.041382553689365e-08,
    "remainder_lattice": 2.262056099641817e-08,
    "remainder": 0.0326559484362899,
-   "certified_error": 0.032817253464761734
+   "numerical_error_estimate": 0.032817253464761734
   },
   {
    "nu": 16.0,
@@ -1141,7 +1141,7 @@
    "higher_order": 4.033127755165809e-08,
    "remainder_lattice": 1.1333964031244719e-08,
    "remainder": 0.016400484144679803,
-   "certified_error": 0.01656167671285435
+   "numerical_error_estimate": 0.01656167671285435
   },
   {
    "nu": 16.0,
@@ -1155,7 +1155,7 @@
    "higher_order": 4.0001778070501184e-08,
    "remainder_lattice": 5.714593776220015e-09,
    "remainder": 0.00834722161311206,
-   "certified_error": 0.008507964349714245
+   "numerical_error_estimate": 0.008507964349714245
   },
   {
    "nu": 16.0,
@@ -1169,7 +1169,7 @@
    "higher_order": 3.8694934851702655e-08,
    "remainder_lattice": 2.954505589648114e-09,
    "remainder": 0.004483744942375247,
-   "certified_error": 0.004642688508757241
+   "numerical_error_estimate": 0.004642688508757241
   },
   {
    "nu": 16.0,
@@ -1183,7 +1183,7 @@
    "higher_order": 3.364647103278622e-08,
    "remainder_lattice": 1.688473279792603e-09,
    "remainder": 0.0030089444395681986,
-   "certified_error": 0.003160693966526966
+   "numerical_error_estimate": 0.003160693966526966
   }
  ]
 }

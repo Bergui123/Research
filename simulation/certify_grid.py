@@ -58,7 +58,7 @@ def truncation(cfg, x1, x2, b2):
 	return u, ghost
 
 
-def certify(args):
+def estimate(args):
 	row, b2 = args
 	nu, dx, n = row["nu"], row["dx"], row["n"]
 	half = 2**n * dx / 2
@@ -76,7 +76,7 @@ def certify(args):
 		nodes = np.array([X0 + d * np.eye(2)[0], X0 - d * np.eye(2)[0], X0 + d * np.eye(2)[1], X0 - d * np.eye(2)[1]])
 		s_val = expansion(nodes / math.sqrt(nu), T, delta, 2)
 		if np.any(delta**6 * b2 + u_pts >= s_val):
-			out.append({"nu": nu, "n": n, "h": h, "certified_error": None})
+			out.append({"nu": nu, "n": n, "h": h, "numerical_error_estimate": None})
 			continue
 		ls = np.log(s_val)
 		v_s = -2 * nu * np.array([ls[0] - ls[1], ls[2] - ls[3]]) / (2 * d)
@@ -86,7 +86,7 @@ def certify(args):
 			"cancellation_free": predicted_error(nu, dx, h)[1], "u_max": float(u_pts.max()),
 			"higher_order": float(np.linalg.norm(v_s - v - feedback_shift(nu, dx, h)) / norm),
 			"remainder_lattice": float(pair(delta**6 * b2)), "remainder": float(pair(delta**6 * b2 + u_pts)),
-			"certified_error": float(np.linalg.norm(v_s - v) / norm + pair(delta**6 * b2 + u_pts))})
+			"numerical_error_estimate": float(np.linalg.norm(v_s - v) / norm + pair(delta**6 * b2 + u_pts))})
 	return out
 
 
@@ -94,9 +94,10 @@ if __name__ == "__main__":
 	rows = [r for r in json.loads((RESULTS / "step5.json").read_text())["grid"] if r["nu"] >= 1]
 	b2 = SAFETY * remainder_constant(2)
 	with ProcessPoolExecutor(max_workers=8) as pool:
-		out = [c for part in pool.map(certify, [(r, b2) for r in rows]) for c in part]
-	ok = [c for c in out if c["certified_error"] is not None]
-	assert all(c["measured"] <= c["certified_error"] * (1 + 1e-6) for c in ok)
-	print(RESULTS.name, f"B_2={b2:.3e}: {len(ok)} of {len(out)} (grid, span) pairs certified; "
-		f"median certified/measured {np.median([c['certified_error'] / c['measured'] for c in ok]):.2f}")
-	save("certified", {"B2": b2, "rows": out})
+		out = [c for part in pool.map(estimate, [(r, b2) for r in rows]) for c in part]
+	ok = [c for c in out if c["numerical_error_estimate"] is not None]
+	# This regression check compares sampled numerical values; it does not certify an enclosure.
+	assert all(c["measured"] <= c["numerical_error_estimate"] * (1 + 1e-6) for c in ok)
+	print(RESULTS.name, f"B_2={b2:.3e}: numerical estimates available for {len(ok)} of {len(out)} (grid, span) pairs; "
+		f"median estimate/measured {np.median([c['numerical_error_estimate'] / c['measured'] for c in ok]):.2f}")
+	save("grid_estimates", {"B2": b2, "rows": out})

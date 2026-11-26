@@ -76,3 +76,29 @@ paper's small-mesh expansion for this Gaussian/quadratic problem or its opposite
 rate-error terms. A broad query using only “radial error” returned unrelated image-registration
 material and was discarded. This pass adds no priority evidence; it is a narrow search record,
 not an exhaustive review or a proof that no source exists.
+
+## Current arXiv search, 26 November 2026
+
+I repeated searches on the official arXiv index, sorted by latest submission:
+`"optimal execution" quantum` (8 results), `"Cole-Hopf" quantum` (15),
+`quantum Hamilton-Jacobi optimal control` (15), and
+`quantum Schrödingerisation gate complexity` (3). I inspected the result
+titles and abstracts ([official result pages](https://arxiv.org/search/?query=%22optimal+execution%22+quantum&searchtype=all&abstracts=show&order=-announced_date_first&size=50),
+[Cole-Hopf query](https://arxiv.org/search/?query=%22Cole-Hopf%22+quantum&searchtype=all&abstracts=show&order=-announced_date_first&size=50),
+[HJB/control query](https://arxiv.org/search/?query=quantum+Hamilton-Jacobi+optimal+control&searchtype=all&abstracts=show&order=-announced_date_first&size=50),
+[Schrödingerisation/gate query](https://arxiv.org/search/?query=quantum+Schr%C3%B6dingerisation+gate+complexity&searchtype=all&abstracts=show&order=-announced_date_first&size=50)).
+The closest hits remain distinct from this paper's
+execution-HJB pipeline: [Jin and Liu, 2512.07919](https://arxiv.org/abs/2512.07919)
+gives quantum algorithms for pointwise values, gradients, minima and values at
+minimizers of viscosity HJ solutions; [Jin, Liu and Yu, 2606.28752](https://arxiv.org/abs/2606.28752)
+uses Cole-Hopf and Schrödingerisation for regularized Wasserstein proximal
+operators; [Wang, Hu and Zhang, 2608.09675](https://arxiv.org/abs/2608.09675)
+provides a gate-level Schrödingerisation algorithm for scalar conservation
+laws. The targeted searches did not reveal an execution-specific HJB resource
+estimate or the manuscript's small-mesh rate-error sign result. This supports
+only a narrowly worded “no exact match found” statement, not priority: arXiv
+full-text indexing, citation chains, theses, patents, non-English sources and
+non-arXiv publications were not exhaustively searched. The manuscript's
+contribution should remain its conditional logical resource estimate and its
+stated Gaussian/quadratic grid-error result, not a general claim to the first
+quantum treatment of HJB, Cole-Hopf or Schrödingerisation.

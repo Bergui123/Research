@@ -9,5 +9,7 @@ Focus on:
 3. The grid-expansion/sign-structure novelty claim, including whether the comparison with Gurevich 1504.02673 is accurate and whether arXiv:2602.16339 changes the assessment.
 4. Whether the novelty claim is appropriately narrow and supported by the cited sources. Do not treat a targeted search as proof of priority.
 5. Whether the refreshed arXiv package and code-path references follow the current official source/ancillary-file guidance.
+6. The 26 November grid-estimate terminology correction: confirm no code, generated table, manuscript or plan now presents sampled floating-point maxima as certified enclosures, and check the baseline-equivalence evidence in `review/validation/check_grid_estimate_rename.py`.
+7. Whether the new abstract and limitations language correctly makes readout-A counts conditional on the sampled grid maxima covering the true spatial and temporal extrema, without qualifying unrelated results too broadly.
 
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.

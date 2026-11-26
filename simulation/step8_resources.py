@@ -263,16 +263,16 @@ def candidates(target):
 	for r in s7:  # envelope: never trust an amplitude error that is worse again at larger eta_max
 		r["amp_err_env"] = max(q["amp_err"] for q in s7 if (q["nu"], q["n"], q["kind"], q["p_a"])
 			== (r["nu"], r["n"], r["kind"], r["p_a"]) and q["eta_max"] >= r["eta_max"])
-	certified = {(c["nu"], c["n"], c["h"]): c["certified_error"]
-		for c in json.loads((RESULTS / "certified.json").read_text())["rows"]}
+	grid_estimates = {(c["nu"], c["n"], c["h"]): c["numerical_error_estimate"]
+		for c in json.loads((RESULTS / "grid_estimates.json").read_text())["rows"]}
 	for r in s5["grid"]:
 		if r["nu"] < 1.0:
 			continue  # readout probabilities below 1e-7
 		for sp in r["spans"]:
-			cert = certified.get((r["nu"], r["n"], sp["h"]))
-			if cert is None:
+			estimate = grid_estimates.get((r["nu"], r["n"], sp["h"]))
+			if estimate is None:
 				continue  # no numerical error-bound estimate for this grid and span
-			eps = max(predicted_error(r["nu"], r["dx"], sp["h"])[1], cert)
+			eps = max(predicted_error(r["nu"], r["dx"], sp["h"])[1], estimate)
 			if eps > target / 2:
 				continue
 			pgrids = sorted((p for p in s7 if p["nu"] == r["nu"] and p["n"] == min(r["n"], 6)),
