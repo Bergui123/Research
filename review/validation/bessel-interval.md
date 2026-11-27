@@ -44,6 +44,10 @@ conditional on the FLINT implementation, the stated arithmetic assumptions
 and the reconstructed data. They do not validate physical-input uncertainty,
 GQSP phase synthesis, or the remainder of the circuit and error budget.
 
+The later [perturbation check](bessel-perturbation.md) covers a narrow
+continuous interval around the reconstructed arguments, with the further
+limitations stated there.
+
 From the repository root, install the pinned packages in
 `simulation/requirements.txt` plus the additional validation dependency
 `review/validation/requirements-validation.txt`, then run:

@@ -73,6 +73,8 @@ zip -q -r "$out/src/anc/research-sources.zip" simulation lean \
  review/validation/bessel-tail.md review/validation/bessel-tail.json \
  review/validation/check_bessel_interval.py review/validation/test_bessel_interval.py \
  review/validation/bessel-interval.md review/validation/bessel-interval.json \
+ review/validation/check_bessel_perturbation.py review/validation/test_bessel_perturbation.py \
+ review/validation/bessel-perturbation.md review/validation/bessel-perturbation.json \
  review/validation/requirements-validation.txt \
  -x '*/__pycache__/*' 'lean/.lake/*' 'simulation/figures/*'
 (cd "$out/src" && for i in 1 2 3; do pdflatex -interaction=nonstopmode -halt-on-error Paper.tex > /dev/null; done

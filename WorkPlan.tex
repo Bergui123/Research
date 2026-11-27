@@ -1537,6 +1537,23 @@ uncertainty in the saved physical parameters, and the full circuit remain
 unverified. Exit criterion: independently review these enclosures and audit
 the remaining circuit and error assumptions.
 
+\emph{Argument perturbations.} The Bessel identity $2J_k'=J_{k-1}-J_{k+1}$
+and the coefficient bound above give, for $T_n(x)=2\sum_{k\ge n}|J_k(x)|$
+and $x,x_0\in[0,b]$,
+\[
+ |T_n(x)-T_n(x_0)|\le\frac{|x-x_0|}{2}\bigl(U_{n-1}(b)+U_{n+1}(b)\bigr),
+\]
+where $U_m(b)$ is the rational generating-function bound on $T_m$ over
+$[0,b]$. For each of the 317 segments, a fresh ball enclosure plus this
+perturbation charge remains below $0.999821\,\underline\theta_j$ throughout
+the interval containing the binary argument and the formula with each saved
+$\alpha$ and $\eta_{\max}$ varied by one adjacent float. The largest displayed
+ratio is $0.999820885$. Source: DLMF 10.6.1;
+\path{review/validation/bessel-perturbation.md}, two tests and the saved
+exact endpoints. Caveat: this interval is not a physical uncertainty model,
+and the historical orders and complete circuit are not established. Exit
+criterion: independently review the bound and remaining assumptions.
+
 \emph{Gate costs.} SELECT is charged at the AND count of the compiled circuit
 (Toffoli and logical-AND both 4 T \cite{gidney2018}); multi-controlled $Z$ from Qualtran 0.7 \cite{qualtran}.
 Compute and uncompute are both counted. Rotations cost

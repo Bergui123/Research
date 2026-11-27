@@ -45,4 +45,6 @@ Focus on:
 
 22. Check `review/validation/bessel-interval.md` and `check_bessel_interval.py`: FLINT ball rounding, Bessel recurrence and indexing, remainder start, rational argument reconstruction and the conservative threshold derived from saved `eps_rot`. Assess whether the claims properly exclude parameter uncertainty, individual historical orders and full circuit synthesis.
 
+23. Check `review/validation/bessel-perturbation.md`: the derivative inequality for the absolute Bessel tail, the generating-function bounds on a whole argument interval, the one-adjacent-float construction and the fresh ball-bound comparison. Assess the remaining parameter and historical-order limitations.
+
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.
