@@ -755,10 +755,11 @@ $\theta$ the success branch errs by at most $2n_p\theta+2n_p^2\theta$ to leading
 $\theta_j\le\eps_{\rm coh}/[4n_p(n_p+1)]$, where $\eps_{\rm coh}$ is the error allowed for the
 state of one run; the other half of $\eps_{\rm coh}$ is for rotations.
 The script sums 399 Bessel terms after $K_j$. For 317 reconstructed segments
-across 27 saved configurations, a rational generating-function bound puts
-the omitted tail below $3.41\times10^{-16}$ of the threshold at the computed
-floating-point arguments. The finite sums, argument and threshold errors are
-not enclosed; the check and its scope are in the ancillary archive.
+across 27 saved configurations, ball arithmetic and a rational remainder
+bound enclose the infinite tail below a conservative reconstructed threshold
+at both the computed binary argument and the exact expression using saved
+binary inputs. Parameter uncertainty and the original individual orders
+remain unverified; the check and its scope are in the ancillary archive.
 
 \subsection{Gate and qubit accounting}
 \label{sec:account}

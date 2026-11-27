@@ -1516,9 +1516,26 @@ than $3.41\times10^{-16}$ of the reconstructed threshold. The observed
 below threshold when the omitted bound is added. Reconstructed walk-step
 totals match the saved totals. Source, derivation, tests and results:
 \path{review/validation/bessel-tail.md}. Caveat: neither the finite Bessel
-values and their summation nor input and threshold roundoff are enclosed;
-individual orders were not saved. Exit criterion: validate the finite sums
-and parameter uncertainties and independently audit the full circuit.
+values and their summation nor input and threshold roundoff are enclosed by
+that check; individual orders were not saved.
+
+\emph{Full reconstructed Bessel tails.} A separate FLINT ball calculation
+encloses the first terms and uses the rational remainder above. For $K$ and
+$j$ reconstructed from the saved configuration, it checks both the binary
+argument and the exact rational expression made from saved binary inputs:
+\[
+ x_j=\alpha\eta_{\max}\frac{2^j}{2^{n_p}-1},\qquad
+ 2\sum_{k>K_j}|J_k(x_j)|<0.999821\,\underline\theta_j.
+\]
+All 317 segments in 27 configurations pass at both arguments. Here
+$\underline\theta_j$ is a conservative lower threshold recovered from the
+saved rotation tolerance, assuming round-to-nearest normal arithmetic. Each
+test uses at most 113 Bessel terms before the rational tail. Source: DLMF
+10.6.1 and \path{review/validation/bessel-interval.md}; five tests and a
+repeat cover the implementation. Caveat: the original individual orders,
+uncertainty in the saved physical parameters, and the full circuit remain
+unverified. Exit criterion: independently review these enclosures and audit
+the remaining circuit and error assumptions.
 
 \emph{Gate costs.} SELECT is charged at the AND count of the compiled circuit
 (Toffoli and logical-AND both 4 T \cite{gidney2018}); multi-controlled $Z$ from Qualtran 0.7 \cite{qualtran}.

@@ -39,6 +39,11 @@ validate the remaining circuit and amplitude assumptions. The full selected
 infinite-tail inequality remains a numerical claim until those errors are
 enclosed.
 
+The later [ball-arithmetic check](bessel-interval.md) encloses the full tail
+at the reconstructed binary argument and at an exact expression made from
+saved binary parameters, against a conservative reconstructed threshold. Its
+remaining input and historical-order limitations are stated there.
+
 Reproduce from the repository root:
 
 ```sh

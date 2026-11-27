@@ -71,6 +71,9 @@ zip -q -r "$out/src/anc/research-sources.zip" simulation lean \
  review/validation/check_fourier_circuit.py review/validation/fourier-circuit.json review/validation/fourier-circuit.md \
  review/validation/check_bessel_tail.py review/validation/test_bessel_tail.py \
  review/validation/bessel-tail.md review/validation/bessel-tail.json \
+ review/validation/check_bessel_interval.py review/validation/test_bessel_interval.py \
+ review/validation/bessel-interval.md review/validation/bessel-interval.json \
+ review/validation/requirements-validation.txt \
  -x '*/__pycache__/*' 'lean/.lake/*' 'simulation/figures/*'
 (cd "$out/src" && for i in 1 2 3; do pdflatex -interaction=nonstopmode -halt-on-error Paper.tex > /dev/null; done
 	if grep -E "undefined|Citation.*undefined" Paper.log; then exit 1; fi
