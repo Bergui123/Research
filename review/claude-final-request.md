@@ -41,4 +41,6 @@ Focus on:
 
 20. Check `review/validation/sweep-grid-bound.md`: the lambda(1-rho^2) one-dimensional potential, rational expansion and reference-rate enclosures, boundary-parameter minimization, fixed-point uniformization, E<S checks, six grid/selection matches and re-costing. Review the two seeded emulations and their stated exclusions. Confirm that the six alternatives do not silently replace or validate the sampled-bound production tables.
 
+21. Check `review/validation/bessel-tail.md` and `check_bessel_tail.py`: the Laurent coefficient bound, rational logarithm and exponential inequalities, 399-term indexing, reconstructed thresholds and aggregate order checks. Confirm that the limits of the bound on the computed binary arguments and the unvalidated finite sums are stated accurately.
+
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.

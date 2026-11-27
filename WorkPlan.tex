@@ -47,7 +47,8 @@ Step 1 is not needed. Step 2 starts from the published Eq.~16 with $R=0$.
 Step 3 verifies the benchmark. Step 4 tests Chen's substitution, derives
 the compatible-diffusion Cole--Hopf PDE and validates it on finite grids.
 Steps 5--9 choose $\nu$, the grid, the Schr\"odingerised $p$-grid, the
-circuit and the readout. Step 10 emulates the costed pipeline end to end.
+circuit and the readout. Step 10 emulates the rounded grid, auxiliary evolution
+and readout, excluding GQSP truncation and gate synthesis.
 Every number comes from the scripts in \path{simulation/}, whose outputs
 are in \path{simulation/results/}. Open items are listed at the end of
 Step 10.
@@ -1500,6 +1501,24 @@ to $|-\rangle$, and the return from it, by $\sqrt{2a_j}$. After $n_p$ segments t
 $\sum_ja_j+\tfrac12(\sum_j\sqrt{2a_j})^2$ to leading order, i.e.\ $2n_p(n_p+1)\theta$ for equal tails. We therefore require
 $\theta_j\le\varepsilon_{\rm state}/[4n_p(n_p+1)]$; the other half of $\varepsilon_{\rm state}$ is for rotations. Source:
 derived here. Caveat: not formalised; the rotation and tail errors are added at first order.
+
+\emph{Omitted Bessel terms.} The resource script evaluates 399 terms after
+$K$ rather than the infinite sum. The generating function in DLMF 10.12.1
+and the Laurent coefficient bound give, for $x\ge0$ and $r>1$,
+\[
+ 2\sum_{k\ge K+400}|J_k(x)|\le
+ \frac{2e^{x(r-r^{-1})/2}r^{-(K+400)}}{1-r^{-1}}.
+\]
+For 27 saved configurations and 317 segments, a rational evaluation at the
+reconstructed binary floating-point $x$ bounds this omitted part by less
+than $3.41\times10^{-16}$ of the reconstructed threshold. The observed
+399-term floating-point sums have relative slack above $0.00023$ and remain
+below threshold when the omitted bound is added. Reconstructed walk-step
+totals match the saved totals. Source, derivation, tests and results:
+\path{review/validation/bessel-tail.md}. Caveat: neither the finite Bessel
+values and their summation nor input and threshold roundoff are enclosed;
+individual orders were not saved. Exit criterion: validate the finite sums
+and parameter uncertainties and independently audit the full circuit.
 
 \emph{Gate costs.} SELECT is charged at the AND count of the compiled circuit
 (Toffoli and logical-AND both 4 T \cite{gidney2018}); multi-controlled $Z$ from Qualtran 0.7 \cite{qualtran}.
