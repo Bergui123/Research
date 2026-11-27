@@ -38,4 +38,7 @@ Focus on:
 
 19. Check `review/validation/sweep-riccati.md` and its six rational certificates: the parameterized Riccati entry ordering, Bernstein positivity/residual checks, generalized coefficient error propagation, Gaussian weights and scaling with nu. Verify the numerical re-selection scope, especially the absence of a lambda=4 candidate, and check that the production sweep claims remain conditional.
 
+
+20. Check `review/validation/sweep-grid-bound.md`: the lambda(1-rho^2) one-dimensional potential, rational expansion and reference-rate enclosures, boundary-parameter minimization, fixed-point uniformization, E<S checks, six grid/selection matches and re-costing. Review the two seeded emulations and their stated exclusions. Confirm that the six alternatives do not silently replace or validate the sampled-bound production tables.
+
 Give concrete findings with severity, file and line, evidence, and a corrective action. If you find no issue, say so and state what you could not verify. Do not edit the source files or run commands that write to simulation/results/. Save the response as Markdown, preferably review/claude-final-response.md, and append a short status to coordination.md.

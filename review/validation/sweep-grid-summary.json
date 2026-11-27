@@ -1,0 +1,209 @@
+{
+  "scope": "Six fixed 1% sweep candidates. Grid bounds depend on the stated rational comparison proofs; resource costs and amplitude inputs remain numerical or uncompiled. No global optimum is asserted.",
+  "cases": [
+    {
+      "case": "rho0-lam1",
+      "rho": "0",
+      "lambda": "1",
+      "B2_upper": 25,
+      "nu": "8",
+      "n": 128,
+      "dx": "1/4",
+      "h": 16,
+      "grid_bound": "461689893513/200000000000000",
+      "grid_bound_decimal": 0.002308449467565,
+      "T_total": 527258922578385.44,
+      "logical_qubits": 185,
+      "profile": "smooth_w1",
+      "eta_max": 19.990234375,
+      "emulations": [
+        {
+          "seed": 20261122,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 6.3548550525927e-05,
+          "amp_budget": 0.0008626064862613191
+        },
+        {
+          "seed": 20261123,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 6.3548550525927e-05,
+          "amp_budget": 0.0008626064862613191
+        }
+      ]
+    },
+    {
+      "case": "rho02-lam1",
+      "rho": "1/5",
+      "lambda": "1",
+      "B2_upper": 35,
+      "nu": "16",
+      "n": 128,
+      "dx": "4/11",
+      "h": 16,
+      "grid_bound": "1323925109969/1000000000000000",
+      "grid_bound_decimal": 0.001323925109969,
+      "T_total": 795426871533452.0,
+      "logical_qubits": 204,
+      "profile": "smooth_w1",
+      "eta_max": 19.990234375,
+      "emulations": [
+        {
+          "seed": 20261122,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 3.0397864367315286e-05,
+          "amp_budget": 0.0007443708153022605
+        },
+        {
+          "seed": 20261123,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 3.0397864367315286e-05,
+          "amp_budget": 0.0007443708153022605
+        }
+      ]
+    },
+    {
+      "case": "rho06-lam1",
+      "rho": "3/5",
+      "lambda": "1",
+      "B2_upper": 92,
+      "nu": "2",
+      "n": 256,
+      "dx": "1/12",
+      "h": 16,
+      "grid_bound": "208315788737/1000000000000000",
+      "grid_bound_decimal": 0.000208315788737,
+      "T_total": 2710720599951239.0,
+      "logical_qubits": 219,
+      "profile": "smooth_w1",
+      "eta_max": 9.990234375,
+      "emulations": [
+        {
+          "seed": 20261122,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 0.00025755790543080526,
+          "amp_budget": 0.0016882119901009574
+        },
+        {
+          "seed": 20261123,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 0.00025755790543080526,
+          "amp_budget": 0.0016882119901009574
+        }
+      ]
+    },
+    {
+      "case": "rho08-lam1",
+      "rho": "4/5",
+      "lambda": "1",
+      "B2_upper": 148,
+      "nu": "4",
+      "n": 256,
+      "dx": "1/9",
+      "h": 16,
+      "grid_bound": "253062854381/1000000000000000",
+      "grid_bound_decimal": 0.000253062854381,
+      "T_total": 3256126203479904.5,
+      "logical_qubits": 223,
+      "profile": "smooth_w0.5",
+      "eta_max": 19.990234375,
+      "emulations": [
+        {
+          "seed": 20261122,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 0.00019689014318458042,
+          "amp_budget": 0.001172383232755326
+        },
+        {
+          "seed": 20261123,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 0.00019689014318458042,
+          "amp_budget": 0.001172383232755326
+        }
+      ]
+    },
+    {
+      "case": "rho04-lam025",
+      "rho": "2/5",
+      "lambda": "1/4",
+      "B2_upper": 10,
+      "nu": "16",
+      "n": 128,
+      "dx": "2/5",
+      "h": 16,
+      "grid_bound": "91205165989/62500000000000",
+      "grid_bound_decimal": 0.001459282655824,
+      "T_total": 647686013946020.9,
+      "logical_qubits": 202,
+      "profile": "smooth_w1",
+      "eta_max": 19.990234375,
+      "emulations": [
+        {
+          "seed": 20261122,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 0.0002588471647271273,
+          "amp_budget": 0.0005190792448798498
+        },
+        {
+          "seed": 20261123,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 0.0002588471647271273,
+          "amp_budget": 0.0005190792448798498
+        }
+      ]
+    },
+    {
+      "case": "rho04-lam4",
+      "rho": "2/5",
+      "lambda": "4",
+      "B2_upper": 27653,
+      "nu": "16",
+      "n": 256,
+      "dx": "1/7",
+      "h": 16,
+      "grid_bound": "3465208250129/1000000000000000",
+      "grid_bound_decimal": 0.003465208250129,
+      "T_total": 1.1501616549051972e+16,
+      "logical_qubits": 227,
+      "profile": "smooth_w1",
+      "eta_max": 19.9951171875,
+      "emulations": [
+        {
+          "seed": 20261122,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 2.741888550150673e-05,
+          "amp_budget": 0.00046067954981423133
+        },
+        {
+          "seed": 20261123,
+          "trials": 2000,
+          "fraction_within_target": 1.0,
+          "one_sided_999_lower": 0.9965520801347684,
+          "amp_rel_err": 2.741888550150673e-05,
+          "amp_budget": 0.00046067954981423133
+        }
+      ]
+    }
+  ]
+}

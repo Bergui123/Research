@@ -1,0 +1,19 @@
+{
+  "cases": 3,
+  "identifiers_and_decisions_match": true,
+  "numeric_fields_changed": 47,
+  "max_absolute_change": {
+    "path": "sweep-extension-rho08-lam1.json/selection/best/T_total",
+    "absolute": 2.0,
+    "relative": 6.142077240903651e-16
+  },
+  "max_relative_change": {
+    "path": "sweep-extension-rho08-lam1.json/row/rel_err_V",
+    "absolute": 2.7972783662425123e-13,
+    "relative": 5.85546756350646e-08
+  },
+  "tolerances": {
+    "relative": 1e-10,
+    "absolute": 1e-12
+  }
+}

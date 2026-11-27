@@ -1,0 +1,77 @@
+{
+  "scope": "One fixed stencil; rational grid comparison is conditional on its proofs, while profile selection, amplitude inputs and circuit costs are numerical or uncompiled.",
+  "rho": "4/5",
+  "lambda": "1",
+  "grid_bound": "253062854381/1000000000000000",
+  "previous_grid_charge": 0.00034240506876951314,
+  "previous_T_total": 3256227366664880.0,
+  "profiles_costed": 20,
+  "best": {
+    "n_p": 15,
+    "walk_steps_per_run": 27581,
+    "walk_steps_std_qsp": 55072,
+    "T_walk_step": 5088.731333046489,
+    "T_walk_parts": {
+      "select_kinetic": 60,
+      "potential_oracle": 4408,
+      "reflections": 168,
+      "rotations": 452.7313330464892
+    },
+    "T_prep": 791144,
+    "T_qft": 1800,
+    "T_run": 141148758.38175306,
+    "eps_rot": 6.974997588285702e-12,
+    "alpha_H": 2672.9086419753085,
+    "alpha_walk": 1336.4543209876542,
+    "alpha_kin": 2592.0,
+    "alpha_pot": 80.90864197530864,
+    "b": 11,
+    "m": 18,
+    "qubits_parts": {
+      "x": 16,
+      "p": 15,
+      "prep_lcu": 21,
+      "gqsp": 1,
+      "arith_work": 131,
+      "phase_grad": 38
+    },
+    "qubits_run": 222,
+    "target": 0.01,
+    "nu": 4.0,
+    "n": 8,
+    "L": 14.222222222222221,
+    "dx": 0.1111111111111111,
+    "h": 16,
+    "eps_grid": 0.000253062854381,
+    "eps_grid_measured": 0.00016582426974804065,
+    "kind": "smooth_w0.5",
+    "eta_max": 19.990234375,
+    "p_a": -0.8765386471799175,
+    "P_succ": 0.4670485343267398,
+    "amp_err_schr": 0.00031465159303922796,
+    "delta_tot": 0.005861916163776629,
+    "b_amp": [
+      0.0026261681755672776,
+      0.01106953244917064,
+      0.003469760889940359,
+      0.008684904897679903
+    ],
+    "AE_log2_iterations": [
+      19,
+      17,
+      18,
+      17
+    ],
+    "AE_iterations": [
+      524288,
+      131072,
+      262144,
+      131072
+    ],
+    "calls_per_estimate_set": 2097156,
+    "median_reps": 11,
+    "T_total": 3256126203479904.5,
+    "T_total_no_boost": 296011473043627.7,
+    "logical_qubits": 223
+  }
+}

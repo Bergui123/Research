@@ -38,6 +38,21 @@ class ProjectedBoxTests(unittest.TestCase):
             self.assertLessEqual(actual[idx+offset], float(result[name])+2e-14)
             self.assertLess(float(result[name])-actual[idx+offset], 1e-9)
 
+    def test_parameterized_potential_against_matrix_exponential(self):
+        n, dx, nu, anchor, h = 8, F(1), F(8), F(1), 1
+        coeff=F(1,2)
+        result=response_upper(anchor,dx,n,nu,h,potential_coeff=coeff)
+        idx=result['anchor_index']
+        coords=np.array([float(anchor+(i-idx)*dx) for i in range(n)])
+        rate=float(nu/dx**2)
+        potential=float(coeff)*coords**2/(4*float(nu))
+        matrix=np.diag(-2*rate-potential)+np.diag(np.full(n-1,rate),1)+np.diag(np.full(n-1,rate),-1)
+        aug=np.zeros((n+1,n+1));aug[:n,:n]=matrix;aug[0,-1]=aug[n-1,-1]=rate
+        actual=expm(aug)[:n,-1]
+        for name,offset in [('center',0),('plus',1),('minus',-1)]:
+            self.assertLessEqual(actual[idx+offset],float(result[name])+2e-14)
+            self.assertLess(float(result[name])-actual[idx+offset],1e-9)
+
 
 if __name__ == '__main__':
     unittest.main()

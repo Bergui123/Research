@@ -439,12 +439,17 @@ research archive.
 
 For the six non-benchmark sweep settings, parameterized rational residual
 checks give conservative integer $B_2$ bounds between 10 and 27653. A
-numerical re-selection using these bounds and the analytic boundary charge
-finds candidates for five settings, but none for $\rho=0.4,\lambda=4$ in
-the original tested grid family. This does not establish failure of that
-case: the bound may be loose, and other grids were not searched. The sweep
-box evolution, expansion values and resource estimates remain numerical;
-the tables retain the original sampled-bound selections.
+numerical search finds no $\rho=0.4,\lambda=4$ candidate in the original
+grid family; one tested larger box supplies a candidate. Two other sweep
+candidates also use tested larger boxes. For one fixed candidate per sweep,
+rational expansion and projected-box comparisons give grid bounds below
+$0.003466$, within the $0.005$ allocation. Re-costing these fixed candidates
+gives approximately $5.27\times10^{14}$--$1.15\times10^{16}$ T gates and
+185--227 qubits. These are not global optima; the comparison proofs await
+independent review, and amplitude inputs and circuit costs remain numerical
+or uncompiled. Each candidate met its target in two sets of 2000 emulated
+trials; GQSP truncation and gate synthesis were not emulated. The tables
+retain the original sampled-bound selections.
 
 \paragraph{Alternative boundary charge.}
 An exploratory reselection using this boundary bound and the same numerical

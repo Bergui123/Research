@@ -788,6 +788,73 @@ uncompiled. Production tables are unchanged. Exit criterion: enclose the
 remaining sweep grid quantities, investigate the high-$\lambda$ case and
 independently audit the full circuit and comparison proofs.
 
+\paragraph{Grid comparisons for six fixed sweep alternatives.}
+For each sweep, the rational polynomial certificate encloses $S$ at the four
+selected stencil nodes, including the Riccati error in the Gaussian exponent
+and determinant. The two-dimensional potential satisfies
+\[
+ V(\x)=\frac{\lambda}{4\nu}\x^\top C\x\ge
+ \frac{\lambda(1-\rho^2)x_i^2}{4\nu},\qquad i=1,2.
+\]
+The projected killed-walk comparison above applies to this potential.
+Its fixed-point uniformization and
+the all-time boundary supersolution give rational box-response bounds; the
+minimum of 21 separately valid rational boundary bounds is also valid. The
+calculation checks $E<S$ at all 24 stencil nodes and combines the bounds with
+rational logarithm, square-root and reference-rate enclosures. The initial
+$\rho=0.6$ and $0.8$ candidates had projected bounds above $0.005$; one
+tested larger box for each gives alternatives below it. A larger box also
+provides a $\lambda=4$ candidate where the original numerical search found
+none. This does not establish a global box-size optimum or that the earlier
+candidates actually miss their targets.
+
+In the sweep order above, the relative grid upper expressions are
+\[
+\begin{aligned}
+ &(0.002308449467565,\ 0.001323925109969,\ 0.000208315788737,\\
+ &\quad 0.000253062854381,\ 0.001459282655824,\ 0.003465208250129)
+ <0.005.
+\end{aligned}
+\]
+The corresponding $(\nu,N,\Delta,h)$ values, in order, are
+\[
+\begin{aligned}
+ &(8,128,1/4,16),\ (16,128,4/11,16),\ (2,256,1/12,16),\\
+ &(4,256,1/9,16),\ (16,128,2/5,16),\ (16,256,1/7,16).
+\end{aligned}
+\]
+Details: \path{review/validation/sweep-grid-bound.md}.
+
+Full floating-point two-dimensional box solves lie below all 24 projected box
+bounds, the expansion values lie within their intervals, and the measured
+grid errors lie below the relative bounds. These are diagnostics, not
+independent proofs. Six focused tests cover matching and mismatched cases;
+the exact expansion, projected-bound and re-cost outputs reproduced byte for
+byte in this environment.
+
+Re-costing the six fixed grids with these rational grid charges and the
+existing numerical amplitude and circuit inputs gives approximately
+\[
+\begin{aligned}
+ T_A^{\rm alt}&=(5.27\!\times\!10^{14},7.95\!\times\!10^{14},
+ 2.71\!\times\!10^{15},3.26\!\times\!10^{15},
+ 6.48\!\times\!10^{14},1.15\!\times\!10^{16}),\\
+ Q_A^{\rm alt}&=(185,204,219,223,202,227).
+\end{aligned}
+\]
+The original sampled-bound sweep estimates were, in the same order,
+$T_A=(8.35\times10^{13},1.14\times10^{14},6.87\times10^{13},
+9.14\times10^{13},1.00\times10^{14},2.14\times10^{14})$ and
+$Q_A=(170,185,184,186,183,189)$. These are different selected grids and
+conditional cost estimates, not a controlled performance comparison or
+proof of optimality. Each alternative met its 1\% target in 2000 of 2000
+emulated trials for each of two seeds; each run has a one-sided 99.9\% lower
+confidence bound of 0.99655. GQSP truncation and gate synthesis were not
+emulated. The production tables and all earlier results remain unchanged.
+Exit criterion: independently review the rational comparison chain and audit
+the amplitude and full circuit assumptions before asserting end-to-end
+resource bounds.
+
 \paragraph{Grid-bound sensitivity check.}
 The 1\% benchmark check in \path{review/validation} recomputed $B_2$ with
 33 and 65 time points at spatial mesh $0.08$, and

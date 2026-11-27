@@ -1,0 +1,24 @@
+{
+  "rho": "3/5",
+  "lambda": "1",
+  "n": 128,
+  "nu": "2",
+  "h": 8,
+  "floating_box_values": [
+    0.00012774772915096025,
+    9.676277346299093e-06,
+    1.9298469819382353e-05,
+    6.191759301831807e-05
+  ],
+  "box_upper": [
+    0.000584874714438,
+    4.3672284061e-05,
+    0.0002013129573,
+    0.000158461850359
+  ],
+  "measured_rate_error": 0.00028951944153056256,
+  "relative_grid_bound_upper": 0.009767758918261,
+  "within_half_target": false,
+  "expansion_values_inside_intervals": 4,
+  "scope": "Floating-point corroboration only, not an enclosure."
+}

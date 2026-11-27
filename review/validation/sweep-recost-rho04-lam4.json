@@ -1,0 +1,77 @@
+{
+  "scope": "One fixed stencil; rational grid comparison is conditional on its proofs, while profile selection, amplitude inputs and circuit costs are numerical or uncompiled.",
+  "rho": "2/5",
+  "lambda": "4",
+  "grid_bound": "3465208250129/1000000000000000",
+  "previous_grid_charge": 0.002191323777634174,
+  "previous_T_total": 1.146650595955341e+16,
+  "profiles_costed": 12,
+  "best": {
+    "n_p": 16,
+    "walk_steps_per_run": 64554,
+    "walk_steps_std_qsp": 129012,
+    "T_walk_step": 5132.562002635244,
+    "T_walk_parts": {
+      "select_kinetic": 60,
+      "potential_oracle": 4420,
+      "reflections": 176,
+      "rotations": 476.5620026352441
+    },
+    "T_prep": 1053696,
+    "T_qft": 2048,
+    "T_run": 332387092.0141367,
+    "eps_rot": 1.7608885311762437e-12,
+    "alpha_H": 6338.873469387756,
+    "alpha_walk": 3169.436734693878,
+    "alpha_kin": 6272.000000000001,
+    "alpha_pot": 66.8734693877551,
+    "b": 11,
+    "m": 19,
+    "qubits_parts": {
+      "x": 16,
+      "p": 16,
+      "prep_lcu": 22,
+      "gqsp": 1,
+      "arith_work": 131,
+      "phase_grad": 40
+    },
+    "qubits_run": 226,
+    "target": 0.01,
+    "nu": 16.0,
+    "n": 8,
+    "L": 18.285714285714285,
+    "dx": 0.14285714285714285,
+    "h": 16,
+    "eps_grid": 0.0034652082501290004,
+    "eps_grid_measured": 0.00018324201353920835,
+    "kind": "smooth_w1",
+    "eta_max": 19.9951171875,
+    "p_a": -1.9186563733441784,
+    "P_succ": 0.2706545223805595,
+    "amp_err_schr": 0.00016263694127882644,
+    "delta_tot": 0.0023033977490711567,
+    "b_amp": [
+      0.003948479515381818,
+      0.009592252423922374,
+      0.004905579847844271,
+      0.007746512063867033
+    ],
+    "AE_log2_iterations": [
+      19,
+      18,
+      19,
+      18
+    ],
+    "AE_iterations": [
+      524288,
+      262144,
+      524288,
+      262144
+    ],
+    "calls_per_estimate_set": 3145732,
+    "median_reps": 11,
+    "T_total": 1.1501616549051972e+16,
+    "T_total_no_boost": 1045601504459270.1,
+    "logical_qubits": 227
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "scope": "One selected sweep stencil on an ideal rational grid; conditional on the stated boundary, B2, expansion and projected-box proofs.",
+  "rho": "4/5",
+  "lambda": "1",
+  "n": 256,
+  "nu": "4",
+  "dx": "1/9",
+  "h": 16,
+  "B2_upper_applied": 148,
+  "boundary_a": "23/40",
+  "radius": "127/9",
+  "ghost_upper": "33708420923/1000000000000",
+  "box_upper": [
+    "158169253/31250000000000",
+    "62783911/1000000000000000",
+    "1398831/1562500000000",
+    "132976503/250000000000000"
+  ],
+  "lattice_upper": "37/8503056",
+  "S_lower": [
+    "82640168941771/1000000000000000",
+    "174168029021413/500000000000000",
+    "109186357018893/1000000000000000",
+    "273296493943897/1000000000000000"
+  ],
+  "E_below_S": true,
+  "reference_norm_lower": "3838614261008253/1000000000000000",
+  "relative_grid_bound_upper": "253062854381/1000000000000000",
+  "relative_grid_bound_upper_decimal": 0.000253062854381,
+  "half_target": "1/200",
+  "within_half_target": true,
+  "uniformization_rates": [
+    653,
+    653
+  ]
+}

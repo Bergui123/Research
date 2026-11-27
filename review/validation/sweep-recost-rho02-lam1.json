@@ -1,0 +1,77 @@
+{
+  "scope": "One fixed stencil; rational grid comparison is conditional on its proofs, while profile selection, amplitude inputs and circuit costs are numerical or uncompiled.",
+  "rho": "1/5",
+  "lambda": "1",
+  "grid_bound": "1323925109969/1000000000000000",
+  "previous_grid_charge": 0.0011551170617651704,
+  "previous_T_total": 729085713698445.2,
+  "profiles_costed": 15,
+  "best": {
+    "n_p": 13,
+    "walk_steps_per_run": 10551,
+    "walk_steps_std_qsp": 21024,
+    "T_walk_step": 4337.916183731589,
+    "T_walk_parts": {
+      "select_kinetic": 52,
+      "potential_oracle": 3696,
+      "reflections": 160,
+      "rotations": 429.9161837315885
+    },
+    "T_prep": 200496,
+    "T_qft": 1352,
+    "T_run": 45974100.10974625,
+    "eps_rot": 2.6054400621706906e-11,
+    "alpha_H": 995.0809917355372,
+    "alpha_walk": 497.5404958677686,
+    "alpha_kin": 968.0,
+    "alpha_pot": 27.08099173553719,
+    "b": 10,
+    "m": 17,
+    "qubits_parts": {
+      "x": 14,
+      "p": 13,
+      "prep_lcu": 20,
+      "gqsp": 1,
+      "arith_work": 119,
+      "phase_grad": 36
+    },
+    "qubits_run": 203,
+    "target": 0.01,
+    "nu": 16.0,
+    "n": 7,
+    "L": 23.272727272727273,
+    "dx": 0.36363636363636365,
+    "h": 16,
+    "eps_grid": 0.0013239251099690002,
+    "eps_grid_measured": 0.00048476179955867237,
+    "kind": "smooth_w1",
+    "eta_max": 19.990234375,
+    "p_a": -0.9750374299450214,
+    "P_succ": 0.3464697869657049,
+    "amp_err_schr": 0.0001273968964562444,
+    "delta_tot": 0.0037218540765113026,
+    "b_amp": [
+      0.005912522713872935,
+      0.018240034427796304,
+      0.008648993072843732,
+      0.01367691770409815
+    ],
+    "AE_log2_iterations": [
+      18,
+      17,
+      18,
+      17
+    ],
+    "AE_iterations": [
+      262144,
+      131072,
+      262144,
+      131072
+    ],
+    "calls_per_estimate_set": 1572868,
+    "median_reps": 11,
+    "T_total": 795426871533452.0,
+    "T_total_no_boost": 72311533775768.36,
+    "logical_qubits": 204
+  }
+}

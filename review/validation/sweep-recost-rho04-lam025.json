@@ -1,0 +1,77 @@
+{
+  "scope": "One fixed stencil; rational grid comparison is conditional on its proofs, while profile selection, amplitude inputs and circuit costs are numerical or uncompiled.",
+  "rho": "2/5",
+  "lambda": "1/4",
+  "grid_bound": "91205165989/62500000000000",
+  "previous_grid_charge": 0.0012698254427319557,
+  "previous_T_total": 647629219526691.6,
+  "profiles_costed": 16,
+  "best": {
+    "n_p": 13,
+    "walk_steps_per_run": 8647,
+    "walk_steps_std_qsp": 17216,
+    "T_walk_step": 4305.561937722441,
+    "T_walk_parts": {
+      "select_kinetic": 52,
+      "potential_oracle": 3680,
+      "reflections": 144,
+      "rotations": 429.5619377224416
+    },
+    "T_prep": 200496,
+    "T_qft": 1352,
+    "T_run": 37434938.228081144,
+    "eps_rot": 2.659301894378582e-11,
+    "alpha_H": 808.1919999999999,
+    "alpha_walk": 404.09599999999995,
+    "alpha_kin": 799.9999999999999,
+    "alpha_pot": 8.192000000000002,
+    "b": 10,
+    "m": 15,
+    "qubits_parts": {
+      "x": 14,
+      "p": 13,
+      "prep_lcu": 18,
+      "gqsp": 1,
+      "arith_work": 119,
+      "phase_grad": 36
+    },
+    "qubits_run": 201,
+    "target": 0.01,
+    "nu": 16.0,
+    "n": 7,
+    "L": 25.6,
+    "dx": 0.4,
+    "h": 16,
+    "eps_grid": 0.001459282655824,
+    "eps_grid_measured": 0.00046393729497179735,
+    "kind": "smooth_w1",
+    "eta_max": 19.990234375,
+    "p_a": -0.4796640933360446,
+    "P_succ": 0.3566420258556074,
+    "amp_err_schr": 0.00015175958689961355,
+    "delta_tot": 0.0025953962243992486,
+    "b_amp": [
+      0.0070932580472044615,
+      0.01579055152804921,
+      0.009883890291427602,
+      0.013580474925215353
+    ],
+    "AE_log2_iterations": [
+      18,
+      17,
+      18,
+      17
+    ],
+    "AE_iterations": [
+      262144,
+      131072,
+      262144,
+      131072
+    ],
+    "calls_per_estimate_set": 1572868,
+    "median_reps": 11,
+    "T_total": 647686013946020.9,
+    "T_total_no_boost": 58880546722365.53,
+    "logical_qubits": 202
+  }
+}

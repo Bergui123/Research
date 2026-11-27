@@ -57,6 +57,15 @@ zip -q -r "$out/src/anc/research-sources.zip" simulation lean \
  review/validation/sweep-nodes-*.json.gz review/validation/sweep-cert-*.json review/validation/sweep-reselection-*.json \
  review/validation/sweep-symbolic.json review/validation/sweep-diagnostic.json review/validation/sweep-residual-symbolic.json \
  review/validation/sweep-repeats.json \
+ review/validation/check_high_lambda_extension.py review/validation/high-lambda-extension.json \
+ review/validation/check_sweep_extension.py review/validation/compare_sweep_extensions.py \
+ review/validation/sweep-extension-*.json review/validation/sweep-expansion-*.json \
+ review/validation/sweep-grid-bound-*.json review/validation/sweep-grid-diagnostic-*.json \
+ review/validation/sweep-recost-*.json review/validation/sweep-emulation-*.json \
+ review/validation/sweep_expansion.py review/validation/sweep_grid_bound.py review/validation/sweep_recost.py \
+ review/validation/check_sweep_grid_numerical.py review/validation/sweep_emulate.py \
+ review/validation/summarize_sweep_grid.py review/validation/sweep-grid-summary.json \
+ review/validation/sweep-grid-bound.md review/validation/test_sweep_enclosures.py \
  review/validation/check_controlled_walk.py review/validation/controlled-walk.json review/validation/controlled-walk.md \
  review/validation/check_controlled_select_profiles.py review/validation/controlled-profiles.json \
  review/validation/check_fourier_circuit.py review/validation/fourier-circuit.json review/validation/fourier-circuit.md \

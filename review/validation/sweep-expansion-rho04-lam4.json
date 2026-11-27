@@ -1,0 +1,48 @@
+{
+  "scope": "One selected sweep stencil, conditional on the separately verified Riccati and polynomial certificates.",
+  "rho": "2/5",
+  "lambda": "4",
+  "n": 256,
+  "nu": "16",
+  "dx": "1/7",
+  "h": 16,
+  "nodes_sha256": "ae6cdc04a4270c5eb48109ac195e8f276daeed10492dc2d3f73cf5fea27fe64a",
+  "nodes": [
+    {
+      "x": "37/7",
+      "y": "1",
+      "lower": "78912777342419/1000000000000000",
+      "upper": "78914527826477/1000000000000000",
+      "lower_decimal": 0.078912777342419,
+      "upper_decimal": 0.078914527826477,
+      "width_upper": 1.750484058e-06
+    },
+    {
+      "x": "5/7",
+      "y": "1",
+      "lower": "2995432844609/15625000000000",
+      "upper": "191710637801369/1000000000000000",
+      "lower_decimal": 0.191707702054976,
+      "upper_decimal": 0.191710637801369,
+      "width_upper": 2.935746393e-06
+    },
+    {
+      "x": "3",
+      "y": "23/7",
+      "lower": "612757013011/6250000000000",
+      "upper": "765961487487/7812500000000",
+      "lower_decimal": 0.09804112208176,
+      "upper_decimal": 0.098043070398336,
+      "width_upper": 1.948316576e-06
+    },
+    {
+      "x": "3",
+      "y": "-9/7",
+      "lower": "77409573985783/500000000000000",
+      "upper": "19352733768037/125000000000000",
+      "lower_decimal": 0.154819147971566,
+      "upper_decimal": 0.154821870144296,
+      "width_upper": 2.72217273e-06
+    }
+  ]
+}

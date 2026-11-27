@@ -100,7 +100,10 @@ previous output files remain unchanged. The re-selection data are saved as
 `sweep-reselection-*.json`; their baseline entries retain the original counts.
 A second run reproduced every saved numeric field and selection exactly;
 `compare_sweep_repeats.py` also permits `rtol=1e-10, atol=1e-12` for future
-floating-point differences.
+floating-point differences. A later comparison, recorded in
+`sweep-grid-bound.md`, uses selected larger boxes for three settings and gives
+conditional rational grid upper expressions below the allocation for one
+candidate in each sweep. It does not validate the original production tables.
 
 ## Reproduction
 

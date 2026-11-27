@@ -28,14 +28,15 @@ def ceil_div(n, d):
     return (n + d - 1) // d
 
 
-def response_upper(anchor, dx, n, nu, h):
-    """Upper-bound the unit-source 1D response at anchor and its +/-h nodes."""
+def response_upper(anchor, dx, n, nu, h, potential_coeff=F(21,25)):
+    """Upper-bound the unit-source 1D response for V=potential_coeff*x^2/(4 nu)."""
+    assert potential_coeff >= 0
     period = n * dx
     index = round((anchor + period / 2) / dx)
     assert 0 <= index-h and index+h < n
     points = [anchor + (i-index)*dx for i in range(n)]
-    # x^T C x >= (1-rho^2) x_i^2 with rho=2/5.
-    potential = [F(21, 25)*x*x/(4*nu) for x in points]
+    # For a sweep, potential_coeff = lambda*(1-rho^2).
+    potential = [potential_coeff*x*x/(4*nu) for x in points]
     rate = nu / dx**2
     lam = math.ceil(2*rate + max(potential))
     diagonal = [ceil_scaled(1 - (2*rate+v)/lam) for v in potential]
